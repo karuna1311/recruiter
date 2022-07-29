@@ -20,7 +20,7 @@
               </div>
               <div class="col-lg-4 form-group">
                 <label>Date Of Birth<br> <span class="text-muted">जन्म तारीख</span></label>
-                <input type="date" class="form-control"  name="dob" id="dob" max="{{config('datevalidation.registration.dob')}}" min="{{config('datevalidation.registration.min_dob')}">
+                <input type="date" class="form-control"  name="dob" id="dob" max="{{config('datevalidation.registration.dob')}}" min="{{config('datevalidation.registration.min_dob')}}">
               </div>
               <div class="col-lg-7 form-group">
                 <label>Enter Mobile Number<br> <span class="text-muted">मोबाइल क्र. प्रविष्ट करा</span></label>

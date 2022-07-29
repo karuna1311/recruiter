@@ -26,22 +26,24 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'rollno' => 'required|unique:users,rollno',
-            'neetappno' => 'required|unique:users,neetappno',
+            'salutation' => 'required',
+            'name' => 'required|string|min:3',
+            'mother_name' => 'required|string|min:3',
             'dob' => 'required|date_format:'.config('panel.date_format').'|before:'.config('datevalidation.registration.dob'),
             'mobile' => 'required|regex:/\b\d{10}\b/|unique:users',
             'mobileOtp' => 'required|regex:/\b\d{6}\b/',
             'email' => 'required|email|unique:users',
-            'EmailOtp' => 'required|regex:/\b\d{6}\b/',
-            'encryptMobileOtp' => 'required',
-            'encryptEmailOtp'=> 'required'
+            // 'EmailOtp' => 'required|regex:/\b\d{6}\b/',
+            // 'encryptMobileOtp' => 'required',
+            // 'encryptEmailOtp'=> 'required'
         ];
     }
     public function messages()
     {
-        return [
-            'rollno.required' => 'Neet roll no required',
-            'neetappno.required' => 'Neet application no required',
+        return [           
+            'salutation.required' => 'Select Salutation',
+            'name.required' => 'Name required',
+            'mother_name.required' => 'Mother Name required',
             'dob.required' => 'Dob required',
             'dob.before' => 'Dob must be before 01-01-2001',
             'mobile.required' => 'Mobile no required',

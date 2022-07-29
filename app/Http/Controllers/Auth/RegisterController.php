@@ -66,21 +66,21 @@ class RegisterController extends Controller
     public function register(RegistrationRequest $request)
     {
         extract($request->validated());
-
-        $otpVerificationCheck=OtpController::otpVerificationCheck($encryptMobileOtp,$encryptEmailOtp,$mobile,$mobileOtp,$email,$EmailOtp);
-        if($otpVerificationCheck['status']=='error') return Response::json($otpVerificationCheck);
-
-        $studentValidation=RegistrationService::studentValidation($rollno,$neetappno,date('d-m-Y',strtotime($dob)));
-        if($studentValidation['status']!='success') return Response::json($studentValidation);
-        $studentData=$studentValidation['data'];
-
-        $checkSchedule=ScheduleMasterService::checkSchedule('Registration',$studentData->neet_year);
-        if($checkSchedule['status']!='success') return Response::json($checkSchedule);
+        
+        // $otpVerificationCheck=OtpController::otpVerificationCheck($encryptMobileOtp,$encryptEmailOtp,$mobile,$mobileOtp,$email,$EmailOtp);
+        // if($otpVerificationCheck['status']=='error') return Response::json($otpVerificationCheck);
 
         $password=substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 8);
+        $data = $request->except('mobileOtp','EmailOtp','encryptMobileOtp','encryptEmailOtp');
+        $data['password'] = Hash::make($password);
+        $data['base64_pwd'] = $password;
+        $data['ip_address'] = RequestIp::ip();
+        $data['application_status'] = 0;
+      
         try{
-            User::create(['name'=>$studentData->cname,'mobile'=>$mobile,'email'=>$email,'dob'=>$studentData->dob,'rollno'=>$studentData->roll_no,'neetappno'=>$studentData->application_no,'arank'=>$studentData->neet_rank,'neet_marks'=>$studentData->neet_score,'neet_year'=>$studentData->neet_year,'password'=>Hash::make($password),'is_active'=>'1','application_status'=>'0','ip_address'=>RequestIp::ip(),'base64_pwd'=>base64_encode($password)]);
-            $user=['name'=>$studentData->cname,'mobile'=>$mobile,'email'=>$email,'password'=>$password];   
+            User::create($data);
+
+            $user=['name'=>$data['name'],'mobile'=>$data['mobile'],'email'=>$data['email'],'password'=>$password];   
             event(new NewlyRegisteredEvent($user));
         }catch(Exception $e){
             return ['status'=>'error','data'=>$e->getMessage()];

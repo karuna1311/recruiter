@@ -10,17 +10,31 @@
               </p>
               <form id="registration_form" method="POST" autocomplete="off">
               <div class="row">
-              <div class="col-lg-4 form-group">
-                <label>NEET Roll No.<br> <span class="text-muted">रोल नंबर</span></label>
-                <input type="text" class="form-control"  name="rollno" id="rollno">
+              
+                 <div class="col-lg-3">
+                  <label>Salutation <br><span class="text-muted">अभिवादन</span></label>
+                  <select class="form-control">
+                    <option value="" selected>[ select ]</option>
+                    <option value="MR">MR.</option>
+                    <option value="MS">MS.</option>
+                    <option value="MRS">MRS.</option>
+                  </select>
+                </div>
+              <div class="col-lg-9 form-group">
+               <label>Name as per SSC/ 10th Marksheet/ Certificate<br> <span class="text-muted">कृपया SSC/ 10वी मार्कशीट/ प्रमाणपत्रानुसार नाव टाका</span></label>
+               <input type="text" class="form-control" placeholder="Please Enter Full Name" name="fullName" id="fullName">
               </div>
-               <div class="col-lg-4 form-group">
-                <label>NEET Application No.<br> <span class="text-muted">अर्ज क्र.</span></label>
-                <input type="text" class="form-control"  name="neetappno" id="neetappno">
+              
+              <div class="form-group col-lg-7">
+                <label>Mother Name<br> <span class="text-muted">आईचे नाव</span></label>
+                <input type="text" class="form-control" placeholder="Please Enter Mother Name" name="motherName" id="motherName"> 
               </div>
-              <div class="col-lg-4 form-group">
-                <label>Date Of Birth<br> <span class="text-muted">जन्म तारीख</span></label>
-                <input type="date" class="form-control"  name="dob" id="dob" max="{{config('datevalidation.registration.dob')}}" min="{{config('datevalidation.registration.min_dob')}}">
+
+
+              <div class="form-group col-lg-5">
+                <label>Date Of Birth<br> <span class="text-muted">जन्मतारीख</span></label>
+                <input type="date" class="form-control" placeholder="Please Enter Date Of Birth" name="dob" id="dob"> 
+
               </div>
               <div class="col-lg-7 form-group">
                 <label>Enter Mobile Number<br> <span class="text-muted">मोबाइल क्र. प्रविष्ट करा</span></label>

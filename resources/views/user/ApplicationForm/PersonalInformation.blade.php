@@ -46,7 +46,7 @@
                      <label class="d-block">{{ trans('cruds.personalInformation.fields.motherName_Eng') }}:<font class="astr">*</font> <br>{{ trans('cruds.personalInformation.fields.motherName_dev') }}:</label>
                   </div>
                   <div class="col-md-4">
-                     <input type="text" id="mname" name="mname" class="form-control" placeholder="Enter your Mother's Name" value="{{ old('mname', isset($personalInfoData) ? $personalInfoData->mname : '') }}">
+                     <input type="text" id="mname" name="mname" class="form-control" placeholder="Enter your Mother's Name" value="{{  isset($userData) ? $userData['mother_name'] : '--' }}" readonly >
                   </div>
                </div>
                <div class="row form-group">

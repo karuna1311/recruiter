@@ -13,7 +13,7 @@
               
                  <div class="col-lg-3">
                   <label>Salutation <br><span class="text-muted">अभिवादन</span></label>
-                  <select class="form-control">
+                  <select class="form-control" name="salutation">
                     <option value="" selected>[ select ]</option>
                     <option value="MR">MR.</option>
                     <option value="MS">MS.</option>
@@ -22,12 +22,12 @@
                 </div>
               <div class="col-lg-9 form-group">
                <label>Name as per SSC/ 10th Marksheet/ Certificate<br> <span class="text-muted">कृपया SSC/ 10वी मार्कशीट/ प्रमाणपत्रानुसार नाव टाका</span></label>
-               <input type="text" class="form-control" placeholder="Please Enter Full Name" name="fullName" id="fullName">
+               <input type="text" class="form-control" placeholder="Please Enter Full Name" name="name" id="fullName">
               </div>
               
               <div class="form-group col-lg-7">
                 <label>Mother Name<br> <span class="text-muted">आईचे नाव</span></label>
-                <input type="text" class="form-control" placeholder="Please Enter Mother Name" name="motherName" id="motherName"> 
+                <input type="text" class="form-control" placeholder="Please Enter Mother Name" name="mother_name" id="motherName"> 
               </div>
 
 
@@ -100,17 +100,18 @@
   $(document).ready(function () {
     $("#registration_form").validate({
       rules: {
-        rollno: {required: true},
-        neetappno: {required: true},
+        salutation: {required: true},
+        name: {required: true},
+        mother_name: {required: true},
         dob: {required: true,date: true},
         mobile: {required: true,number: true,minlength: 10,maxlength: 10},
         mobileOtp: {required: true,number: true,minlength: 6,maxlength: 6},
-        email: {required: true,email: true},
-        EmailOtp: {required: true,number: true,minlength: 6,maxlength: 6},
+        // email: {required: true,email: true},
+        // EmailOtp: {required: true,number: true,minlength: 6,maxlength: 6},
         },
       messages: {
-        rollno: {required: "Please enter roll number"},
-        neetappno: {required: "Please enter application number",number: "Please enter valid application number"},
+        salutation: {required: "Please select salutation"},
+        name: {required: "Please enter name"},
         dob: {required: "Please enter dob",date: "Please enter valid dob"},
         mobile: {required: "Please Enter Mobile Number",number: "Please enter valid number",minlength: "Please enter valid number",maxlength: "Please enter valid number"},
         mobileOtp: {required: "Please Enter OTP",number: "Please enter valid otp",minlength: "Please enter valid otp",maxlength: "Please enter valid otp"},

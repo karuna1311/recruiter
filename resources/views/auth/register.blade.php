@@ -30,9 +30,11 @@
                 <input type="text" class="form-control" placeholder="Please Enter Mother Name" name="motherName" id="motherName"> 
               </div>
 
+
               <div class="form-group col-lg-5">
                 <label>Date Of Birth<br> <span class="text-muted">जन्मतारीख</span></label>
                 <input type="date" class="form-control" placeholder="Please Enter Date Of Birth" name="dob" id="dob"> 
+
               </div>
               <div class="col-lg-7 form-group">
                 <label>Enter Mobile Number<br> <span class="text-muted">मोबाइल क्र. प्रविष्ट करा</span></label>

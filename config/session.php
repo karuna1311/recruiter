@@ -59,7 +59,7 @@ return [
     |
     */
 
-    'files' => 'C:/xampp/htdocs/upload1/'.env('APP_NAME').'/sessions/',
+    'files' => storage_path('framework/sessions'),
 
     /*
     |--------------------------------------------------------------------------

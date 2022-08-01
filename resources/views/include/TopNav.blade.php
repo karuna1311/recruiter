@@ -3,19 +3,9 @@
 
    <div class="w-100">
       <div class="navbar-brand">
-          <div class="row headerFullWidth">
-            <div class="col-md-1 al-center col-2 mobPd0">
-               <img src="{{ url('/') }}/assets/img/logo_heder.png" class="w-80">
-            </div>
-            <div class="col-md-10 text-center al-center col-8">
-               <h3 class="uppercase mb-0">Government of Maharashtra</h3>
-               <p class="mb-0 subText1">State Common Entrance Test Cell, Maharashtra State</p>
-               <p class="mb-0 subText2 mobNone">Admission for Dental Postgraduate Courses (MDS) at Maharashtra state Government/Corporation/Unaided private/Minority Dental Colleges</p>
-            </div>
-            <div class="col-md-1 al-center text-center col-2 mobNone">
-               <img src="{{ url('/') }}/assets/img/govtLogo.png" class="w-50">
-            </div>
-         </div>
+         <div class="navbar-brand">
+         <a href="index.html" class="df-logo"><img src="assets/img/cet-cell-logo.png" class="w-80"></a>
+      </div>
          <a href="#" id="mainMenuOpen" class="burger-menu"><i data-feather="menu"></i></a>
       </div>
       <!-- navbar-brand -->

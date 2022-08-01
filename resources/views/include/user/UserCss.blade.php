@@ -1,5 +1,5 @@
  <meta charset="utf-8" />
-           <title>State Common Entrance Cell</title>
+           <title>The Munciple Co-Op. Bank LTD</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="" name="description" />
         <meta content="" name="" />

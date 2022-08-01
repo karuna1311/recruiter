@@ -29,7 +29,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="./assets/img/logo_heder.png">
 
-    <title>State Common Entrance Cell</title>
+    <title>The Munciple Co-Op. Bank LTD</title>
 
     <!-- vendor css -->
     <link href="{{ url('/') }}/lib/%40fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">

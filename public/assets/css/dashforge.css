@@ -1090,13 +1090,13 @@ sup {
 }
 
 a {
-  color: #0148ae;
+  color: #39c;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #0148ae;
+  color: #39c;
   text-decoration: none;
 }
 
@@ -4205,8 +4205,8 @@ fieldset:disabled a.btn {
 
 .btn-outline-dark {
   color: #ffffff;
-  background: #19569b;
-  border-color: #19569b;
+  background: #39c;
+  border-color: #39c;
 }
 
 .btn-outline-dark:hover {
@@ -4247,7 +4247,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-link:hover {
-  color: #0148ae;
+  color: #39c;
   text-decoration: none;
 }
 
@@ -6312,7 +6312,7 @@ input[type="button"].btn-block {
 
 .page-link:hover {
   z-index: 2;
-  color: #0148ae;
+  color: #39c;
   text-decoration: none;
   background-color: #e3e7ed;
   border-color: #cdd4e0;
@@ -11721,7 +11721,7 @@ button.bg-dark:focus {
 
 a.text-primary:hover,
 a.text-primary:focus {
-  color: #0148ae !important;
+  color: #39c !important;
 }
 
 .text-secondary {
@@ -14984,7 +14984,7 @@ textarea.form-control {
 }
 
 .marker-primary.marker-ribbon::after {
-  border-bottom-color: #0148ae;
+  border-bottom-color: #39c;
 }
 
 .marker-secondary {
@@ -16355,7 +16355,7 @@ textarea.form-control {
 
 .step-link:hover,
 .step-link:focus {
-  color: #19569b;
+  color: #39c;
 }
 
 .step-link>div {
@@ -19092,13 +19092,13 @@ textarea.parsley-success:focus {
 
 .navbar-menu-wrapper {
   order: 3;
-  background: #19569b;
+  background: #39c;
   width: 260px;
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  background-color: #19569b;
+  background-color: #39c;
   overflow: hidden;
   z-index: 1060;
   transform: translateX(-260px);
@@ -19119,7 +19119,7 @@ textarea.parsley-success:focus {
     top: auto;
     left: auto;
     bottom: auto;
-    background-color: #19569b;
+    background-color: #39c;
     overflow: visible;
     display: flex;
     justify-content: center;
@@ -68848,7 +68848,7 @@ button.bg-twitter:focus,
 }
 
 .news-ticker-h li a {
-  color: #19569b;
+  color: #39c;
   font-weight: bold;
   font-size: 13px;
 }
@@ -69075,7 +69075,7 @@ button.bg-twitter:focus,
 }
 
 .otplogin:hover {
-  color: #19569b;
+  color: #39c;
 }
 
 .noteForm {
@@ -69154,8 +69154,8 @@ button:disabled {
     height: 50px;
     margin: 20% auto;
     border-radius: 50%;
-    border: 4px solid #19569b;
-    border-color: #19569b #ffb03a#19569b #ffb03a;
+    border: 4px solid #39c;
+    border-color: #39c #ffb03a#39c #ffb03a;
     animation: lds-dual-ring 1.2s linear infinite;
     }
     @keyframes lds-dual-ring {
@@ -69191,13 +69191,14 @@ button:disabled {
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #19569b; 
+  background: #39c; 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+.df-logo img{width: 400px;}
 @media (max-width: 768px) {
   .mobPd0{padding: 0;}
   .headerFullWidth h3 {

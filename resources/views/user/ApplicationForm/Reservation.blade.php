@@ -10,8 +10,8 @@
       <div class="tab-content">
          <form id="reservationform" autocomplete="off">
             @csrf
-            <fieldset class="form-fieldset mb-3">
-               <legend>{{ trans('cruds.Reservation.title_eng') }} <span class="text-muted">{{ trans('cruds.Reservation.title_dev') }}</span></legend>
+            <!-- <fieldset class="form-fieldset mb-3">
+               
                <div class="row  ">
                   <div class="col-md-6 text-right">
                      <label class="d-block">{{ trans('cruds.Reservation.fields.nri_eng') }}:<font class="astr text-danger">*</font> <br>{{ trans('cruds.Reservation.fields.nri_dev') }}:</label>
@@ -47,8 +47,10 @@
                      </select>
                   </div>
                </div>
-            </fieldset>
+            </fieldset> -->
+
             <fieldset class="form-fieldset mb-3">
+            <legend>{{ trans('cruds.Reservation.title_eng') }} <span class="text-muted">{{ trans('cruds.Reservation.title_dev') }}</span></legend>
                <div class="row">
                   <div class="col-md-6 text-right">
                      <label class="d-block">{{ trans('cruds.Reservation.fields.Nationality_eng') }}:<font class="astr">*</font> <br>{{ trans('cruds.Reservation.fields.Nationality_dev') }}:</label>
@@ -57,7 +59,7 @@
                      <select class="form-control inpField " name="nation"  id="Nationality">
                         <option value="">[SELECT]</option>
                         <option value="INDIAN" {{ (isset($reservationData->nation) && $reservationData->nation==='INDIAN') ? 'selected' : '' }}>Indian</option>
-                        <option value="FOREIGNER" {{ (isset($reservationData->nation) && $reservationData->nation==='FOREIGNER') ? 'selected' : '' }}>Foreigner</option>
+                        <!-- <option value="FOREIGNER" {{ (isset($reservationData->nation) && $reservationData->nation==='FOREIGNER') ? 'selected' : '' }}>Foreigner</option> -->
                      </select>
                   </div>
                </div>
@@ -474,27 +476,29 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-   $(document).on('change', '#nri', function() {
-     $('.certificateDetails').hide();
-     $('.incomeAnnual').hide();
-     valueFlush(['nriSelf','NriWard','Nationality','Category']);
-     $('.natDetails').hide();
-     $('.CatDetail').css('display', 'flex');
-     var nristatus = $(this).val();
-     var nation = $('#Nationality').val();
-     if (nristatus == "YES"){
-         $('#nridetails').css('display', 'flex');
-         $('#NriError').show();
-         $('.CatDetail').css('display', 'flex');
-         $("#Category").empty();
-         $('#Category').append('<option value="OPEN">OPEN</option>');
-     } 
-     else{
-         $('#nridetails').hide();
-         $('#NriError').hide();
-         $('.CatDetail').hide();
-     }
-   });
+    // nri condition
+//    $(document).on('change', '#nri', function() {
+//      $('.certificateDetails').hide();
+//      $('.incomeAnnual').hide();
+//      valueFlush(['nriSelf','NriWard','Nationality','Category']);
+//      $('.natDetails').hide();
+//      $('.CatDetail').css('display', 'flex');
+//      var nristatus = $(this).val();
+//      var nation = $('#Nationality').val();
+//      if (nristatus == "YES"){
+//          $('#nridetails').css('display', 'flex');
+//          $('#NriError').show();
+//          $('.CatDetail').css('display', 'flex');
+//          $("#Category").empty();
+//          $('#Category').append('<option value="OPEN">OPEN</option>');
+//      } 
+//      else{
+//          $('#nridetails').hide();
+//          $('#NriError').hide();
+//          $('.CatDetail').hide();
+//      }
+//    });
+
    $(document).on('change', '#Nationality', function() {
        document.getElementById('Category').value = "";
        document.getElementById('domicile').value = "";
@@ -509,20 +513,21 @@
            $("#Category").empty();
            $('#Category').append('<option value="" selected>[SELECT]</option><option value="OPEN">OPEN</option><option value="SC">SC</option><option value="ST">ST</option><option value="DT-VJ(A)">DT-VJ(A)</option><option value="NT(B)">NT(B)</option> <option value="NT(C)">NT(C)</option> <option value="NT(D)">NT(D)</option><option value="SBC">SBC</option> <option value="OBC">OBC</option><option value="EWS">EWS</option>');
        }
-       else if(nristatus == "NO" && nation == "FOREIGNER"){
-           $('.incomeAnnual').hide();
-           $('.natDetails').hide();
-           // $('.incomeAnnual').hide();
-           $('.CatDetail').css('display', 'flex');
-            $("#Category").empty();
-           $('#Category').append('<option value="" selected>[SELECT]</option><option value="OPEN">OPEN</option>');
-       }else if(nristatus == "YES" && nation == "FOREIGNER"){
-           $('.incomeAnnual').hide();
-           $('.natDetails').hide();
-           $('.CatDetail').css('display', 'flex');
-           $("#Category").empty();
-           $('#Category').append('<option value="" selected>[SELECT]</option><option value="OPEN">OPEN</option>');
-       }else if(nristatus == "YES" && nation == "INDIAN"){
+    //    else if(nristatus == "NO" && nation == "FOREIGNER"){
+    //        $('.incomeAnnual').hide();
+    //        $('.natDetails').hide();
+    //        // $('.incomeAnnual').hide();
+    //        $('.CatDetail').css('display', 'flex');
+    //         $("#Category").empty();
+    //        $('#Category').append('<option value="" selected>[SELECT]</option><option value="OPEN">OPEN</option>');
+    //    }else if(nristatus == "YES" && nation == "FOREIGNER"){
+    //        $('.incomeAnnual').hide();
+    //        $('.natDetails').hide();
+    //        $('.CatDetail').css('display', 'flex');
+    //        $("#Category").empty();
+    //        $('#Category').append('<option value="" selected>[SELECT]</option><option value="OPEN">OPEN</option>');
+    //    }
+       else if(nristatus == "YES" && nation == "INDIAN"){
          $('.natDetails').hide();
        }
        else{
@@ -579,11 +584,10 @@
            $('.sccertavaildetails').hide();
            $('.ewsdetails').hide();
        } 
-       else if(nristatus == "NO" && nation == "FOREIGNER" && cat == "OPEN"){
-         $('.incomeAnnual').hide();
-         $('.natDetails').hide();
-         
-       }
+    //    else if(nristatus == "NO" && nation == "FOREIGNER" && cat == "OPEN"){
+    //      $('.incomeAnnual').hide();
+    //      $('.natDetails').hide();   
+    //    }
        else if (cat == "SC" || cat == "ST" && nation == "INDIAN" && nristatus == "NO" && domicile == "YES") {
            $('.certificateDetails').show();
            $('.scdetails').css('display', 'flex');
@@ -615,19 +619,19 @@
            $('.certdetails').hide();
            $('.sccertavaildetails').hide();
         }
-        else if(nristatus == "YES" && nation == "FOREIGNER" && cat == "OPEN"){
+        // else if(nristatus == "YES" && nation == "FOREIGNER" && cat == "OPEN"){
          
-           $('.incomeAnnual').hide();
-           $('.ewsdetails').hide();
-           $('.certificateDetails').hide();
-           $('.scdetails').hide();
-           $('.Ncldetails').hide();
-           $('.opendetails').hide();
-           $('.castavail').hide();
-           $('.CasteValApplied').hide();
-           $('.certdetails').hide();
-           $('.sccertavaildetails').hide();
-        }
+        //    $('.incomeAnnual').hide();
+        //    $('.ewsdetails').hide();
+        //    $('.certificateDetails').hide();
+        //    $('.scdetails').hide();
+        //    $('.Ncldetails').hide();
+        //    $('.opendetails').hide();
+        //    $('.castavail').hide();
+        //    $('.CasteValApplied').hide();
+        //    $('.certdetails').hide();
+        //    $('.sccertavaildetails').hide();
+        // }
            else if(nristatus == "YES" && nation == "INDIAN" && cat == "OPEN"){
          
            $('.incomeAnnual').hide();
@@ -1038,15 +1042,15 @@
                 },
             },
             messages: {
-                nriq: {
-                    required: 'Please select NRI Candidate status',
-                },
-                nrim: {
-                    required: 'Please select NRI Candidate himself/herself',
-                },
-                nriw: {
-                    required: 'Please select NRI Candidate ward',
-                },
+                // nriq: {
+                //     required: 'Please select NRI Candidate status',
+                // },
+                // nrim: {
+                //     required: 'Please select NRI Candidate himself/herself',
+                // },
+                // nriw: {
+                //     required: 'Please select NRI Candidate ward',
+                // },
                 nation : {
                     required: 'Please select nationality of the candidate'
                 },
@@ -1195,16 +1199,16 @@
                        beforeSend: function() {
                          
            // setting a timeout
-                var nrihimself = $('#nriSelf').val();
-               var nriward = $('#NriWard').val();
-                   if($('#nri').val()=='YES' && nrihimself == nriward){
-                     toastr.error('Please select NRI Myself or ward of NRI one should be YES');
-                       return false;
-                   }
-                   if($('#Nationality').val() == 'FOREIGNER'){
-                     toastr.error('Foreigner not allowed');
-                       return false;
-                   }
+            //     var nrihimself = $('#nriSelf').val();
+            //    var nriward = $('#NriWard').val();
+            //        if($('#nri').val()=='YES' && nrihimself == nriward){
+            //          toastr.error('Please select NRI Myself or ward of NRI one should be YES');
+            //            return false;
+            //        }
+            //        if($('#Nationality').val() == 'FOREIGNER'){
+            //          toastr.error('Foreigner not allowed');
+            //            return false;
+            //        }
                    },
                     success : function(data){
                      if (data.ValidatorErrors) {
@@ -1219,7 +1223,7 @@
                           if(data.status==='error') toastr.error(data.data);
                           else if(data.status==='success'){
                              toastr.success(data.data);
-                             window.location.replace("{{route('inserviceQuota.index')}}");
+                            //  window.location.replace("{{route('inserviceQuota.index')}}");
                            }
                         }
                    },

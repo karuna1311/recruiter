@@ -27,7 +27,6 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	Route::get('/home', 'ApplicationStatusController@index')->name('applicationstatus.index');
 	Route::resource('personalInfo', 'PersonalInformationController');
 	Route::resource('reservation', 'ReservationController');
-	Route::resource('inserviceQuota', 'InserviceQuotaController');
 	Route::resource('collegeInfo', 'CollegeInformationController');
 	Route::resource('medicalCouncil', 'MedicalCouncilController');
 

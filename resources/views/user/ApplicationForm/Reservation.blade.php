@@ -544,18 +544,6 @@
            $('.certdetails').hide();
            $('.sccertavaildetails').hide();
         }
-        // else if(nation == "INDIAN" && cat == "OPEN"){
-        //    $('.incomeAnnual').hide();
-        //    $('.ewsdetails').hide();
-        //    $('.certificateDetails').hide();
-        //    $('.scdetails').hide();
-        //    $('.Ncldetails').hide();
-        //    $('.opendetails').hide();
-        //    $('.castavail').hide();
-        //    $('.CasteValApplied').hide();
-        //    $('.certdetails').hide();
-        //    $('.sccertavaildetails').hide();
-        // }
        else {
            $('.opendetails').hide();
            $('.scdetails').hide();

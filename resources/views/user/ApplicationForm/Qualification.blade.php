@@ -14,13 +14,16 @@
                               <div class="row">
                                  <div class="col-md-3 mb-1">
                                     <label >Qualification Type <br>पात्रता प्रकार</label>
-                                    <select class="form-control" name="qualificationtype">
-                                       <option value="Select">Select Qualification Type</option>
+                                    <select class="form-control select2" name="qualificationtype" id="qualificationtype">
+                                       <option value="Select">Select Qualification Type</option>                        
+                                       @foreach($qualification as $value)
+                                       <option value="{{ $value->qualificationtypecode }}"> {{ $value->qualificationtypename }}</option>   
+                                       @endforeach                                       
                                     </select>
                                  </div>
                                  <div class="col-md-3 mb-1">
                                     <label >Name of Qualification <br>पात्रतेचे नाव</label>
-                                    <select class="form-control" name="qualificationnamecode" id="qualificationnamecode"></select>
+                                    <select class="form-control" name="qualificationname" id="qualificationname"></select>
                                  </div>
                                  <div class="col-md-3 mb-1">
                                     <label >Subject / Stream / Branch<br>विषय/प्रवाह/शाखा</label>
@@ -28,7 +31,11 @@
                                  </div>
                                  <div class="col-md-3 mb-1">
                                     <label >State<br>राज्य</label>
-                                    <select class="form-control" name="statecode" id="statecode" ></select>
+                                    <select class="form-control select2" name="statecode" id="statecode">
+                                       @foreach($stateData as $key=>$value)
+                                          <option value="{{ $key }}">{{ $value }}</option>
+                                       @endforeach
+                                    </select>                                    
                                  </div>
                                  <div class="form-group col-md-6">
                                     <label for="universitycode" >Board / University<br>मंडळ / विद्यापीठ</label>
@@ -122,6 +129,33 @@
 </div>
 @endsection
 @section('js')
+<script type="text/javascript">
+     $(document).ready(function() {
+         $(document).on('change','#qualificationtype',function() {
+   //  valueFlush(['collegeList','college_name_out_mh','uni_name_out_mh']);
+    var Qualificationtype = $(this).val();
+   
+    var url = '{{ route("services.getQualificationName", ":Qualificationtype") }}';
+    url = url.replace(':Qualificationtype', Qualificationtype);
+      $.ajax({
+           url: url,
+           type: 'get',
+           success : function(data){
 
+              $('#qualificationname').empty();
+              if(data){
+                  $.each(data, function(key, val) {
+                    $('#qualificationname').append('<option value="'+key+'">'+val+'</option>');
+                });
+              }
+          },
+          error:function (response) {
+              let data = response.responseJSON;
+              toastr.error(data);
+          }
+       });
+   });
+     });
+   </script>
 @include('include.user.UserCustomJs')
 @endsection

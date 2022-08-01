@@ -27,6 +27,7 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	Route::get('/home', 'ApplicationStatusController@index')->name('applicationstatus.index');
 	Route::resource('personalInfo', 'PersonalInformationController');
 	Route::resource('reservation', 'ReservationController');
+	Route::resource('qualification', 'QualificationController');
 	Route::resource('collegeInfo', 'CollegeInformationController');
 	Route::resource('medicalCouncil', 'MedicalCouncilController');
 
@@ -57,6 +58,10 @@ Route::post('/updatePushResponse', 'App\Http\Controllers\User\PaymentController@
 
 Route::post('/getLocation', 'App\Http\Controllers\Location\LocationController@index')->name('location.index');
 Route::get('/getCollegeList/{collegeType}', 'App\Http\Controllers\User\CollegeListController@index')->name('collegeList.index');
+
+
+Route::get('/services/{qualificationtype}', 'App\Http\Controllers\service\ServiceController@getQualificationName')->name('services.getQualificationName');
+
 
 
 Route::get('/contact', function () {

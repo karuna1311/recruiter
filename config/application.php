@@ -13,11 +13,11 @@ return [
            	'gate_name'=>'reservation',
            	'route'=>'reservation.index',
            ],
-        //    '3'=>[
-        //    	'name'=>'Details Of Inservice Quota',
-        //    	'gate_name'=>'inservice_quota',
-        //    	'route'=>'inserviceQuota.index',
-        //    ],
+           '3'=>[
+           	'name'=>'Qualification',
+           	'gate_name'=>'',
+           	'route'=>'qualification.index',
+           ],
            '4'=>[
            	'name'=>'Previous College Information',
            	'gate_name'=>'pre_college_info',

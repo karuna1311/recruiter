@@ -352,6 +352,7 @@
           }
        });
    });
+   
    $(document).on('change', '#DiplomaCourse', function() {
       valueFlush(['SubofDiploma']);
       const DiplomaCourse = $(this).val();

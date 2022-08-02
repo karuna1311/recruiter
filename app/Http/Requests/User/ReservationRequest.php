@@ -25,10 +25,9 @@ class ReservationRequest extends FormRequest
      */
     public function rules()
     {
-        $nri   = 'NO' === $this->get('nriq');
+    
         $nation = 'INDIAN' === $this->get('nation');
-        $domicile = 'YES' === $this->get('domicle_maharashtra');
-        $category = 'OPEN'  === $this->get('cate');
+
 
         $domicile_annual = 'YES'||'NO' === $this->get('domicle_maharashtra');
         $category_annual = 'OPEN'||'SC'||'ST'||'DT-VJ(A)'||'NT(B)'||'NT(C)'||'NT(D)'||'SBC'||'OBC'||'EWS' === $this->get('cate');
@@ -38,16 +37,11 @@ class ReservationRequest extends FormRequest
         $ews_cert_status_applied = 'APPLIED BUT NOT RECEIVED' === $this->get('ews_cert_status');
 
         $rules = [
-            'nriq'          => 'required',
-            'nrim'          => 'required_if:nriq,YES',
-            'nriw'          => 'required_if:nriq,YES',
-            'nation'        => 'required|prohibited_if:nation,FOREIGNER',
-
-            'domicle_maharashtra' => ($nri && $nation) ? $rules['domicle_maharashtra'] = 'required' : '',
-            'cate'          => 'required_if:nation,INDIAN,FOREIGNER',
-            'annual_family_income' => ($nri && $nation && $domicile_annual && $category_annual) ? $rules['annual_family_income'] = 'required' : '',
-
-            'region_of_residence' => ($nri && $nation && $domicile_annual && $category_annual) ? $rules['region_of_residence'] = 'required' : '',
+            'nation'        => 'required',
+            'domicle_maharashtra' => ($nation) ? $rules['domicle_maharashtra'] = 'required' : '',
+            'cate'          => 'required_if:nation,INDIAN',
+            'annual_family_income' => ($nation && $domicile_annual && $category_annual) ? $rules['annual_family_income'] = 'required' : '',
+            'region_of_residence' => ($nation && $domicile_annual && $category_annual) ? $rules['region_of_residence'] = 'required' : '',
 
             'ews_cert_status' => 'required_if:cate,EWS',
             'ews_cert_no' => ($ews_category && $ews_cert_status_available) ? $rules['ews_cert_no'] = 'required' : '',
@@ -97,13 +91,8 @@ class ReservationRequest extends FormRequest
     {
         return [
 
-            'nriw.required_if' => 'Please select NRI Candidate ward',
-            
-            'nriq.required' => 'Please select NRI Candidate status',
-            'nrim.required_if' => 'Please select NRI Candidate himself/herself',
             'nation.required' => 'Please select nationality of the candidate',
-            'nation.prohibited_if'=> 'FOREIGNER candidates not allowed',
-
+        
             'domicle_maharashtra.required' => 'Please select the domicile of maharashtra',
             'cate.required_if' => 'Please select category',
             'annual_family_income.required' => 'Please select the annual family income',
@@ -125,7 +114,6 @@ class ReservationRequest extends FormRequest
             'caste_cert_appli_date.required_if' => 'Please select Caste Certificate Application Date',
             'caste_cert_appli_issue_dist.required_if' => 'Please select Caste Certificate Application District',
             'caste_cert_appli_issue_taluka.required_if' => 'Please select Caste Certificate Application Taluka',
-
 
             'caste_validity_appli_no.required_if' => 'Please enter Caste Validity Application no',
             'caste_validity_appli_date.required_if' => 'Please select Caste Validity Application Date',

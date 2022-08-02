@@ -44,11 +44,6 @@
                      <a href="{{route('reservation.index')}}"> <i class="uil-money-stack"></i> <span>Reservation</span> </a>
                   </li>
                   @endcan
-                  @can('inservice_quota')
-                  <li>
-                     <a href="{{route('inserviceQuota.index')}}"> <i class="uil-wall"></i> <span>Details Of Inservice Quota</span> </a>
-                  </li>
-                  @endcan
                   @can('pre_college_info')
                   <li>
                      <a href="{{route('collegeInfo.index')}}"> <i class="uil-building"></i> <span>Previous College Information</span></a>
@@ -76,7 +71,8 @@
                   @endcan
                </ul>
             </div>
-         </li>
+         </li.
+         >
          @endcan
          @can('session_application')
          <li class="side-nav-item">

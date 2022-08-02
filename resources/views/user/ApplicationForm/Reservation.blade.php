@@ -19,8 +19,7 @@
                   <div class=" col-md-3">
                      <select class="form-control inpField " name="nation" id="Nationality">
                         <option value="">[SELECT]</option>
-                        <option value="INDIAN" {{ (isset($reservationData->nation) && $reservationData->nation==='INDIAN') ? 'selected' : '' }}>Indian</option>
-                        <!-- <option value="FOREIGNER" {{ (isset($reservationData->nation) && $reservationData->nation==='FOREIGNER') ? 'selected' : '' }}>Foreigner</option> -->
+                        <option value="INDIAN" {{ (isset($reservationData->nation) && $reservationData->nation==='INDIAN') ? 'selected' : '' }}>Indian</option>                
                      </select>
                   </div>
                </div>
@@ -1110,7 +1109,6 @@
                 });
             }
         });
-   
     });
 </script>
 @include('include.user.UserCustomJs')

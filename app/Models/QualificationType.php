@@ -12,8 +12,8 @@ class QualificationType extends Model
     public $table = 'qualificationtype';
 
     protected $fillable = [
-        'qualificationtypecode ',
-        'qualificationtypename',
+        'qualification_type_code ',
+        'qualification_type_name',
         'sort_order',
         'translations'
 

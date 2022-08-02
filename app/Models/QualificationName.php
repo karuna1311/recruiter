@@ -12,9 +12,9 @@ class QualificationName extends Model
     public $table = 'qualificationname';
     
     protected $fillable = [
-        'qualificationnamecode',
-        'qualificationtypecode',
-        'qualificationname',
+        'qualification_name_code',
+        'qualification_type_code',
+        'qualification_name',
         'sort_order',
         'translations'
     ];

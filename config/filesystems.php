@@ -36,7 +36,7 @@ return [
         ],
         'uploads' => [
             'driver' => 'local',
-            'root' => 'C:/xampp/htdocs/upload1/'.env('APP_NAME'),
+            'root' => 'D:/xampp/htdocs/upload1/'.env('APP_NAME'),
         ],
 
         'public' => [

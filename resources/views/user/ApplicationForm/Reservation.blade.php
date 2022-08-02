@@ -413,6 +413,7 @@
                </div>
             </fieldset>
             <fieldset class="form-fieldset ">
+               <legend>Persons with Benchmark Disabilities Details <span class="text-muted">बेंचमार्क अपंग तपशील असलेल्या व्यक्ती</span></legend>
                <div class="row form-group br-bt-1">
                   <div class="col-md-6 text-right">
                      <label class="d-block mb-0">{{ trans('cruds.Reservation.fields.ph_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.ph_dev') }}:</label>
@@ -425,6 +426,35 @@
                      </select>
                      <p class="noteForm hide text-danger" id="phNote">Certificate mandatory as per competent authority  <br>सक्षम प्राधिकरणानुसार प्रमाणपत्र बंधनकारक</p>
                   </div>
+               </div>
+               <div class="row form-group br-bt-1 mt-2 mb-2">
+                  <div class="col-md-3 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.perdisability_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.perdisability_dev') }}</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <input type="text" class="form-control" name="perDisability" id="perDisability">
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.phType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.phType_dev') }}</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <select class="form-control inpField"  id="phType" name="phType">
+                           <option value="">Select</option>
+                           <option value="VISUAL IMPAIRMENT">VISUAL IMPAIRMENT</option>
+                           <option value="HEARING IMPAIRMENT">HEARING IMPAIRMENT</option>
+                           <option value="LOCOMOTOR DISABILITY">LOCOMOTOR DISABILITY</option
+                           ><option value="INTELLECTUAL DISABILITY">INTELLECTUAL DISABILITY</option>
+                           <option value="MULTIPLE DISABILITIES">Multiple Disabilities</option>
+                           <option value="OTHER">Other</option>
+
+
+                     </select>
+                  </div>
+               </div>
+            </fieldset>
+            <fieldset class="form-fieldset mt-3">
+               <legend>Orphan Details <span class="text-muted">अनाथ तपशील</span></legend>
+               <div class="row form-group br-bt-1">
                   <div class="col-md-6 text-right ">
                      <label  class="d-block mb-0" for="orphan">{{ trans('cruds.Reservation.fields.orphan_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.orphan_dev') }}:</label>
                   </div>
@@ -436,7 +466,24 @@
                      </select>
                      <p class="noteForm hide text-danger" id="orphanNote">Certificate mandatory as per Ministry of WOMEN AND CHILD DEVELOPMENT DEPARTMENT<br>महिला व बाल विकास मंत्रालयानुसार प्रमाणपत्र बंधनकारक </p>
                   </div>
-                  <div class="col-md-6 text-right ">
+               </div>
+               <div class="row form-group br-bt-1">
+                  <div class="col-md-6 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.orphanType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.orphanType_dev') }}</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <select class="form-control" name="orphanType" id="orphanType">
+                        <option value="">Select</option>
+                        <option value="ORPHAN TYPE-A">ORPHAN TYPE-A</option>
+                        <option value="ORPHAN TYPE-B">ORPHAN TYPE-B</option>
+                        <option value="ORPHAN TYPE-C">ORPHAN TYPE-C</option>
+                     </select> 
+                  </div>
+
+
+
+
+                  <!-- <div class="col-md-6 text-right ">
                      <label  class="d-block text" for="orphan">{{ trans('cruds.Reservation.fields.MinorityQuota_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.MinorityQuota_dev') }}:</label>
                   </div>
                   <div class="col-sm-3 ">
@@ -445,8 +492,51 @@
                         <option value="YES" {{ (isset($reservationData->minority) && $reservationData->minority==='YES') ? 'selected' : '' }}>YES</option>
                         <option value="NO" {{ (isset($reservationData->minority) && $reservationData->minority==='NO') ? 'selected' : '' }}>NO</option>
                      </select>
+                  </div> -->
+               </div>
+            </fieldset>
+
+               <fieldset class="form-fieldset mt-3">
+               <legend>Ex-serviceman <span class="text-muted">माजी सैनिक</span></legend>
+               <div class="row form-group br-bt-1">
+                  <div class="col-md-6 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.exserviceman_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.exserviceman_dev') }}</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <select class="form-control" name="exServiceman" id="exServiceman">
+                        <option value="">Select</option>
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
+                     </select> 
                   </div>
                </div>
+
+               <div class="row form-group br-bt-1 mt-2">
+                  <div class="col-md-3 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.joinDate_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.joinDate_dev') }}</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <input type="date" class="form-control" name="joinDate" id="joinDate">
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.retirement_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.retirement_dev') }}</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <input type="date" class="form-control" name="joinDate" id="joinDate">
+                  </div>
+               </div>
+
+                <div class="row form-group br-bt-1 mt-2">
+                  <div class="col-md-6 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.PeriodOfService_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.PeriodOfService_dev') }}</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <input type="text" class="form-control" name="PeriodOfService" id="PeriodOfService">
+                  </div>
+               </div>
+
+            </fieldset>
+
                <div class="row form-group br-bt-1 religionDetails {{ (isset($reservationData->minority) && $reservationData->minority==='YES') ? 'show' : 'hide' }}" >
                   <div class="col-md-6 text-right ">
                      <label  class="d-block" for="orphan"> {{ trans('cruds.Reservation.fields.religion_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.religion_dev') }}:</label>
@@ -1198,17 +1288,17 @@
                     type: 'PUT',
                        beforeSend: function() {
                          
-           // setting a timeout
-            //     var nrihimself = $('#nriSelf').val();
-            //    var nriward = $('#NriWard').val();
-            //        if($('#nri').val()=='YES' && nrihimself == nriward){
-            //          toastr.error('Please select NRI Myself or ward of NRI one should be YES');
-            //            return false;
-            //        }
-            //        if($('#Nationality').val() == 'FOREIGNER'){
-            //          toastr.error('Foreigner not allowed');
-            //            return false;
-            //        }
+                     // setting a timeout
+                     //     var nrihimself = $('#nriSelf').val();
+                     //    var nriward = $('#NriWard').val();
+                     //        if($('#nri').val()=='YES' && nrihimself == nriward){
+                     //          toastr.error('Please select NRI Myself or ward of NRI one should be YES');
+                     //            return false;
+                     //        }
+                     //        if($('#Nationality').val() == 'FOREIGNER'){
+                     //          toastr.error('Foreigner not allowed');
+                     //            return false;
+                     //        }
                    },
                     success : function(data){
                      if (data.ValidatorErrors) {

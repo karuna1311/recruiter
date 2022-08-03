@@ -28,6 +28,7 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	Route::resource('personalInfo', 'PersonalInformationController');
 	Route::resource('reservation', 'ReservationController');
 	Route::resource('qualification', 'QualificationController');
+	Route::resource('experience', 'ExperienceController');
 	Route::resource('collegeInfo', 'CollegeInformationController');
 	Route::resource('medicalCouncil', 'MedicalCouncilController');
 

@@ -46,9 +46,16 @@
                   @endcan
                   <!-- @can('') -->
                   <li>
-                     <a href="{{route('qualification.index')}}"> <i class="uil-money-stack"></i> <span>Qualification</span> </a>
+                     <a href="{{route('qualification.index')}}"> <i class="uil-money-stack"></i> <span>Qualification</span> </a>               
                   </li>
                   <!-- @endcan -->
+                  <!-- @can('') -->
+                  <li>                     
+                     <a href="{{route('experience.index')}}"> <i class="uil-money-stack"></i> <span>Experience</span> </a>
+                  </li>
+                  <!-- @endcan -->
+
+
                   @can('pre_college_info')
                   <li>
                      <a href="{{route('collegeInfo.index')}}"> <i class="uil-building"></i> <span>Previous College Information</span></a>

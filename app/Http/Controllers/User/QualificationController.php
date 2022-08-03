@@ -27,9 +27,9 @@ class QualificationController extends Controller
         // abort_if(Gate::denies('qualification'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
         $qualification = QualificationType::Select('qualification_type_name','qualification_type_code')->orderby('sort_order','ASC')->get();
         $stateData = LocationController::getState();
-        $grade = lookup::select('id','label')->where('type','LIKE','%qualification_grade%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
-        $mode = lookup::Select('id','label')->where('type','LIKE','%qualification_mode%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
-
+        $grade = lookup::select('id','label')->where('type','LIKE','%qualification_grade%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]')->all();
+        $mode = lookup::Select('id','label')->where('type','LIKE','%qualification_mode%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]')->all();
+        // dd($grade);
         // user qualification
         $user_qualification = UserQualification::Select('user_qualification.id','user_qualification.typeResult','user_qualification.doq','user_qualification.attempts','user_qualification.percentage','user_qualification.courseDurations','user_qualification.compulsorySubjects','user_qualification.optionalSubjects','subject.subject_name as subject_name','university.name as university_name','class.label as class',
         'mode.label as mode','qualificationtype.qualification_type_name as qualification_type','qualificationname.qualification_name as qualification_name')
@@ -95,7 +95,13 @@ class QualificationController extends Controller
      */
     public function edit($id)
     {
-        //
+        // abort_if(Gate::denies('login_edit'), response()->json(['status' => 'error','url'=> route('admin.login-instruction.index'),'data' => 'You don`t have permission to Edit']));
+        $token = base64_decode($id);
+        dd($token);
+        $data = UserQualification::find($token);
+        $data['action'] = '/qualification/' . base64_encode($data->id);
+
+        return response()->json(['data' => $data]);
     }
 
     /**

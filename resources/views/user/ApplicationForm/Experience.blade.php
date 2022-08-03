@@ -14,7 +14,7 @@
                               <div class="row mt-3" >
                                  <div class="col-md-3 mt-3 mb-3">
                                     <label >Employment (Present / Past) <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="typeEmploymentLookupId" id="typeEmploymentLookupId">
+                                    <select class="form-control " name="typeEmploymentLookupId" id="typeEmploymentLookupId">
                                        <option value="" selected>Select</option>
                                        <option value="PAST">PAST</option>
                                        <option value="PRESENT">PRESENT</option>
@@ -22,7 +22,7 @@
                                  </div>
                                  <div class="col-md-3 mt-3">
                                     <label >Whether selected from MPSC? <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="flgMpscSelection" id="flgMpscSelection">
+                                    <select class="form-control " name="flgMpscSelection" id="flgMpscSelection">
                                        <option value="">Select</option>
                                        <option value="YES">YES</option>
                                        <option value="NO">NO</option>
@@ -30,15 +30,17 @@
                                  </div>
                                  <div class="col-md-3 mt-3 postNameLookupId">
                                     <label >Post Name <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="postNameLookupId" id="postNameLookupId">
-                                       <option value="">Select</option>
-
+                                    <select class="form-control select2" name="postNameLookupId" id="postNameLookupId">                                       
+                                       @foreach($post_name as $key=>$value)
+                                          <option value="{{ $value->id }}">{{ $value }}</option>
+                                       @endforeach 
+                                     
                                     </select>
                                  </div>
                                  <div class="col-md-3 mt-3"><label >Institution / Department / Organisation / Court <span class="asrtick">*</span></label><input type="text" class="form-control" name="officeName" maxlength="500" value=""></div>
                                  <div class="col-md-3">
                                     <label style="float: left; width: 250px;">Is Office / Institution owned by Govt. of Maharashtra? <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="flgOfficeGovOwned">
+                                    <select class="form-control select2" name="flgOfficeGovOwned">
                                        <option value="">Select</option>
                                        <option value="YES">YES</option>
                                        <option value="NO">NO</option>
@@ -51,14 +53,15 @@
 
                                  <div class="col-md-3 mb-3" >
                                     <label >5.6&nbsp;Nature Of Job <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="jobNatureLookupId" id="jobNatureLookupId">
-                                       <option value="">Select</option>
-                                     
+                                    <select class="form-control select2" name="jobNatureLookupId" id="jobNatureLookupId">
+                                    @foreach($job_nature as $key=>$value)
+                                          <option value="{{ $key }}">{{ $value }}</option>
+                                       @endforeach                                     
                                     </select>
                                  </div>
                                  <div class="col-md-3 mb-3" >
                                     <label >Whether the post is Gazetted? <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="flgGazettedPost" id="flgGazettedPost">
+                                    <select class="form-control select2" name="flgGazettedPost" id="flgGazettedPost">
                                        <option value="">Select</option>
                                        <option value="YES">YES</option>
                                        <option value="NO">NO</option>
@@ -68,7 +71,7 @@
                               <div class="row">
                                  <div class="col-md-3 mb-3 typeGroupLookupId">
                                     <label>Group <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="typeGroupLookupId">
+                                    <select class="form-control select2" name="typeGroupLookupId">
                                        <option value="">Select</option>
                                        <option value="1"> Group A</option>
                                        <option value="2">Group B</option>
@@ -77,28 +80,10 @@
 
                                  <div class="col-md-3 mb-3">
                                     <label >Nature Of Appointment <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="apointmentNatureLookupId" id="apointmentNatureLookupId">
-                                       <option value="">Select</option>
-                                       <OPTION VALUE="AD-HOC">AD-HOC</OPTION>
-                                       <OPTION VALUE="ADDITIONAL CHARGE">ADDITIONAL CHARGE</OPTION>
-                                       <OPTION VALUE="CLINICAL">CLINICAL</OPTION>
-                                       <OPTION VALUE="CONTRACT BASIS">CONTRACT BASIS</OPTION>
-                                       <OPTION VALUE="CONTRIBUTORY">CONTRIBUTORY</OPTION>
-                                       <OPTION VALUE="DAILY WAGES">DAILY WAGES</OPTION>
-                                       <OPTION VALUE="HONORARIUM">HONORARIUM</OPTION>
-                                       <OPTION VALUE="HOURBASIS">HOURBASIS</OPTION>
-                                       <OPTION VALUE="INCHARGE">INCHARGE</OPTION>
-                                       <OPTION VALUE="INTERNSHIP">INTERNSHIP</OPTION>
-                                       <OPTION VALUE="ON STIPEND">ON STIPEND</OPTION>
-                                       <OPTION VALUE="PART TIME">PART TIME</OPTION>
-                                       <OPTION VALUE="PERIODICAL">PERIODICAL</OPTION>
-                                       <OPTION VALUE="PERMANENT">PERMANENT</OPTION>
-                                       <OPTION VALUE="PROFESSIONAL">PROFESSIONAL</OPTION>
-                                       <OPTION VALUE="REGULAR">REGULAR</OPTION>
-                                       <OPTION VALUE="TEMPORARY">TEMPORARY</OPTION>
-                                       <OPTION VALUE="VISITING">VISITING</OPTION>
-                                       <OPTION VALUE="WITHOUT PAY">WITHOUT PAY</OPTION>
-                                       <OPTION VALUE="WORK CHARGED">WORK CHARGED</OPTION>
+                                    <select class="form-control " name="apointmentNatureLookupId" id="apointmentNatureLookupId">
+                                    @foreach($appointment_nature as $key=>$value)
+                                          <option value="{{ $key }}">{{ $value }}</option>
+                                       @endforeach                                     
                                     </select>
                                  </div>
 
@@ -251,16 +236,6 @@
     }
    });
 
-   //flgMpscSelection
-   $(document).on('change', '#flgMpscSelection', function() {
-    valueFlush(['postNameLookupId']); 
-    var flgMpscSelection = $(this).val();
-    if (flgMpscSelection == "NO") {
-        $('.postNameLookupId').hide();
-    } else {
-        $('.postNameLookupId').show();
-    }
-   }); 
    //flgGazettedPost
    $(document).on('change', '#flgGazettedPost', function() {
     valueFlush(['typeGroupLookupId']); 
@@ -275,10 +250,11 @@
     $(document).on('change', '#apointmentNatureLookupId', function() {
     valueFlush(['appointmentLetterNo','letterDate']); 
     var apointmentNatureLookupId = $(this).val();
-    if (apointmentNatureLookupId == "AD-HOC" || apointmentNatureLookupId == "CONTRACT BASIS" || apointmentNatureLookupId == "PERMANENT" || apointmentNatureLookupId == "TEMPORARY") {
+    console.log(apointmentNatureLookupId);
+    if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "CONTRACT BASIS" || apointmentNatureLookupId == "PERMANENT" || apointmentNatureLookupId == "TEMPORARY") {
         $('.appointmentContent').show();
     } 
-    else if(apointmentNatureLookupId == "AD-HOC")
+    else if(apointmentNatureLookupId == "269")
     {
       $('.fullTimeLookup').show();
     }

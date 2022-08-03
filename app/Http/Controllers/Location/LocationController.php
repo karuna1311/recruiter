@@ -7,6 +7,9 @@ use App\Models\pincodedata;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\LocationRequest;
+use App\Models\district;
+use App\Models\taluka;
+use App\Models\village;
 
 class LocationController extends Controller
 {
@@ -21,10 +24,10 @@ class LocationController extends Controller
                 $data=$this->getDistrict($request->state);
                 break;
             case 'subDistrict':
-                $data=$this->getSubDistrict($request->state,$request->district);
+                $data=$this->getSubDistrict($request->district);
                 break;
             case 'pincode':
-                $data=$this->getPincode($request->state,$request->district,$request->subDistrict);
+                $data=$this->getPincode($request->subDistrict);
                 break;            
             default:
                 $data=[''=>'[SELECT]'];
@@ -34,15 +37,17 @@ class LocationController extends Controller
 
     }
     public static function getState(){
-        return state::select('state_name','state_id')->orderBy('state_id')->pluck('state_name','state_id')->prepend('[SELECT]','')->all();
+        return state::select('state_name','state_id')->orderBy('state_id')->pluck('state_name','state_id')->prepend('[SELECT]')->all();
     }
-    // public static function getDistrict($state){
-    //     return pincodedata::where('statename',$state)->select('districtname')->groupBy('districtname')->orderBy('districtname')->pluck('districtname','districtname')->prepend('[SELECT]','')->all();
-    // }
-    // protected function getSubDistrict($statename,$district){
-    //     return pincodedata::where([['statename',$statename],['districtname',$district]])->select('taluka')->groupBy('taluka')->orderBy('taluka')->pluck('taluka','taluka')->prepend('[SELECT]','')->all();
-    // }
-    // protected function getPincode($statename,$district,$subDistrict){
-    //     return pincodedata::where([['statename',$statename],['districtname',$district],['taluka',$subDistrict]])->select('pincode')->groupBy('pincode')->orderBy('pincode')->pluck('pincode','pincode')->prepend('[SELECT]',' ')->all();
-    // }
+    public static function getDistrict($state){
+        
+        return district::where('state_id',$state)->select('district_name','district_id')->pluck('district_name','district_id')->prepend('[SELECT]')->all();
+         
+    }
+    public static function getSubDistrict($district){
+        return taluka::where('district_id',$district)->select('subdistrict_name','subdistrict_id')->pluck('subdistrict_name','subdistrict_id')->prepend('[SELECT]')->all();
+    }
+    public static function getPincode($subDistrict){
+        return village::where('subdistrict_id',$subDistrict)->select('pincode')->pluck('pincode','pincode')->prepend('[SELECT]')->all();
+    }
 }

@@ -16,6 +16,7 @@ use Response;
 use RequestIp;
 use App\Events\NewlyRegisteredEvent;
 
+
 class RegisterController extends Controller
 {
     /*

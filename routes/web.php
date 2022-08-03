@@ -27,6 +27,8 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	Route::get('/home', 'ApplicationStatusController@index')->name('applicationstatus.index');
 	Route::resource('personalInfo', 'PersonalInformationController');
 	Route::resource('reservation', 'ReservationController');
+	Route::resource('qualification', 'QualificationController');
+	Route::resource('experience', 'ExperienceController');
 	Route::resource('collegeInfo', 'CollegeInformationController');
 	Route::resource('medicalCouncil', 'MedicalCouncilController');
 
@@ -56,7 +58,15 @@ Route::post('/paymentUpdate/{transaction}', 'App\Http\Controllers\User\PaymentCo
 Route::post('/updatePushResponse', 'App\Http\Controllers\User\PaymentController@updatePushResponse')->name('payment.updatePushResponse');
 
 Route::post('/getLocation', 'App\Http\Controllers\Location\LocationController@index')->name('location.index');
+Route::get('/getState', 'App\Http\Controllers\Location\LocationController@getState')->name('location.getState');
+Route::get('/getDistrict', 'App\Http\Controllers\Location\LocationController@getDistrict')->name('location.getDistrict');
 Route::get('/getCollegeList/{collegeType}', 'App\Http\Controllers\User\CollegeListController@index')->name('collegeList.index');
+
+
+Route::get('/services/{qualificationtype}', 'App\Http\Controllers\service\ServiceController@getQualificationName')->name('services.getQualificationName');
+Route::get('/university/{id}', 'App\Http\Controllers\service\ServiceController@getUniversity')->name('services.getUniversityName');
+Route::get('/subject/{id}', 'App\Http\Controllers\service\ServiceController@getSubject')->name('services.getSubject');
+
 
 
 Route::get('/contact', function () {

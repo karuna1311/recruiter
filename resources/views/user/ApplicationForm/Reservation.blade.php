@@ -372,6 +372,23 @@
                         </select>
                      </div>
                   </div>
+
+                   <div class="row form-group br-bt-1 religionDetails {{ (isset($reservationData->minority) && $reservationData->minority==='YES') ? 'show' : 'hide' }}" >
+                  <div class="col-md-6 text-right ">
+                     <label  class="d-block" for="orphan"> {{ trans('cruds.Reservation.fields.religion_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.religion_dev') }}:</label>
+                  </div>
+                  <div class="col-sm-3 ">
+                     <select class="form-control inpField"  id="religion" name="minority_quota"  >
+                        <option value="">[SELECT]</option>
+                        <option value="MUSLIM" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='MUSLIM') ? 'selected' : '' }}>Muslim </option>                              
+                        <option value="CHRIST" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='CHRIST') ? 'selected' : '' }}>CHRISTIAN </option>
+                        <option value="JAIN" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='JAIN') ? 'selected' : '' }}>Jain</option>
+                        <option value="BUDDHIST" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='BUDDHIST') ? 'selected' : '' }}>BUDDHIST</option>
+                        <option value="OTHERS" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='OTHERS') ? 'selected' : '' }}>Others</option>
+                     </select>
+                     <h5 class="errorHide" id="err_religion"></h5>
+                  </div>
+               </div>
                </div>
             </fieldset>
             <fieldset class="form-fieldset ">
@@ -382,14 +399,14 @@
                   </div>
                   <div class="col-md-3">
                      <select class="form-control inpField"  id="ph" name="ph"  >
-                        <option value="">[SELECT]</option>
+                        <option value="" selected>[SELECT]</option>
                         <option value="YES" {{ (isset($reservationData->ph) && $reservationData->ph==='YES') ? 'selected' : '' }}>YES</option>
                         <option value="NO" {{ (isset($reservationData->ph) && $reservationData->ph==='NO') ? 'selected' : '' }}>NO</option>
                      </select>
                      <p class="noteForm hide text-danger" id="phNote">Certificate mandatory as per competent authority  <br>सक्षम प्राधिकरणानुसार प्रमाणपत्र बंधनकारक</p>
                   </div>
                </div>
-               <div class="row form-group br-bt-1 mt-2 mb-2">
+               <div class="row form-group br-bt-1 mt-2 mb-2 phDetails hide">
                   <div class="col-md-3 text-right">
                      <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.perdisability_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.perdisability_dev') }}</label>
                   </div>
@@ -422,16 +439,16 @@
                   </div>
                   <div class="col-sm-3 ">
                      <select class="form-control inpField"  id="orphan" name="orphan">
-                        <option value="">[SELECT]</option>
+                        <option value="" selected>[SELECT]</option>
                         <option value="YES" {{ (isset($reservationData->orphan) && $reservationData->orphan==='YES') ? 'selected' : '' }}>YES</option>
                         <option value="NO" {{ (isset($reservationData->orphan) && $reservationData->orphan==='NO') ? 'selected' : '' }}>NO</option>
                      </select>
                      <p class="noteForm hide text-danger" id="orphanNote">Certificate mandatory as per Ministry of WOMEN AND CHILD DEVELOPMENT DEPARTMENT<br>महिला व बाल विकास मंत्रालयानुसार प्रमाणपत्र बंधनकारक </p>
                   </div>
                </div>
-               <div class="row form-group br-bt-1">
+               <div class="row form-group br-bt-1 orphanDetails hide">
                   <div class="col-md-6 text-right">
-                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.orphanType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.orphanType_dev') }}</label>
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.orphanType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.orphanType_dev') }}:</label>
                   </div>
                   <div class="col-md-3 text-right">
                      <select class="form-control" name="orphanType" id="orphanType">
@@ -441,10 +458,6 @@
                         <option value="ORPHAN TYPE-C">ORPHAN TYPE-C</option>
                      </select> 
                   </div>
-
-
-
-
                </div>
             </fieldset>
 
@@ -452,35 +465,35 @@
                <legend>Ex-serviceman <span class="text-muted">माजी सैनिक</span></legend>
                <div class="row form-group br-bt-1">
                   <div class="col-md-6 text-right">
-                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.exserviceman_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.exserviceman_dev') }}</label>
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.exserviceman_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.exserviceman_dev') }}:</label>
                   </div>
                   <div class="col-md-3 text-right">
                      <select class="form-control" name="exServiceman" id="exServiceman">
-                        <option value="">Select</option>
+                        <option value="" selected>Select</option>
                         <option value="YES">YES</option>
                         <option value="NO">NO</option>
                      </select> 
                   </div>
                </div>
 
-               <div class="row form-group br-bt-1 mt-2">
+               <div class="row form-group br-bt-1 mt-2 hide serviceDetails">
                   <div class="col-md-3 text-right">
-                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.joinDate_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.joinDate_dev') }}</label>
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.joinDate_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.joinDate_dev') }}:</label>
                   </div>
                   <div class="col-md-3 text-right">
                      <input type="date" class="form-control" name="joinDate" id="joinDate">
                   </div>
                   <div class="col-md-3 text-right">
-                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.retirement_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.retirement_dev') }}</label>
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.retirement_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.retirement_dev') }}:</label>
                   </div>
                   <div class="col-md-3 text-right">
-                     <input type="date" class="form-control" name="joinDate" id="joinDate">
+                     <input type="date" class="form-control" name="retirementDate" id="retirementDate">
                   </div>
                </div>
 
-                <div class="row form-group br-bt-1 mt-2">
+                <div class="row form-group br-bt-1 mt-2 hide serviceDetails">
                   <div class="col-md-6 text-right">
-                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.PeriodOfService_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.PeriodOfService_dev') }}</label>
+                     <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.PeriodOfService_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.PeriodOfService_dev') }}:</label>
                   </div>
                   <div class="col-md-3 text-right">
                      <input type="text" class="form-control" name="PeriodOfService" id="PeriodOfService">
@@ -488,23 +501,90 @@
                </div>
 
             </fieldset>
+            <fieldset class="form-fieldset mt-3">
+               <legend>{{ trans('cruds.SportDetails.title_eng') }} <span class="text-muted">{{ trans('cruds.SportDetails.title_dev') }}</span></legend>
 
-               <div class="row form-group br-bt-1 religionDetails {{ (isset($reservationData->minority) && $reservationData->minority==='YES') ? 'show' : 'hide' }}" >
-                  <div class="col-md-6 text-right ">
-                     <label  class="d-block" for="orphan"> {{ trans('cruds.Reservation.fields.religion_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.religion_dev') }}:</label>
+               <div class="row form-group br-bt-1 mt-2">
+                  <div class="col-md-6 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.sportPerson_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.sportPerson_dev') }}:</label>
                   </div>
-                  <div class="col-sm-3 ">
-                     <select class="form-control inpField"  id="religion" name="minority_quota"  >
-                        <option value="">[SELECT]</option>
-                        <option value="MUSLIM" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='MUSLIM') ? 'selected' : '' }}>Muslim </option>                              
-                        <option value="CHRIST" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='CHRIST') ? 'selected' : '' }}>CHRISTIAN </option>
-                        <option value="JAIN" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='JAIN') ? 'selected' : '' }}>Jain</option>
-                        <option value="BUDDHIST" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='BUDDHIST') ? 'selected' : '' }}>BUDDHIST</option>
-                        <option value="OTHERS" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='OTHERS') ? 'selected' : '' }}>Others</option>
+                  <div class="col-md-3 text-right">
+                     <select class="form-control" name="Meritorious_Sports_Person" id="Meritorious_Sports_Person">
+                         <option value="" selected>Select</option>
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
                      </select>
-                     <h5 class="errorHide" id="err_religion"></h5>
                   </div>
                </div>
+
+               <div class="row form-group br-bt-1 mt-2 hide SportDetails">
+                  <div class="col-md-3 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionType_dev') }}:</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <select class="form-control" name="typeOfCompetition" id="typeOfCompetition">
+                           <OPTION VALUE="" SELECTED>SELECT</OPTION>
+                           <OPTION VALUE="RECOGNISED INTERNATIONAL SPORTS COMPETITION">RECOGNISED INTERNATIONAL SPORTS COMPETITION</OPTION>
+                           <OPTION VALUE="PARALYMPIC INTERNATIONAL COMPETITION">PARALYMPIC INTERNATIONAL COMPETITION</OPTION>
+                           <OPTION VALUE="WORLD INTER UNIVERSITY SPORTS COMPETITION">WORLD INTER UNIVERSITY SPORTS COMPETITION</OPTION>
+                           <OPTION VALUE="WORLD SCHOOL SPORTS COMPETITION ORGANISED BY INTERNATIONAL SCHOOL FEDERATION">WORLD SCHOOL SPORTS COMPETITION ORGANISED BY INTERNATIONAL SCHOOL FEDERATION</OPTION>
+                           <OPTION VALUE="GRAND MASTER AWARD">GRAND MASTER AWARD</OPTION>
+                           <OPTION VALUE="RECOGNISED INTERNATIONAL COMPETITION IN JUNIOR CATEGORY">RECOGNISED INTERNATIONAL COMPETITION IN JUNIOR CATEGORY</OPTION>
+                           <OPTION VALUE="NATIONAL CHAMPIONSHIP - SENIOR GROUP">NATIONAL CHAMPIONSHIP - SENIOR GROUP</OPTION>
+                           <OPTION VALUE="NATIONAL CHAMPIONSHIP - JUNIOR GROUP">NATIONAL CHAMPIONSHIP - JUNIOR GROUP</OPTION>
+                           <OPTION VALUE="NATIONAL PARALYMPIC COMPETITION">NATIONAL PARALYMPIC COMPETITION</OPTION>
+                           <OPTION VALUE="NATIONAL SCHOOL COMPETITION">NATIONAL SCHOOL COMPETITION</OPTION>
+                           <OPTION VALUE="NATIONAL RURAL AND WOMAN SPORTS COMPETITION">NATIONAL RURAL AND WOMAN SPORTS COMPETITION</OPTION>
+                           <OPTION VALUE="ALL INDIA INTER UNIVERSITY COMPETITION">ALL INDIA INTER UNIVERSITY COMPETITION</OPTION>
+                           <OPTION VALUE="INTERNATIONAL MASTER COMPETITION">INTERNATIONAL MASTER COMPETITION</OPTION>
+                           <OPTION VALUE="STATE LEVEL SENIOR GAMES COMPETITION">STATE LEVEL SENIOR GAMES COMPETITION</OPTION>
+                           <OPTION VALUE="STATE LEVEL JUNIOR GROUP CHAMPIONSHIP COMPETITION">STATE LEVEL JUNIOR GROUP CHAMPIONSHIP COMPETITION</OPTION>
+                           <OPTION VALUE="STATE LEVEL SCHOOL GAMES COMPETITION">STATE LEVEL SCHOOL GAMES COMPETITION</OPTION>
+                           <OPTION VALUE="STATE LEVEL RURAL AND WOMAN SPORTS COMPETITION">STATE LEVEL RURAL AND WOMAN SPORTS COMPETITION</OPTION>
+                           <OPTION VALUE="STATE LEVEL INTER UNIVERSITY COMPETITION (ASHVAMEDHA)">STATE LEVEL INTER UNIVERSITY COMPETITION (ASHVAMEDHA)</OPTION>
+                           <OPTION VALUE="STATE LEVEL TRIBAL GAMES COMPETITION">STATE LEVEL TRIBAL GAMES COMPETITION</OPTION>
+                           <OPTION VALUE="STATE LEVEL PARALYMPIC SPORTS COMPETITION">STATE LEVEL PARALYMPIC SPORTS COMPETITION</OPTION>
+                           <OPTION VALUE="STATE LEVEL SPORTS COMPETITION FOR PERSONS WITH DISABILITY">STATE LEVEL SPORTS COMPETITION FOR PERSONS WITH DISABILITY</OPTION>
+                           <OPTION VALUE="PARTICIPATION IN NATIONAL GAMES COMPETITION - SENIOR GROUP">PARTICIPATION IN NATIONAL GAMES COMPETITION - SENIOR GROUP</OPTION>
+                           <OPTION VALUE="PARTICIPATION IN NATIONAL PARALYMPIC COMPETITION - SENIOR GROUP">PARTICIPATION IN NATIONAL PARALYMPIC COMPETITION - SENIOR GROUP</OPTION>
+                     </select>
+                  </div>
+                   <div class="col-md-3 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionLevel_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionLevel_dev') }}:</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                      <select class="form-control" name="LevelOfCompetition" id="LevelOfCompetition">
+                           <OPTION VALUE="" SELECTED>SELECT</OPTION>
+                           <OPTION VALUE="NATIONAL LEVEL">NATIONAL LEVEL</OPTION>
+                           <OPTION VALUE="INTERNATIONAL LEVEL">INTERNATIONAL LEVEL</OPTION>
+                        </select>
+                  </div>
+                   <div class="col-md-3 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionMedal_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionMedal_dev') }}:</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <select class="form-control" name="positionMedal" id="positionMedal">
+                        <OPTION VALUE="" SELECTED>SELECT</OPTION>
+                        <OPTION VALUE="FIRST/GOLD">FIRST/GOLD</OPTION>
+                        <OPTION VALUE="SECOND/SILVER">SECOND/SILVER</OPTION>
+                        <OPTION VALUE="THIRD/BRONZE">THIRD/BRONZE</OPTION>
+                        <OPTION VALUE="NONE">NONE</OPTION>
+                     </select>
+                  </div>
+                  <div class="col-md-3 text-right">
+                     <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionYear_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionYear_dev') }}:</label>
+                  </div>
+                  <div class="col-md-3 text-right">
+                    <input type="text" class="form-control" name="CompetitionYear" id="CompetitionYear">
+                  </div>
+
+               </div>
+
+
+
+            </fieldset>
+
+              
                <div class="row form-group ">
                   <div class="col-md-12 text-right">
                      <button type="submit" class="btn btn-success mb-3" id="submitReservation">Save And Next</button>
@@ -733,23 +813,55 @@
    });
    //ph
    $(document).on('change', '#ph', function() {
+      valueFlush(['perDisability','phType']);   
        var ph = $(this).val();
       if (ph == "YES") {
            $('#phNote').show();
+           $('.phDetails').css('display', 'flex');
        }
        else {
            $('#phNote').hide();
+           $('.phDetails').hide();
        }
    });
    $(document).on('change', '#orphan', function() {
+      valueFlush(['orphanType']);   
        var orphan = $(this).val();
       if (orphan == "YES") {
            $('#orphanNote').show();
+           $('.orphanDetails').css('display', 'flex');
        }
        else {
            $('#orphanNote').hide();
+           $('.orphanDetails').hide();
        }
    });
+   //
+    //exserviceman
+   $(document).on('change', '#exServiceman', function() {
+      valueFlush(['joinDate','retirementDate', 'PeriodOfService']);   
+       var exServiceman = $(this).val();
+      if (exServiceman == "YES") {
+           $('.serviceDetails').css('display', 'flex');
+       }
+       else {
+           $('.serviceDetails').hide();
+       }
+   });
+   //Meritorious_Sports_Person
+
+   $(document).on('change', '#Meritorious_Sports_Person', function() {
+      valueFlush(['typeOfCompetition', 'LevelOfCompetition', 'positionMedal', 'CompetitionYear']);   
+       var Meritorious_Sports_Person = $(this).val();
+      if (Meritorious_Sports_Person == "YES") {
+           $('.SportDetails').css('display', 'flex');
+       }
+       else {
+           $('.SportDetails').hide();
+       }
+   });
+   //
+
    function valueFlush(arryOfElements){
      $.each(arryOfElements, function(key, val) {
          $('#'+val).val('');

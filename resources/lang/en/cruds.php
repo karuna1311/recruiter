@@ -166,8 +166,8 @@ return [
             'orphan_dev'                    =>'उमेदवार अनाथ आहे का?',
             'MinorityQuota_eng'             =>'Do you want to claim Minority Quota ?',
             'MinorityQuota_dev'             =>'तुम्हाला अल्पसंख्याक कोट्याचा दावा करायचा आहे का?',
-            'religion_eng'                  =>'Minority Quota ?',
-            'religion_dev'                  =>'अल्पसंख्याक कोटा ',
+            'religion_eng'                  =>'Religion',
+            'religion_dev'                  =>'धर्म',
         ],
     ],
     'SpecialReservation'        => [
@@ -195,6 +195,23 @@ return [
             'PeriodOfService_dev'            => 'सेवेचा कालावधी',
             ],           
         ],
+    'SportDetails'        => [
+        'title_eng'      => 'Sports Details',
+        'title_dev'      => 'क्रीडा तपशील',
+        'fields'         => [
+            'sportPerson_eng' => 'Are you a Meritorious Sports Person?',
+            'sportPerson_dev' => 'तुम्ही गुणवंत क्रीडा व्यक्ती आहात का?',
+            'CompetitionType_eng' => 'Type of Competition',
+            'CompetitionType_dev' => 'स्पर्धेचा प्रकार',
+            'CompetitionLevel_eng' => 'Level of Competition',
+            'CompetitionLevel_dev' => 'स्पर्धेची पातळी',
+            'CompetitionMedal_eng' => 'Position/Medal',
+            'CompetitionMedal_dev' => 'पद/पदक',
+            'CompetitionYear_eng' => 'Competetion Year',
+            'CompetitionYear_dev' => 'स्पर्धेचे वर्ष',
+
+        ],
+    ],
     'CollegeInformation'        => [
         'title_eng'      => 'Previous College Information',
         'title_dev'      => 'मागील महाविद्यालयाची माहिती',

@@ -220,15 +220,15 @@
                url: url,
                type: 'get',
                success : function(data){
-                  console.log(data.length);
-                  if(data.length > 1){                     
+                  // console.log(data.length);
+                  const arr = Object.entries(data);
+                  if(arr.length > 1){                       
                         $('#subjectId').empty();
                         $('#subjectId').prop('disabled', false);
                         $.each(data, function(key, val) {
-                        $('#subjectId').append('<option value="'+key+'">'+val+'</option>');
-                     });
-                  }else{
-                     
+                           $('#subjectId').append('<option value="'+key+'">'+val+'</option>');
+                        });
+                     }else{                                         
                      $('#subjectId').empty();
                      $('#subjectId').prop('disabled', 'disabled');
                   }

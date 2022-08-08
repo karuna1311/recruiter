@@ -32,7 +32,7 @@
                                     <label >Post Name <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="postNameLookupId" id="postNameLookupId">                                       
                                        @foreach($post_name as $key=>$value)
-                                          <option value="{{ $value->id }}">{{ $value }}</option>
+                                          <option value="{{ $key }}">{{ $value }}</option>
                                        @endforeach 
                                      
                                     </select>
@@ -251,7 +251,7 @@
     valueFlush(['appointmentLetterNo','letterDate']); 
     var apointmentNatureLookupId = $(this).val();
     console.log(apointmentNatureLookupId);
-    if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "CONTRACT BASIS" || apointmentNatureLookupId == "PERMANENT" || apointmentNatureLookupId == "TEMPORARY") {
+    if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "258" || apointmentNatureLookupId == "272" || apointmentNatureLookupId == "271") {
         $('.appointmentContent').show();
     } 
     else if(apointmentNatureLookupId == "269")

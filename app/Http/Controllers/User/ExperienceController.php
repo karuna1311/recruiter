@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use Response;
+use Exception;
 use App\Models\lookup;
 use Illuminate\Http\Request;
+use App\Models\UserExperience;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserExperienceRequest;
 
 class ExperienceController extends Controller
 {
@@ -37,9 +42,20 @@ class ExperienceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserExperienceRequest $request)
     {
-        //
+        // dd($request->all());
+        try {
+            $user=Auth::user();
+            $data = $request->except('_token');
+            $data['user_id'] = $user->id;
+            
+            $insert = UserExperience::create($data);
+        }
+        catch(Exception $e) {
+            return Response::json(['status'=>'error','data'=>$e->getMessage()]);
+        }
+        return Response::json(['status'=>'success','data'=>'Data submitted successfully']);
     }
 
     /**

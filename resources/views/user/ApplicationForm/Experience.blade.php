@@ -8,7 +8,8 @@
    </div>
    <div class="col-12">
       <div class="tab-content">
-         <form>
+         <form id="experienceForm">
+            @csrf
                            <fieldset class="form-fieldset">
                               <legend>Experiance Information <span class="text-muted">अनुभव माहिती</span></legend>
                               <div class="row mt-3" >
@@ -73,8 +74,8 @@
                                     <label>Group <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="typeGroupLookupId">
                                        <option value="">Select</option>
-                                       <option value="1"> Group A</option>
-                                       <option value="2">Group B</option>
+                                       <option value="Group A"> Group A</option>
+                                       <option value="Group B">Group B</option>
                                     </select>
                                  </div>
 
@@ -176,30 +177,14 @@
                                     </tr>
                                  </thead>
                                  <tbody style="font-size: 12px;">
-                                    <tr>
-                                       <td>1</td>
-                                       <td >smb1</td>
-                                       <td >o</td>
-                                       <td>Permanent</td>
-                                       <td>Teaching</td>
-                                       <td></td>
-                                       <td>as</td>
-                                       <td>21</td>
-                                       <td>21</td>
-                                       <td>02/12/2020</td>
-                                       <td></td>
-                                       <td>0</td>
-                                       <td>8</td>
-                                       <td>23</td>
-                                       <td>No</td>
-                                    </tr>
+                              
                                  </tbody>
                               </table>
 
                            </fieldset>
                            <div class="row form-group  mt-3 ">
                               <div class="col-md-6 text-right"> 
-                                 <button type="button" class="btn btn-success mb-1">Save And Next</button>
+                                 <button type="submit" class="btn btn-success mb-1">Save And Next</button>
                               </div>
                            </div>
                         </form>
@@ -209,31 +194,88 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-         function valueFlush(arryOfElements){
+   function valueFlush(arryOfElements)
+   {
      $.each(arryOfElements, function(key, val) {
          $('#'+val).val('');
      });
    }
-//
+
+   function getDays(date1, date2) {
+         var t2 = date2.getTime();
+        var t1 = date1.getTime();
+
+        return parseInt((t2-t1)/(24*3600*1000));
+   }
+
+   function getMonths(date1,date2){
+      
+      var d1Y = date1.getFullYear();
+        var d2Y = date2.getFullYear();
+        var d1M = date1.getMonth();
+        var d2M = date2.getMonth();
+
+        return (d2M+12*d2Y)-(d1M+12*d1Y);
+   }
+
+   function getYears(date1,date2){
+      return diffInYr = date2.getFullYear() - date1.getFullYear();
+   }
+
+
+
+   // $('#fromDate').on('change',function(){
+   //    var employment = $('#typeEmploymentLookupId').val();
+   //    console.log(employment);
+
+   //    var fromDate = $(this).val();
+   //    if(employment=='PRESENT'){
+   //       let toDate = $('#toDate').val();
+   //       console.log(getDifferenceInDays(fromDate, toDate));
+   //    }else{
+
+   //    }
+   // });
+
+   $('#toDate').on('change',function(){
+      var employment = $('#typeEmploymentLookupId').val();
+      
+      let fromDate = $('#fromDate').val();
+      var toDate = $(this).val();
+    
+      if(employment=='PAST'){
+         const date1 = new Date(fromDate);
+         const date2 = new Date(toDate);
+
+         var days = getDays(date1, date2);
+         var months = getMonths(date1, date2);
+         var years = getYears(date1, date2);
+        
+         
+      }else{
+
+      }
+   });
+
    $(document).on('change', '#typeEmploymentLookupId', function() {
-    valueFlush(['toDate']); 
-    var typeEmploymentLookupId = $(this).val();
-    if (typeEmploymentLookupId == "PRESENT") {
-        $('.toDate').hide();
-    } else {
-        $('.toDate').show();
-    }
+      valueFlush(['toDate']); 
+      var typeEmploymentLookupId = $(this).val();
+      if (typeEmploymentLookupId == "PRESENT") {
+         $('.toDate').hide();
+      } else {
+         $('.toDate').show();
+      }
    });
 
    //flgMpscSelection
    $(document).on('change', '#flgMpscSelection', function() {
-    valueFlush(['postNameLookupId']); 
-    var flgMpscSelection = $(this).val();
-    if (flgMpscSelection == "NO") {
-        $('.postNameLookupId').hide();
-    } else {
-        $('.postNameLookupId').show();
-    }
+         valueFlush(['postNameLookupId']); 
+         var flgMpscSelection = $(this).val();
+            if (flgMpscSelection == "NO") {
+               $('.postNameLookupId').hide();
+            } else {
+               $('.postNameLookupId').show();
+            }
    });
 
    //flgGazettedPost
@@ -246,7 +288,7 @@
         $('.typeGroupLookupId').show();
     }
    });
-   //
+   
     $(document).on('change', '#apointmentNatureLookupId', function() {
     valueFlush(['appointmentLetterNo','letterDate']); 
     var apointmentNatureLookupId = $(this).val();
@@ -262,6 +304,115 @@
         $('.appointmentContent').hide();
         $('.fullTimeLookup').hide();
     }
+   });
+
+   $(document).ready(function() 
+   {
+         $("#experienceForm").validate({
+            // Specify validation rules
+            rules: {
+               typeEmploymentLookupId : "required",
+               flgMpscSelection : "required",    
+               officeName : "required",    
+               flgOfficeGovOwned : "required",    
+               designation : "required",    
+               jobNatureLookupId : "required",    
+               flgGazettedPost : "required",    
+               typeGroupLookupId : "required",    
+               apointmentNatureLookupId : "required",                   
+               payScale : "required",    
+               gradePay : "required",    
+               basicPay : "required",    
+               monthlyGrossSalary : "required",    
+               fromDate : "required",    
+               toDate : "required",    
+               postNameLookupId:{
+                           required: function () { return $('#flgMpscSelection').val()==='YES';},
+                  },
+               toDate:{
+                        required: function () { return $('#typeEmploymentLookupId').val()==='PAST';},
+               },  
+               appointmentLetterNo:{
+                        required: function () { return $('#apointmentNatureLookupId').val()==='258';},
+                        // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               },
+                 letterDate:{
+                        required: function () { return $('#apointmentNatureLookupId').val()==='258';},
+                        // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               },
+               fullTimeLookupId:{
+                        required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               },
+              
+              
+            },
+            // Specify validation error messages
+            // messages: {
+            //    qualificationtype : {
+            //                   required:"Please select Qualification Type"
+            //                },
+            //                qualificationname : {
+            //                   required:"Please select Qualification Name"
+            //                },
+            //                state : {
+            //                   required:"Please select State"
+            //                },
+            //                university : {
+            //                   required:"Please select University"
+            //                },
+            //                typeResult : {
+            //                   required:"Please select Qualification Status"
+            //                },
+            //                attempts : {
+            //                   required:"Please enter your attempts"
+            //                },
+            //                percentage : {
+            //                   required:"Please enter your percentage"
+            //                },
+            //                courseDurations : {
+            //                   required:"Please enter your course duration"
+            //                },
+            //                classGrade : {
+            //                   required:"Please select Class/Grade Type"
+            //                },
+            //                mode : {
+            //                   required:"Please select Mode"
+            //                },   
+            //                doq : {
+            //                   required:"Please select Date of Qualification Passed"
+            //                }
+            // },
+            // Make sure the form is submitted to the destination defined
+            // in the "action" attribute of the form when valid
+            submitHandler: function(form) {
+               $.ajax({
+                              url: "{{ route('experience.store')}}",
+                              data: $(form).serialize(),
+                              type: 'POST',
+                              success : function(data){
+                                 if (data.ValidatorErrors) {
+                                 $.each(data.ValidatorErrors, function(index, jsoNObject) {
+                                    $.each(jsoNObject, function(key, val) {
+                                       toastr.error(val);
+                                    });
+                                    return false;
+                                 });
+                                 }
+                                 if (data.status) {
+                                 if(data.status==='error') toastr.error(data.data);
+                                 else if(data.status==='success'){
+                                    toastr.success(data.data);
+                                    window.location.reload();
+                                    }
+                                 }
+                              },
+                              error:function (response) {
+                                 let data = response.responseJSON;
+                                 toastr.error(data);
+                              }
+                     });
+            }
+         });
    });
       </script>
 @include('include.user.UserCustomJs')

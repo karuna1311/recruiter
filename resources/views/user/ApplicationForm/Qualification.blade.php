@@ -206,10 +206,11 @@
                   toastr.error(data);
                }
             });
-         }
+      }
       
    
      
+      
       function qualificationnamechange(name){
          var Qualificationname = name;
          var encode = btoa(Qualificationname);
@@ -304,6 +305,7 @@
             })
         }
 
+   
    $(document).ready(function() 
    {
          $("#qualificationform").validate({
@@ -402,7 +404,7 @@
          });
    });
   
-    
+
 </script> 
 @include('include.user.UserCustomJs')
 @endsection

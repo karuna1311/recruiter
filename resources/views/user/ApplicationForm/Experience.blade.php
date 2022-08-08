@@ -10,7 +10,7 @@
       <div class="tab-content">
          <form>
                            <fieldset class="form-fieldset">
-                              <legend>Experiance Information <span class="text-muted">शैक्षणिक माहिती</span></legend>
+                              <legend>Experiance Information <span class="text-muted">अनुभव माहिती</span></legend>
                               <div class="row mt-3" >
                                  <div class="col-md-3 mt-3 mb-3">
                                     <label >Employment (Present / Past) <span class="asrtick">*</span></label>

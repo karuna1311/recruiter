@@ -2,6 +2,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
    <head>
       @include('include.user.UserCss')
+      <style>
+         .asrtick{
+            color:red
+         }
+      </style>
    </head>
    <body class="loading" data-layout-config='{"leftSideBarTheme":"light","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false}'>
       <div class="wrapper">

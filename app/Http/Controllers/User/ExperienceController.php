@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\lookup;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ExperienceController extends Controller
 {
@@ -14,7 +15,10 @@ class ExperienceController extends Controller
      */
     public function index()
     {
-        return view('user.ApplicationForm.experience');
+        $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
+        $job_nature = lookup::select('id','label')->where('type','LIKE','%job_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
+        $appointment_nature = lookup::select('id','label')->where('type','LIKE','%appointment_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
+        return view('user.ApplicationForm.experience',compact('post_name','job_nature','appointment_nature'));
     }
 
     /**

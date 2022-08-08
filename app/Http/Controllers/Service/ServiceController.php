@@ -29,9 +29,10 @@ class ServiceController extends Controller
     public function getSubject($id){
         $token = base64_decode(filter_var($id));
     
-        return subject::where('qualification_name_code','like','%'.$token.'%')
+        return subject::select('subject.subject_name','subject.id')->where('qualification_name_code','like','%'.$token.'%')
         ->orderBy('subject_name','ASC')
-        ->pluck('subject_name','subject_id')->prepend('[SELECT]','')->all();
+        ->pluck('subject.subject_name','subject.id')->prepend('[Select]','')->toArray();
+        
     }
 
 

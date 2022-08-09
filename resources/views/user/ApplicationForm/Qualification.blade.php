@@ -93,9 +93,11 @@
                            </fieldset>
                            <br>
                            <fieldset class="form-fieldset">
-                              <table class="table tableauto table-bordered table-responsive w-100">
+                              <div class="table-responsive">
+                              <table class="table table-bordered table-striped table-hover datatable datatable-qualification ">
                                  <thead class="thead-light">
                                     <tr>
+                                       <th ></th>
                                        <th >Sr No</th>
                                        <th >Qualification Type</th>
                                        <th >Name of Qualification</th>
@@ -117,6 +119,7 @@
                                  <tbody style="font-size: 12px;">
                                  @foreach($user_qualification as $value)
                                     <tr>
+                                       <td></td>
                                        <td>{{ $value->id }}</td>
                                        <td>{{ !empty($value->qualification_type) ? $value->qualification_type : '-'}}</td>
                                        <td>{{ !empty($value->qualification_name) ? $value->qualification_name : '-'}}</td>
@@ -131,14 +134,12 @@
                                        <td>{{ !empty($value->mode) ? $value->mode : '-'}}</td> 
                                        <td>
                                                 <a type="button" class="btn btn-xs btn-info"
-                                                   data-toggle="modal" data-target="#editQualificationModal" onclick="editQualification(this)"
+                                                data-bs-toggle="modal" data-bs-target="#editQualificationModal" onclick="editQualification(this)"
                                                    action="{{ route('qualification.edit', base64_encode($value->id)) }}"
                                                    >
                                                     {{ trans('global.edit') }}
                                                 </a>   
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-  Launch demo modal
-</button>                                                             
+                                                                      
                                        </td>
 
                                                 <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
@@ -148,6 +149,7 @@
                                   
                                  </tbody>
                               </table>
+                              </div>
                            </fieldset>
                            <div class="row form-group  mt-3 ">
                               <div class="col-md-6 text-right"> 
@@ -158,30 +160,178 @@
       </div>
    </div>
 </div>
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+
+<!-- Edit Qualification modal -->
+<div class="modal" id="editQualificationModal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add-modal-label">Edit Qualification</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="attachment-body-content">
+                    <div class="card mb-0">
+                     
+                        <form role="form" id="editQualification" method="post"  action="" enctype="multipart/form-data">
+                            @csrf  
+                            <div class="row">
+                                 <div class="col-md-6 mb-1">
+                                    <label for="qualificationtype">Qualification Type <br>पात्रता प्रकार</label>
+                                    <select class="form-control select2" name="qualificationtype" id="qualificationtype" onchange="qualificationtypechange($(this).val())">
+                                       <option value="Select">Select Qualification Type</option>                        
+                                       <!-- @foreach($qualification as $value)
+                                       <option value="{{ $value->qualification_type_code }}"> {{ $value->qualification_type_name }}</option>   
+                                       @endforeach                                        -->
+                                    </select>
+                                 </div>
+                                 <div class="col-md-6 mb-1">
+                                    <label for="qualificationname">Name of Qualification <br>पात्रतेचे नाव</label>
+                                    <select class="form-control select2" name="qualificationname" id="qualificationname" onchange="qualificationnamechange($(this).val())"></select>
+                                 </div>
+                            </div>
+                            <div class="row">
+                                 <div class="col-md-6 mb-1">
+                                    <label for="subject">Subject / Stream / Branch<br>विषय/प्रवाह/शाखा</label>
+                                    <select class="form-control select2" name="subject" id="subjectId" ></select>
+                                 </div>
+                                 <div class="col-md-6 mb-1">
+                                    <label for="state">State<br>राज्य</label>
+                                    <select class="form-control select2" name="state" id="statecode" onchange="statechange($(this).val())">
+                                       <!-- @foreach($stateData as $key=>$value)
+                                          <option value="{{ $key }}">{{ $value }}</option>
+                                       @endforeach -->
+                                    </select>                                    
+                                 </div>
+                            </div>
+                            <div class="row">
+                                 <div class="form-group col-md-12 mb-1">
+                                    <label for="universitycode" >Board / University<br>मंडळ / विद्यापीठ</label>
+                                    <select id="universitycode" class="form-control select2" name="university" id="universitycode"></select>
+                                 </div>
+                            </div>
+                            <div class="row">
+                                 <div class="col-md-6 mb-1"><label >Qualification Status <br>पात्रता स्थिती</label>
+                                    <select class="form-control" name="typeResult" id="typeResult" onchange="qual_status($(this).val())">
+                                       <option value="">SELECT</option>
+                                       <option value="PASSED">Passed</option>
+                                       <option value="APPEARED">Appeared</option>
+                                    </select>
+                                 </div>
+                                 <div class="col-md-6 mb-1">
+                                    <label >Date of qualification completion<br>पात्रता पूर्ण होण्याची तारीख</label>
+                                    <input type="date"  name="doq" id="DateofQualification" class="form-control" value="">   
+                                 </div>
+                            </div>
+                            <div class="row">                            
+                                 <div class="col-md-6 mt-3 mb-1">
+                                    <label >Attempts<br>प्रयत्न</label>
+                                    <input type="text" class="form-control" name="attempts" id="attempts" >
+                                 </div>
+                                 <div class="col-md-6 mt-3 mb-1">
+                                    <label >Number of academic months<br>शैक्षणिक महिन्यांची संख्या</label>
+                                    <input type="text" class="form-control" name="courseDurations" id="courseDurationMonths">
+                                 </div>
+                                
+                            </div>
+                            <div class="row">                               
+                                 <div class="col-md-6  mb-1">
+                                    <label >Class / Grade<br>वर्ग / श्रेणी</label>
+                                    <select class="form-control select2" name="classGrade" id="classGradeLookupId">
+                                    <!-- @foreach($grade as $key=>$value)
+                                          <option value="{{ $key }}">{{ $value }}</option>
+                                       @endforeach -->
+                                    </select>
+                                 </div>
+                                 <div class="col-md-6 mb-1">
+                                    <label >Mode<br>मोड</label>
+                                    <select class="form-control select2" name="mode" id="modeLookupId">
+                                    <!-- @foreach($mode as $key=>$value)                                       
+                                          <option value="{{ $key }}">{{ $value }}</option>
+                                       @endforeach -->
+                                    </select>
+                                 </div>
+                            </div>
+                            <div class="row">                          
+                                 <div class="col-md-6 mb-1">
+                                    <label >Compulsory Subjects<br>अनिवार्य विषय</label>
+                                    <input type="text" class="form-control" name="compulsorySubjects" id="compulsorySubjects">
+                                 </div>
+                                 <div class="col-md-6 mb-1">
+                                          <label >Optional Subjects<br>ऐच्छिक विषय</label>
+                                          <input type="text" class="form-control" name="optionalSubjects" id="optionalSubjects">
+                                 </div>
+                            </div>
+                            <div class="row">
+                               <div class="col-md-6 mt-3 mb-1">
+                                    <label >Percentage / CGPA (For Grade add respective percentage value)<br>टक्केवारी / CGPA (श्रेणीसाठी संबंधित टक्केवारी मूल्य जोडा)</label>
+                                    <input type="text" class="form-control" name="percentage" id="percentageGrade">
+                                 </div>
+                            </div>
+                                 
+                            <div class="card-footer">
+                                <button type="submit" id="loginFormsubmit" class="btn btn-warning">Update Qualification</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+    <!--Edit Qualification Modal  -->
+
 
 @endsection
 @section('js')
  <script type="text/javascript">
  
+
+ $(function () {
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            // @can('')
+            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+        
+
+            let deleteButton = {
+                text: deleteButtonTrans,
+                url: "{{ route('qualification.massDestroy') }}",
+                className: 'btn-danger',
+                action: function (e, dt, node, config) {
+                    var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+                        return $(entry).data('entry-id')
+                    });
+
+                    if (ids.length === 0) {
+                        alert('{{ trans('global.datatables.zero_selected') }}')
+                        return
+                    }
+
+                    if (confirm('{{ trans('global.areYouSure') }}')) {
+                        $.ajax({
+                            headers: {'x-csrf-token': _token},
+                            method: 'POST',
+                            url: config.url,
+                            data: { ids: ids, _method: 'DELETE' }})
+                            .done(function () { location.reload() })
+                    }
+                }
+            }
+            dtButtons.push(deleteButton)
+            // @endcan()
+
+            $.extend(true, $.fn.dataTable.defaults, {
+                // order: [[ 1, 'ASC' ]],
+                pageLength: 100,
+            });
+
+
+            $('.datatable-qualification:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
+        })
       
       function qualificationtypechange(type){
          var Qualificationtype = type;

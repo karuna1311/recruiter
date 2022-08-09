@@ -78,11 +78,29 @@ class ReservationRequest extends FormRequest
             'ncl_cert_appli_date' => 'required_if:ncl_cert,APPLIED BUT NOT RECEIVED',
             'ncl_cert_appli_issue_dist' => 'required_if:ncl_cert,APPLIED BUT NOT RECEIVED',
             'ncl_cert_appli_issue_taluka' => 'required_if:ncl_cert,APPLIED BUT NOT RECEIVED',
-
+            
             'ph' => 'required',
+            'per_disability' => 'required_if:ph,YES|integer|between:40,100',
+            'ph_type' => 'required_if:ph,YES',
+            
+            
             'orphan' => 'required',
-            'minority' => 'required',
-            'minority_quota' => 'required_if:minority,YES',
+            'orphan_type' => 'required_if:orphan,YES',
+            
+            'ex_serviceman' => 'required',
+            'forces_division' => 'required_if:ex_serviceman,YES',
+            'join_date' => 'required_if:ex_serviceman,YES',
+            'retirement_date' => 'required_if:ex_serviceman,YES',
+            'service_period' => 'required_if:ex_serviceman,YES',
+            
+            'sports_person' => 'required',
+            'type_competition' => 'required_if:sports_person,YES',
+            'level_competition' => 'required_if:sports_person,YES',
+            'position_medal' => 'required_if:sports_person,YES',
+            'competition_year' => 'required_if:sports_person,YES',
+            
+            // 'minority' => 'required',
+            // 'minority_quota' => 'required_if:minority,YES',
         ];
 
         return $rules;

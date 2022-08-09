@@ -61,14 +61,14 @@ class PersonalInformationController extends Controller
     }
     public function update(PersonalInfoRequest $request, MasterPgd $personalInfo)
     {
-        //print_r($request->validated());die();
+        // print_r($request->all());die();
         try {
-            $updatetPersonalInfo = $personalInfo->update($request->validated());
+            $updatetPersonalInfo = $personalInfo->update($request->except('_token'));
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);
         }
-        return Response::json(['status'=>'success','data'=>'Data submitted successfully']);
+        return Response::json(['status'=>'success','data'=>'Data updated successfully']);
     }
     public function destroy($id)
     {

@@ -202,10 +202,17 @@
    }
 
    function getDays(date1, date2) {
-         var t2 = date2.getTime();
-        var t1 = date1.getTime();
 
-        return parseInt((t2-t1)/(24*3600*1000));
+      console.log(date(date1,"dd-mm-YYYY"));
+      console.log(date(date2,"dd-mm-YYYY"));
+      return false;
+         var d1d = date1.getDay();
+         var d2d = date2.getDay();
+         var d1Y = date1.getFullYear();
+        var d2Y = date2.getFullYear();
+        var d1M = date1.getMonth();
+        var d2M = date2.getMonth();
+        return (d2d+d2M+12*d2Y)-(d1d+d1M+12*d1Y);
    }
 
    function getMonths(date1,date2){
@@ -250,7 +257,7 @@
          var days = getDays(date1, date2);
          var months = getMonths(date1, date2);
          var years = getYears(date1, date2);
-        
+        console.log(days+'-'+months+'-'+years);
          
       }else{
 

@@ -23,7 +23,17 @@ class ExperienceController extends Controller
         $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
         $job_nature = lookup::select('id','label')->where('type','LIKE','%job_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         $appointment_nature = lookup::select('id','label')->where('type','LIKE','%appointment_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
-        return view('user.ApplicationForm.experience',compact('post_name','job_nature','appointment_nature'));
+       
+        $user_experience = UserExperience::Select('user_experience.id as id','employmentType','flgMpscSelection','post.label as post_name','officeName',
+        'flgOfficeGovOwned','designation','job_nature.label as job_nature','appointment.label as appointment','time','appointmentLetterNo',
+        'letterDate','payScale','gradePay','basicPay','monthlyGrossSalary','fromDate','toDate','expYears','expMonths','expDays'
+        )
+        ->leftjoin('lookup_options as post','user_experience.postNameLookupId','=','post.id')
+        ->leftjoin('lookup_options as job_nature','user_experience.jobNatureLookupId','=','job_nature.id')
+        ->leftjoin('lookup_options as appointment','user_experience.apointmentNatureLookupId','=','appointment.id')
+        ->get();
+       
+        return view('user.ApplicationForm.experience',compact('post_name','job_nature','appointment_nature','user_experience'));
     }
 
     /**

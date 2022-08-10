@@ -15,7 +15,7 @@
                               <div class="row mt-3" >
                                  <div class="col-md-3 mt-3 mb-3">
                                     <label >Employment (Present / Past) <span class="asrtick">*</span></label>
-                                    <select class="form-control " name="typeEmploymentLookupId" id="typeEmploymentLookupId">
+                                    <select class="form-control " name="employmentType" id="typeEmploymentLookupId">
                                        <option value="" selected>Select</option>
                                        <option value="PAST">PAST</option>
                                        <option value="PRESENT">PRESENT</option>
@@ -34,8 +34,7 @@
                                     <select class="form-control select2" name="postNameLookupId" id="postNameLookupId">                                       
                                        @foreach($post_name as $key=>$value)
                                           <option value="{{ $key }}">{{ $value }}</option>
-                                       @endforeach 
-                                     
+                                       @endforeach                                      
                                     </select>
                                  </div>
                                  <div class="col-md-3 mt-3"><label >Institution / Department / Organisation / Court <span class="asrtick">*</span></label><input type="text" class="form-control" name="officeName" maxlength="500" value=""></div>
@@ -72,7 +71,7 @@
                               <div class="row">
                                  <div class="col-md-3 mb-3 typeGroupLookupId">
                                     <label>Group <span class="asrtick">*</span></label>
-                                    <select class="form-control select2" name="typeGroupLookupId">
+                                    <select class="form-control select2" name="typeGroup" id="typeGroupLookupId">
                                        <option value="">Select</option>
                                        <option value="Group A"> Group A</option>
                                        <option value="Group B">Group B</option>
@@ -90,7 +89,7 @@
 
                                  <div class="col-md-3 mb-3 fullTimeLookup">
                                     <label>Full Time / Other</label>
-                                    <select class="form-control" name="fullTimeLookupId" id="fullTimeLookupId">
+                                    <select class="form-control" name="time" id="fullTimeLookupId">
                                        <option value="">Select</option>
                                        <option value="FULL TIME">FULL TIME</option>
                                        <option value="OTHERWISE">OTHERWISE</option>
@@ -156,9 +155,11 @@
                            </fieldset>
                            <br>
                            <fieldset class="form-fieldset">
-                              <table class="table tableauto table-bordered table-responsive w-100" style="margin: 0px; position: relative; right: 15px;">
+                           <div class="table-responsive">
+                              <table class="table table-bordered table-striped table-hover datatable datatable-experience">                              
                                  <thead class="thead-light">
                                     <tr>
+                                       <th></th>
                                        <th>Sr No</th>
                                        <th>Institution / Department / Organisation / Court</th>
                                        <th>Designation (Post Held)</th>
@@ -170,18 +171,48 @@
                                        <th>Monthly Gross Salary / Income</th>
                                        <th>From Date</th>
                                        <th>To Date</th>
-                                       <th>Years</th>
+                                       <!-- <th>Years</th>
                                        <th>Months</th>
-                                       <th>Days</th>
+                                       <th>Days</th> -->
                                        <th>Whether selected from MPSC?</th>
+                                       <th>Action</th>
                                     </tr>
                                  </thead>
                                  <tbody style="font-size: 12px;">
-                              
+                                 @foreach($user_experience as $value)
+                                    <tr>
+                                       <td></td>
+                                       <td>{{ $value->id }}</td>
+                                       <td>{{ !empty($value->officeName) ? $value->officeName : '-'}}</td>
+                                       <td>{{ !empty($value->designation) ? $value->designation : '-'}}</td>
+                                       <td>{{ !empty($value->appointment) ? $value->appointment : '-'}}</td>
+                                       <td>{{ !empty($value->job_nature) ? $value->job_nature : '-'}}</td>                                    
+                                       <td>{{ !empty($value->time) ? $value->time : '-'}}</td>                                    
+                                       <td>{{ !empty($value->payScale) ? $value->payScale : '-'}}</td>                                    
+                                       <td>{{ !empty($value->gradePay) ? $value->gradePay : '-'}}</td>                                                                                                           
+                                       <td>{{ !empty($value->monthlyGrossSalary) ? $value->monthlyGrossSalary : '-'}}</td>                                    
+                                       <td>{{ !empty($value->fromDate) ? $value->fromDate : '-'}}</td>                                    
+                                       <td>{{ !empty($value->toDate) ? $value->toDate : '-'}}</td>                                    
+                                       <td>{{ !empty($value->flgMpscSelection) ? $value->flgMpscSelection : '-'}}</td>
+                                       <td>
+                                                <a type="button" class="btn btn-xs btn-info"
+                                                data-bs-toggle="modal"  onclick="editExperience(this)"
+                                                   action="{{ route('experience.edit', base64_encode($value->id)) }}"
+                                                   >
+                                                    {{ trans('global.edit') }}
+                                                </a>   
+                                                                      
+                                       </td>
+
+                                                <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
+                                       <td>{{ !empty($value->optionalSubjects) ? $value->optionalSubjects : '-'}}</td> -->
+                                    </tr>
+                                 @endforeach
                                  </tbody>
                               </table>
 
                            </fieldset>
+                        </div>
                            <div class="row form-group  mt-3 ">
                               <div class="col-md-6 text-right"> 
                                  <button type="submit" class="btn btn-success mb-1">Save And Next</button>
@@ -191,15 +222,64 @@
       </div>
    </div>
 </div>
+
+<!-- Edit Qualification modal -->
+<div class="modal" id="editExperienceModal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+   
+</div>
+    <!--Edit Qualification Modal  -->
 @endsection
 @section('js')
 <script type="text/javascript">
-   function valueFlush(arryOfElements)
+
+   
+$(function () 
    {
-     $.each(arryOfElements, function(key, val) {
-         $('#'+val).val('');
-     });
-   }
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            // @can('')
+            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+        
+
+            let deleteButton = {
+                text: deleteButtonTrans,
+                url: "{{ route('experience.massDestroy') }}",
+                className: 'btn-danger',
+                action: function (e, dt, node, config) {
+                    var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+                        return $(entry).data('entry-id')
+                    });
+
+                    if (ids.length === 0) {
+                        alert('{{ trans('global.datatables.zero_selected') }}')
+                        return
+                    }
+
+                    if (confirm('{{ trans('global.areYouSure') }}')) {
+                        $.ajax({
+                            headers: {'x-csrf-token': _token},
+                            method: 'POST',
+                            url: config.url,
+                            data: { ids: ids, _method: 'DELETE' }})
+                            .done(function () { location.reload() })
+                    }
+                }
+            }
+            dtButtons.push(deleteButton)
+            // @endcan()
+
+            $.extend(true, $.fn.dataTable.defaults, {
+                // order: [[ 1, 'ASC' ]],
+                pageLength: 100,
+            });
+
+
+            $('.datatable-experience:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
+   })
+ 
 
    function getDays(date1, date2) {
 
@@ -228,21 +308,6 @@
    function getYears(date1,date2){
       return diffInYr = date2.getFullYear() - date1.getFullYear();
    }
-
-
-
-   // $('#fromDate').on('change',function(){
-   //    var employment = $('#typeEmploymentLookupId').val();
-   //    console.log(employment);
-
-   //    var fromDate = $(this).val();
-   //    if(employment=='PRESENT'){
-   //       let toDate = $('#toDate').val();
-   //       console.log(getDifferenceInDays(fromDate, toDate));
-   //    }else{
-
-   //    }
-   // });
 
    $('#toDate').on('change',function(){
       var employment = $('#typeEmploymentLookupId').val();
@@ -276,7 +341,7 @@
 
    //flgMpscSelection
    $(document).on('change', '#flgMpscSelection', function() {
-         valueFlush(['postNameLookupId']); 
+         // valueFlush(['postNameLookupId']); 
          var flgMpscSelection = $(this).val();
             if (flgMpscSelection == "NO") {
                $('.postNameLookupId').hide();
@@ -287,7 +352,7 @@
 
    //flgGazettedPost
    $(document).on('change', '#flgGazettedPost', function() {
-    valueFlush(['typeGroupLookupId']); 
+   //  valueFlush(['typeGroupLookupId']); 
     var flgGazettedPost = $(this).val();
     if (flgGazettedPost == "NO") {
         $('.typeGroupLookupId').hide();
@@ -313,19 +378,37 @@
     }
    });
 
+   function editExperience(element){
+            var $this = $(element);
+            var action = $this.attr('action');
+            $.ajax({
+                type:'get',
+                url: action,
+                contentType: false,
+                processData: false,
+                success: (response) => {
+                    console.log(response);
+                  //   $('#editExperienceModal').html(response.html);
+                  //   $('#editExperienceModal').modal('toggle');                 
+                },
+                error: function(response) {
+                }
+            })
+      }
+
    $(document).ready(function() 
    {
          $("#experienceForm").validate({
             // Specify validation rules
             rules: {
-               typeEmploymentLookupId : "required",
+               employmentType : "required",
                flgMpscSelection : "required",    
                officeName : "required",    
                flgOfficeGovOwned : "required",    
                designation : "required",    
                jobNatureLookupId : "required",    
                flgGazettedPost : "required",    
-               typeGroupLookupId : "required",    
+               typeGroup : "required",    
                apointmentNatureLookupId : "required",                   
                payScale : "required",    
                gradePay : "required",    
@@ -347,7 +430,7 @@
                         required: function () { return $('#apointmentNatureLookupId').val()==='258';},
                         // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
                },
-               fullTimeLookupId:{
+               time:{
                         required: function () { return $('#apointmentNatureLookupId').val()==='269';},
                },
               

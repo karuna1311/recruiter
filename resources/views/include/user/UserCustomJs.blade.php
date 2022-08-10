@@ -2,7 +2,7 @@
 
 function valueFlush(arryOfElements){
      $.each(arryOfElements, function(key, val) {
-         $('#'+val).val('');
+         $('#'+val).empty('');
      });
    }
 

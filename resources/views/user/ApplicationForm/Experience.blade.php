@@ -37,7 +37,8 @@
                                        @endforeach                                      
                                     </select>
                                  </div>
-                                 <div class="col-md-3 mt-3"><label >Institution / Department / Organisation / Court <span class="asrtick">*</span></label><input type="text" class="form-control" name="officeName" maxlength="500" value=""></div>
+                                 <div class="col-md-3 mt-3"><label >Institution / Department / Organisation / Court <span class="asrtick">*</span></label>
+                                 <input type="text" class="form-control" name="officeName" maxlength="500" value=""></div>
                                  <div class="col-md-3">
                                     <label style="float: left; width: 250px;">Is Office / Institution owned by Govt. of Maharashtra? <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="flgOfficeGovOwned">
@@ -61,7 +62,7 @@
                                  </div>
                                  <div class="col-md-3 mb-3" >
                                     <label >Whether the post is Gazetted? <span class="asrtick">*</span></label>
-                                    <select class="form-control select2" name="flgGazettedPost" id="flgGazettedPost">
+                                    <select class="form-control" name="flgGazettedPost" id="flgGazettedPostId">
                                        <option value="">Select</option>
                                        <option value="YES">YES</option>
                                        <option value="NO">NO</option>
@@ -71,7 +72,7 @@
                               <div class="row">
                                  <div class="col-md-3 mb-3 typeGroupLookupId">
                                     <label>Group <span class="asrtick">*</span></label>
-                                    <select class="form-control select2" name="typeGroup" id="typeGroupLookupId">
+                                    <select class="form-control" name="typeGroup" id="typeGroupLookupId">
                                        <option value="">Select</option>
                                        <option value="Group A"> Group A</option>
                                        <option value="Group B">Group B</option>
@@ -80,7 +81,7 @@
 
                                  <div class="col-md-3 mb-3">
                                     <label >Nature Of Appointment <span class="asrtick">*</span></label>
-                                    <select class="form-control " name="apointmentNatureLookupId" id="apointmentNatureLookupId">
+                                    <select class="form-control select2" name="apointmentNatureLookupId" onchange="apointmentNaturechange($(this).val())" id="apointmentNatureLookupId">
                                     @foreach($appointment_nature as $key=>$value)
                                           <option value="{{ $key }}">{{ $value }}</option>
                                        @endforeach                                     
@@ -233,7 +234,7 @@
 <script type="text/javascript">
 
    
-$(function () 
+   $(function () 
    {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             // @can('')
@@ -278,7 +279,7 @@ $(function ()
                 $($.fn.dataTable.tables(true)).DataTable()
                     .columns.adjust();
             });
-   })
+   });
  
 
    function getDays(date1, date2) {
@@ -338,6 +339,16 @@ $(function ()
          $('.toDate').show();
       }
    });
+// edit modal
+   $(document).on('change', '#edittypeEmploymentLookupId', function() {
+      valueFlush(['edittoDate']); 
+      var typeEmploymentLookupId = $(this).val();
+      if (typeEmploymentLookupId == "PRESENT") {
+         $('.edittoDate').hide();
+      } else {
+         $('.edittoDate').show();
+      }
+   });
 
    //flgMpscSelection
    $(document).on('change', '#flgMpscSelection', function() {
@@ -350,33 +361,74 @@ $(function ()
             }
    });
 
+   $(document).on('change', '#editflgMpscSelection', function() {
+         // valueFlush(['postNameLookupId']); 
+         var flgMpscSelection = $(this).val();
+            if (flgMpscSelection == "NO") {
+               $('.editpostNameLookupId').hide();
+            } else {
+               $('.editpostNameLookupId').show();
+            }
+   });
+
+
    //flgGazettedPost
-   $(document).on('change', '#flgGazettedPost', function() {
+   $(document).on('change', '#flgGazettedPostId', function() {
    //  valueFlush(['typeGroupLookupId']); 
-    var flgGazettedPost = $(this).val();
-    if (flgGazettedPost == "NO") {
-        $('.typeGroupLookupId').hide();
-    } else {
-        $('.typeGroupLookupId').show();
-    }
+      var flgGazettedPost = $(this).val();
+      
+      if (flgGazettedPost == "NO") {
+         $('.typeGroupLookupId').hide();
+      } else {
+         $('.typeGroupLookupId').show();
+      }
+   });
+
+   $(document).on('change', '#editflgGazettedPostId', function() {
+   //  valueFlush(['typeGroupLookupId']); 
+      var flgGazettedPost = $(this).val();
+      
+      if (flgGazettedPost == "NO") {
+         $('.edittypeGroupLookupId').hide();
+      } else {
+         $('.edittypeGroupLookupId').show();
+      }
    });
    
-    $(document).on('change', '#apointmentNatureLookupId', function() {
-    valueFlush(['appointmentLetterNo','letterDate']); 
-    var apointmentNatureLookupId = $(this).val();
-    console.log(apointmentNatureLookupId);
-    if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "258" || apointmentNatureLookupId == "272" || apointmentNatureLookupId == "271") {
-        $('.appointmentContent').show();
-    } 
-    else if(apointmentNatureLookupId == "269")
-    {
-      $('.fullTimeLookup').show();
-    }
-    else {
-        $('.appointmentContent').hide();
-        $('.fullTimeLookup').hide();
-    }
-   });
+   function apointmentNaturechange(token,type=null){   
+      if(type==null){
+         valueFlush(['editappointmentLetterNo','editletterDate']);  
+            var apointmentNatureLookupId = token;
+            
+            if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "258" || apointmentNatureLookupId == "272" || apointmentNatureLookupId == "271") {
+               $('.appointmentContent').show();
+            } 
+            else if(apointmentNatureLookupId == "269")
+            {
+               $('.fullTimeLookup').show();
+            }
+            else {
+               $('.appointmentContent').hide();
+               $('.fullTimeLookup').hide();
+            }   
+      }
+      else{
+         valueFlush(['appointmentLetterNo','letterDate']);  
+      var apointmentNatureLookupId = token;
+      
+      if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "258" || apointmentNatureLookupId == "272" || apointmentNatureLookupId == "271") {
+         $('.editappointmentContent').show();
+      } 
+      else if(apointmentNatureLookupId == "269")
+      {
+         $('.editfullTimeLookup').show();
+      }
+      else {
+         $('.editappointmentContent').hide();
+         $('.editfullTimeLookup').hide();
+      } 
+      }
+   }
 
    function editExperience(element){
             var $this = $(element);
@@ -388,8 +440,8 @@ $(function ()
                 processData: false,
                 success: (response) => {
                     console.log(response);
-                  //   $('#editExperienceModal').html(response.html);
-                  //   $('#editExperienceModal').modal('toggle');                 
+                    $('#editExperienceModal').html(response.html);
+                    $('#editExperienceModal').modal('toggle');                 
                 },
                 error: function(response) {
                 }
@@ -407,15 +459,16 @@ $(function ()
                flgOfficeGovOwned : "required",    
                designation : "required",    
                jobNatureLookupId : "required",    
-               flgGazettedPost : "required",    
-               typeGroup : "required",    
+               flgGazettedPost : "required",        
                apointmentNatureLookupId : "required",                   
                payScale : "required",    
                gradePay : "required",    
                basicPay : "required",    
                monthlyGrossSalary : "required",    
-               fromDate : "required",    
-               toDate : "required",    
+               fromDate : "required",   
+               typeGroup:{
+                           required: function () { return $('#flgGazettedPostId').val()==='YES';},
+                  },                
                postNameLookupId:{
                            required: function () { return $('#flgMpscSelection').val()==='YES';},
                   },
@@ -432,46 +485,45 @@ $(function ()
                },
                time:{
                         required: function () { return $('#apointmentNatureLookupId').val()==='269';},
-               },
-              
+               },             
               
             },
             // Specify validation error messages
-            // messages: {
-            //    qualificationtype : {
-            //                   required:"Please select Qualification Type"
-            //                },
-            //                qualificationname : {
-            //                   required:"Please select Qualification Name"
-            //                },
-            //                state : {
-            //                   required:"Please select State"
-            //                },
-            //                university : {
-            //                   required:"Please select University"
-            //                },
-            //                typeResult : {
-            //                   required:"Please select Qualification Status"
-            //                },
-            //                attempts : {
-            //                   required:"Please enter your attempts"
-            //                },
-            //                percentage : {
-            //                   required:"Please enter your percentage"
-            //                },
-            //                courseDurations : {
-            //                   required:"Please enter your course duration"
-            //                },
-            //                classGrade : {
-            //                   required:"Please select Class/Grade Type"
-            //                },
-            //                mode : {
-            //                   required:"Please select Mode"
-            //                },   
-            //                doq : {
-            //                   required:"Please select Date of Qualification Passed"
-            //                }
-            // },
+            messages: {
+               qualificationtype : {
+                              required:"Please select Qualification Type"
+                           },
+                           qualificationname : {
+                              required:"Please select Qualification Name"
+                           },
+                           state : {
+                              required:"Please select State"
+                           },
+                           university : {
+                              required:"Please select University"
+                           },
+                           typeResult : {
+                              required:"Please select Qualification Status"
+                           },
+                           attempts : {
+                              required:"Please enter your attempts"
+                           },
+                           percentage : {
+                              required:"Please enter your percentage"
+                           },
+                           courseDurations : {
+                              required:"Please enter your course duration"
+                           },
+                           classGrade : {
+                              required:"Please select Class/Grade Type"
+                           },
+                           mode : {
+                              required:"Please select Mode"
+                           },   
+                           doq : {
+                              required:"Please select Date of Qualification Passed"
+                           }
+            },
             // Make sure the form is submitted to the destination defined
             // in the "action" attribute of the form when valid
             submitHandler: function(form) {
@@ -480,6 +532,7 @@ $(function ()
                               data: $(form).serialize(),
                               type: 'POST',
                               success : function(data){
+                                 // console.log(data);
                                  if (data.ValidatorErrors) {
                                  $.each(data.ValidatorErrors, function(index, jsoNObject) {
                                     $.each(jsoNObject, function(key, val) {
@@ -503,6 +556,41 @@ $(function ()
                      });
             }
          });
+   });
+
+   $(document).on('click','#editexperiencesubmit',function(e)
+   {
+      e.preventDefault();
+
+      url = $('#updateexperienceform').attr('action');
+      data = $('#updateexperienceform').serialize();
+   
+               $.ajax({
+                              url:url,
+                              data: data,
+                              type: 'POST',
+                              success : function(data){
+                                 if (data.ValidatorErrors) {
+                                    $.each(data.ValidatorErrors, function(index, jsoNObject) {
+                                       $.each(jsoNObject, function(key, val) {
+                                          toastr.error(val);
+                                       });
+                                       return false;
+                                    });
+                                 }
+                                 if (data.status) {
+                                 if(data.status==='error') toastr.error(data.data);
+                                 else if(data.status==='success'){
+                                    toastr.success(data.data);
+                                    window.location.reload();
+                                    }
+                                 }
+                              },
+                              error:function (response) {
+                                 let data = response.responseJSON;
+                                 toastr.error(data);
+                              }
+                     });
    });
       </script>
 @include('include.user.UserCustomJs')

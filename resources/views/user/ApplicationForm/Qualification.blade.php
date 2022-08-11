@@ -147,7 +147,7 @@
                                     </tr>
                                  @endforeach
                                  
-                                 @foreach($user_experience as $value)
+                                 @foreach($user_qualification as $value)
                                     <tr>
                                        <td></td>
                                        <td>{{ $value->id }}</td>
@@ -411,10 +411,7 @@
             })
       }
 
-      $('#updateQualificationform').on('click',function(e){
-            e.preventDefault();
-            alert('hey');
-         });
+     
   
   
         $(document).ready(function() 
@@ -524,7 +521,7 @@
       data = $('#updatequalificationform').serialize();     
                $.ajax({
                               url: $('#updatequalificationform').attr('action'),
-                              data: $('#updatequalificationform').serialize(),
+                              data:data,
                               type: 'PUT',
                               success : function(data){
                                  if (data.ValidatorErrors) {

@@ -53,8 +53,7 @@ class ExperienceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(UserExperienceRequest $request)
-    {
-        // dd($request->all());
+    {        
         try {
             $user=Auth::user();
             $data = $request->except('_token');
@@ -87,7 +86,21 @@ class ExperienceController extends Controller
      */
     public function edit($id)
     {
-        //
+         // abort_if(Gate::denies('login_edit'), response()->json(['status' => 'error','url'=> route('admin.login-instruction.index'),'data' => 'You don`t have permission to Edit']));
+         $token = base64_decode($id);
+         $data = UserExperience::find($token);
+         $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
+        $job_nature = lookup::select('id','label')->where('type','LIKE','%job_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
+        $appointment_nature = lookup::select('id','label')->where('type','LIKE','%appointment_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
+       
+        $user_experience = UserExperience::Select('*')->get();
+       
+         $html_view = view('user.ApplicationForm.Modal.ExperienceModal',compact('data','user_experience','post_name',
+         'job_nature',
+         'appointment_nature'))->render();
+ 
+ 
+         return response()->json(['html'=>$html_view]);
     }
 
     /**
@@ -97,9 +110,16 @@ class ExperienceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserExperienceRequest $request, $token)
     {
-        //
+        try {            
+            $id = base64_decode($token);
+            $update = UserExperience::where('id',$id)->update($request->except('_token','_method'));
+        }
+        catch(Exception $e) {
+            return Response::json(['status'=>'error','data'=>$e->getMessage()]);
+        }
+        return Response::json(['status'=>'success','data'=>'Data updated successfully']);
     }
 
     /**

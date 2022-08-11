@@ -137,8 +137,7 @@ class QualificationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(UserQualificationRequest $request, $token)
-    {
-        // dd($request->all());
+    {        
         try {            
             $id = base64_decode($token);
             $update = UserQualification::where('id',$id)->update($request->except('_token','_method'));
@@ -146,7 +145,7 @@ class QualificationController extends Controller
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);
         }
-        return Response::json(['status'=>'success','data'=>'Data submitted successfully']);
+        return Response::json(['status'=>'success','data'=>'Data updated successfully']);
     }
 
     /**

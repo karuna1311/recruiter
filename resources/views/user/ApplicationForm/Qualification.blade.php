@@ -8,7 +8,7 @@
    </div>
    <div class="col-12">
       <div class="tab-content">
-          <form id="qualificationform" method="POST">
+          <form id="qualificationform" action="{{ route('qualification.store')}}" method="POST" novalidate="novalidate">
             @csrf
                            <fieldset class="form-fieldset">
                               <legend>Qualifications Information <span class="text-muted">शैक्षणिक माहिती</span></legend>
@@ -28,7 +28,7 @@
                                  </div>
                                  <div class="col-md-3 mb-1">
                                     <label for="subject">Subject / Stream / Branch<br>विषय/प्रवाह/शाखा</label>
-                                    <select class="form-control select2" name="subject" id="subjectId" ></select>
+                                    <select class="form-control select2" name="subject" id="subjectId"></select>
                                  </div>
                                  <div class="col-md-3 mb-1">
                                     <label for="state">State<br>राज्य</label>
@@ -93,9 +93,11 @@
                            </fieldset>
                            <br>
                            <fieldset class="form-fieldset">
-                              <table class="table tableauto table-bordered table-responsive w-100">
+                              <div class="table-responsive">
+                              <table class="table table-bordered table-striped table-hover datatable datatable-qualification">
                                  <thead class="thead-light">
                                     <tr>
+                                       <th ></th>
                                        <th >Sr No</th>
                                        <th >Qualification Type</th>
                                        <th >Name of Qualification</th>
@@ -117,6 +119,7 @@
                                  <tbody style="font-size: 12px;">
                                  @foreach($user_qualification as $value)
                                     <tr>
+                                       <td></td>
                                        <td>{{ $value->id }}</td>
                                        <td>{{ !empty($value->qualification_type) ? $value->qualification_type : '-'}}</td>
                                        <td>{{ !empty($value->qualification_name) ? $value->qualification_name : '-'}}</td>
@@ -131,23 +134,51 @@
                                        <td>{{ !empty($value->mode) ? $value->mode : '-'}}</td> 
                                        <td>
                                                 <a type="button" class="btn btn-xs btn-info"
-                                                   data-toggle="modal" data-target="#editQualificationModal" onclick="editQualification(this)"
+                                                data-bs-toggle="modal"  onclick="editQualification(this)"
                                                    action="{{ route('qualification.edit', base64_encode($value->id)) }}"
                                                    >
                                                     {{ trans('global.edit') }}
                                                 </a>   
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-  Launch demo modal
-</button>                                                             
+                                                                      
                                        </td>
 
                                                 <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
                                        <td>{{ !empty($value->optionalSubjects) ? $value->optionalSubjects : '-'}}</td> -->
                                     </tr>
                                  @endforeach
-                                  
+                                 
+                                 @foreach($user_qualification as $value)
+                                    <tr>
+                                       <td></td>
+                                       <td>{{ $value->id }}</td>
+                                       <td>{{ !empty($value->qualification_type) ? $value->qualification_type : '-'}}</td>
+                                       <td>{{ !empty($value->qualification_name) ? $value->qualification_name : '-'}}</td>
+                                       <td>{{ !empty($value->subject_name) ? $value->subject_name : '-'}}</td>
+                                       <td>{{ !empty($value->university_name) ? $value->university_name : '-'}}</td>                                    
+                                       <td>{{ !empty($value->typeResult) ? $value->typeResult : '-'}}</td>                                    
+                                       <td>{{ !empty($value->doq) ? $value->doq : '-'}}</td>                                    
+                                       <td>{{ !empty($value->attempts) ? $value->attempts : '-'}}</td>                                    
+                                       <td>{{ !empty($value->percentage) ? $value->percentage : '-'}}</td>                                    
+                                       <td>{{ !empty($value->courseDurations) ? $value->courseDurations : '-'}}</td>                                    
+                                       <td>{{ !empty($value->class) ? $value->class : '-'}}</td>                                    
+                                       <td>{{ !empty($value->mode) ? $value->mode : '-'}}</td> 
+                                       <td>
+                                                <a type="button" class="btn btn-xs btn-info"
+                                                data-bs-toggle="modal"  onclick="editQualification(this)"
+                                                   action="{{ route('qualification.edit', base64_encode($value->id)) }}"
+                                                   >
+                                                    {{ trans('global.edit') }}
+                                                </a>   
+                                                                      
+                                       </td>
+
+                                                <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
+                                       <td>{{ !empty($value->optionalSubjects) ? $value->optionalSubjects : '-'}}</td> -->
+                                    </tr>
+                                 @endforeach
                                  </tbody>
                               </table>
+                              </div>
                            </fieldset>
                            <div class="row form-group  mt-3 ">
                               <div class="col-md-6 text-right"> 
@@ -158,47 +189,93 @@
       </div>
    </div>
 </div>
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
+<!-- Edit Qualification modal -->
+<div class="modal" id="editQualificationModal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+   
+</div>
+    <!--Edit Qualification Modal  -->
 @endsection
 @section('js')
  <script type="text/javascript">
  
+
+   $(function () 
+   {
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            // @can('')
+            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+        
+
+            let deleteButton = {
+                text: deleteButtonTrans,
+                url: "{{ route('qualification.massDestroy') }}",
+                className: 'btn-danger',
+                action: function (e, dt, node, config) {
+                    var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+                        return $(entry).data('entry-id')
+                    });
+
+                    if (ids.length === 0) {
+                        alert('{{ trans('global.datatables.zero_selected') }}')
+                        return
+                    }
+
+                    if (confirm('{{ trans('global.areYouSure') }}')) {
+                        $.ajax({
+                            headers: {'x-csrf-token': _token},
+                            method: 'POST',
+                            url: config.url,
+                            data: { ids: ids, _method: 'DELETE' }})
+                            .done(function () { location.reload() })
+                    }
+                }
+            }
+            dtButtons.push(deleteButton)
+            // @endcan()
+
+            $.extend(true, $.fn.dataTable.defaults, {
+                // order: [[ 1, 'ASC' ]],
+                pageLength: 100,
+            });
+
+
+            $('.datatable-qualification:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
+   })
       
-      function qualificationtypechange(type){
+
+   function qualificationtypechange(type,edit=null)
+   {
+        
          var Qualificationtype = type;
          var encode = btoa(Qualificationtype);
-         valueFlush(['qualificationname','subjectId','statecode','universitycode','typeResult']);
+         
          var url = '{{ route("services.getQualificationName", ":Qualificationtype") }}';
          url = url.replace(':Qualificationtype', encode);
             $.ajax({
                url: url,
                type: 'get',
                success : function(data){
-
-                  $('#qualificationname').empty();
-                  if(data){
-                        $.each(data, function(key, val) { 
-                        $('#qualificationname').append('<option value="'+key+'">'+val+'</option>');
-                     });
+                  if(edit=null){
+                     $('#qualificationname').empty();
+                     valueFlush(['qualificationname','subjectId']);
+                     if(data){
+                           $.each(data, function(key, val) { 
+                           $('#qualificationname').append('<option value="'+key+'">'+val+'</option>');
+                        });
+                     }
+                  }else{
+                     $('#editqualificationname').empty();
+                     valueFlush(['editqualificationname','editsubjectId']);
+                     if(data){
+                           $.each(data, function(key, val) { 
+                           $('#editqualificationname').append('<option value="'+key+'">'+val+'</option>');
+                        });
+                     }
                   }
                },
                error:function (response) {
@@ -206,14 +283,16 @@
                   toastr.error(data);
                }
             });
-         }
+   }
       
    
      
-      function qualificationnamechange(name){
+      
+   function qualificationnamechange(name,type=null)
+   {
          var Qualificationname = name;
          var encode = btoa(Qualificationname);
-         valueFlush(['subjectId']);
+         
          var url = '{{ route("services.getSubject", ":Qualificationname") }}';
          url = url.replace(':Qualificationname', encode);
             $.ajax({
@@ -222,7 +301,9 @@
                success : function(data){
                   // console.log(data.length);
                   const arr = Object.entries(data);
+                  if(edit=null){
                   if(arr.length > 1){                       
+                     valueFlush(['subjectId']);
                         $('#subjectId').empty();
                         $('#subjectId').prop('disabled', false);
                         $.each(data, function(key, val) {
@@ -232,34 +313,56 @@
                      $('#subjectId').empty();
                      $('#subjectId').prop('disabled', 'disabled');
                   }
+               }else{
+                  if(arr.length > 1){    
+                     valueFlush(['editsubjectId']);                   
+                        $('#editsubjectId').empty();
+                        $('#editsubjectId').prop('disabled', false);
+                        $.each(data, function(key, val) {
+                           $('#editsubjectId').append('<option value="'+key+'">'+val+'</option>');
+                        });
+                     }else{                                         
+                     $('#editsubjectId').empty();
+                     $('#editsubjectId').prop('disabled', 'disabled');
+                  }
+               }
                },
                error:function (response) {
                   let data = response.responseJSON;
                   toastr.error(data);
                }
             });
-      }
+   }
 
 
    
-   function statechange(stateid){
+   function statechange(stateid,type=null){
    
       var state = stateid;
       var encode = btoa(state);
-      valueFlush(['universitycode','typeResult']);
-            
+      
             var url = '{{ route("services.getUniversityName", ":state") }}';
             url = url.replace(':state', encode );
                $.ajax({
                   url: url,
                   type: 'get',
                   success : function(data){
-                     $('#universitycode').empty();
+                     
+                     if(edit=null){
+                        if(data){
+                           valueFlush(['universitycode']);
+                              $.each(data, function(key, val) {
+                              $('#universitycode').append('<option value="'+key+'">'+val+'</option>');
+                           });
+                        }
+                  }else{
                      if(data){
-                           $.each(data, function(key, val) {
-                           $('#universitycode').append('<option value="'+key+'">'+val+'</option>');
-                        });
-                     }
+                        valueFlush(['edituniversitycode']);
+                              $.each(data, function(key, val) {
+                              $('#edituniversitycode').append('<option value="'+key+'">'+val+'</option>');
+                           });
+                        }
+                  }
                   },
                   error:function (response) {
                      let data = response.responseJSON;
@@ -268,14 +371,25 @@
                });
    }
 
-   function qual_status(type){
-      if(type == 'APPEARED'){
-         $('#DateofQualification').prop('disabled','disabled');
-         $('#DateofQualification').val("");
-         valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths','classGradeLookupId','modeLookupId']);
+   function qual_status(qual_type,type=null){
+      if(edit=null){
+         if(qual_type == 'APPEARED'){
+            valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths','classGradeLookupId','modeLookupId']);
+            $('#DateofQualification').prop('disabled','disabled');
+            $('#DateofQualification').val("");
+         }else{
+            valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths','classGradeLookupId','modeLookupId']);
+            $('#DateofQualification').prop('disabled',false);
+         }
       }else{
-         valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths','classGradeLookupId','modeLookupId']);
-         $('#DateofQualification').prop('disabled',false);
+         if(qual_type == 'APPEARED'){
+            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','editcourseDurationMonths','editclassGradeLookupId','editmodeLookupId']);
+            $('#editDateofQualification').prop('disabled','disabled');
+            $('#editDateofQualification').val("");
+         }else{
+            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','editcourseDurationMonths','editclassGradeLookupId','editmodeLookupId']);
+            $('#editDateofQualification').prop('disabled',false);
+         }
       }
    }
 
@@ -289,22 +403,18 @@
                 processData: false,
                 success: (response) => {
                     console.log(response);
-                    if (response.status) {
-                        if(response.status==='error'){ 
-                            toastr.error(response.data);
-                        }
-                        else if(response.status==='success'){                        
-                           //  $('#').val(response.id);      
-                        }
-                    }
-                    
+                    $('#editQualificationModal').html(response.html);
+                    $('#editQualificationModal').modal('toggle');                 
                 },
                 error: function(response) {
                 }
             })
-        }
+      }
 
-   $(document).ready(function() 
+     
+  
+  
+        $(document).ready(function() 
    {
          $("#qualificationform").validate({
             // Specify validation rules
@@ -372,8 +482,11 @@
             // Make sure the form is submitted to the destination defined
             // in the "action" attribute of the form when valid
             submitHandler: function(form) {
+               var action = $this.attr('action');
+             
                $.ajax({
-                              url: "{{ route('qualification.store')}}",
+
+                              url: action,
                               data: $(form).serialize(),
                               type: 'POST',
                               success : function(data){
@@ -401,8 +514,41 @@
             }
          });
    });
+
+   $(document).on('click','#editqualificationsubmit',function(e)
+   {
+      e.preventDefault();
+      data = $('#updatequalificationform').serialize();     
+               $.ajax({
+                              url: $('#updatequalificationform').attr('action'),
+                              data:data,
+                              type: 'PUT',
+                              success : function(data){
+                                 if (data.ValidatorErrors) {
+                                 $.each(data.ValidatorErrors, function(index, jsoNObject) {
+                                    $.each(jsoNObject, function(key, val) {
+                                       toastr.error(val);
+                                    });
+                                    return false;
+                                 });
+                                 }
+                                 if (data.status) {
+                                 if(data.status==='error') toastr.error(data.data);
+                                 else if(data.status==='success'){
+                                    toastr.success(data.data);
+                                    window.location.reload();
+                                    }
+                                 }
+                              },
+                              error:function (response) {
+                                 let data = response.responseJSON;
+                                 toastr.error(data);
+                              }
+                     });
+   });
+           
   
-    
+
 </script> 
 @include('include.user.UserCustomJs')
 @endsection

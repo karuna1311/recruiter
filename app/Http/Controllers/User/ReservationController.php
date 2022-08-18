@@ -6,6 +6,7 @@ use App\Models\MasterPgd;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Location\LocationController;
+use App\Models\lookup;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Response;
 use Auth;
@@ -16,9 +17,30 @@ class ReservationController extends Controller
     public function index()
     {
         abort_if(Gate::denies('reservation'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
-        $reservationData=MasterPgd::select('id','nriq','nrim','nriw','nation','domicle_maharashtra','cate','caste_certificate','caste_cert_no','caste_cert_issue_district','caste_cert_appli_no','caste_cert_appli_date','caste_cert_appli_issue_dist','caste_cert_appli_issue_taluka','caste_validity','caste_validity_no','caste_validity_issue_district','caste_validity_appli_no','caste_validity_appli_date','caste_validity_appli_issue_dist','caste_validity_appli_issue_taluka','ncl_cert','ncl_cert_no','ncl_cert_issue_dist','ncl_cert_date','ncl_cert_appli_no','ncl_cert_appli_date','ncl_cert_appli_issue_dist','ncl_cert_appli_issue_taluka','annual_family_income','ews','ews_cert_status','ews_cert_no','ews_cert_issue_dist','ews_cert_appli_no','ews_cert_appli_date','ews_cert_appli_issue_dist','ews_cert_appli_issue_taluka','ph','ph_type','orphan','minority','minority_quota','region_of_residence')->first();
+        $reservationData=MasterPgd::select('id','nriq','nrim','nriw','nation','domicle_maharashtra','cate','caste_certificate','caste_cert_no','caste_cert_issue_district','caste_cert_appli_no','caste_cert_appli_date','caste_cert_appli_issue_dist','caste_cert_appli_issue_taluka','caste_validity','caste_validity_no','caste_validity_issue_district','caste_validity_appli_no','caste_validity_appli_date','caste_validity_appli_issue_dist','caste_validity_appli_issue_taluka',
+        'ncl_cert','ncl_cert_no','ncl_cert_issue_dist','ncl_cert_date','ncl_cert_appli_no','ncl_cert_appli_date','ncl_cert_appli_issue_dist','ncl_cert_appli_issue_taluka',
+        'annual_family_income','ews','ews_cert_status','ews_cert_no','ews_cert_issue_dist',
+        'ews_cert_appli_no','ews_cert_appli_date','ews_cert_appli_issue_dist','ews_cert_appli_issue_taluka',
+        'ph','ph_type',
+        'per_disability',
+        'orphan_type',
+       'ex_serviceman',
+       'forces_division',
+       'join_date',
+       'retirement_date',
+       'service_period',
+       'sports_person',
+       'type_competition',
+       'level_competition',
+       'position_medal',
+       'competition_year',
+        'orphan','minority','minority_quota','region_of_residence')->first();
         $districtData = LocationController::getDistrict('27');
-        return view('user.ApplicationForm.Reservation',compact('districtData','reservationData'));
+        $disability  = lookup::select('label','id')->where('type','LIKE','%disability_category%')->pluck('label','id')->prepend('[SELECT]','')->all();
+        $competition_type = lookup::select('label','id')->where('type','LIKE','%competition_type%')->pluck('label','id')->prepend('[SELECT]','')->all();
+        $position_medal = lookup::select('label','id')->where('type','LIKE','%position_medal%')->pluck('label','id')->prepend('[SELECT]','')->all();
+        
+        return view('user.ApplicationForm.Reservation',compact('districtData','reservationData','disability','competition_type','position_medal'));
     }
     public function create()
     {
@@ -26,7 +48,7 @@ class ReservationController extends Controller
     }
     public function store(ReservationRequest $request)
     {
-//      
+     dd($request->all);
     }
     public function show($id)
     {
@@ -41,7 +63,7 @@ class ReservationController extends Controller
         // dd($request->all());die();
         try {
             if($request->nation == "INDIAN"){
-                $updatetReservation = $reservation->update($request->validated());
+                $updatetReservation = $reservation->update($request->all());
                 $user=Auth::user();
                 if($user->application_status < 2) User::where('id',$user->id)->update(['application_status'=>'2']);
             }
@@ -52,7 +74,7 @@ class ReservationController extends Controller
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);
         }
-        return Response::json(['status'=>'success','data'=>'Data submitted successfully']);
+        return Response::json(['status'=>'success','data'=>'Data updated successfully']);
     }
     public function destroy($id)
     {

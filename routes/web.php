@@ -27,8 +27,11 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	Route::get('/home', 'ApplicationStatusController@index')->name('applicationstatus.index');
 	Route::resource('personalInfo', 'PersonalInformationController');
 	Route::resource('reservation', 'ReservationController');
+
 	Route::resource('qualification', 'QualificationController');
+	Route::post('qualification/destroy','QualificationController@massDestroy')->name('qualification.massDestroy');
 	Route::resource('experience', 'ExperienceController');
+	Route::post('experience/destroy','ExperienceController@massDestroy')->name('experience.massDestroy');
 	Route::resource('collegeInfo', 'CollegeInformationController');
 	Route::resource('medicalCouncil', 'MedicalCouncilController');
 

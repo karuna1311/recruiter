@@ -56,7 +56,7 @@
                   <!-- @endcan -->
 
 
-                  @can('pre_college_info')
+                  <!-- @can('pre_college_info')
                   <li>
                      <a href="{{route('collegeInfo.index')}}"> <i class="uil-building"></i> <span>Previous College Information</span></a>
                   </li>
@@ -70,7 +70,7 @@
                   <li>
                      <a href="{{route('securityDeposite.index')}}"> <i class="uil-keyhole-square-full"></i> <span>Security Deposite</span></a>
                   </li>
-                  @endcan
+                  @endcan -->
                   @can('preview')
                   <li>
                      <a href="{{route('preview.index')}}"> <i class="uil-presentation-check"></i> <span>Preview</span></a>

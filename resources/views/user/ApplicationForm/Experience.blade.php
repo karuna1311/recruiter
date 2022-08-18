@@ -11,7 +11,7 @@
          <form id="experienceForm">
             @csrf
                            <fieldset class="form-fieldset">
-                              <legend>Experiance Information <span class="text-muted">अनुभव माहिती</span></legend>
+                              <legend>Experience Information <span class="text-muted">अनुभव माहिती</span></legend>
                               <div class="row mt-3" >
                                  <div class="col-md-3 mt-3 mb-3">
                                     <label >Employment (Present / Past) <span class="asrtick">*</span></label>
@@ -296,14 +296,10 @@
         return (d2d+d2M+12*d2Y)-(d1d+d1M+12*d1Y);
    }
 
-   function getMonths(date1,date2){
-      
-      var d1Y = date1.getFullYear();
-        var d2Y = date2.getFullYear();
-        var d1M = date1.getMonth();
-        var d2M = date2.getMonth();
+   function getMonths(date1,date2){    
+           return  date2.getMonth() - date1.getMonth() + 
+   (12 * (date2.getFullYear() - date1.getFullYear()))
 
-        return (d2M+12*d2Y)-(d1M+12*d1Y);
    }
 
    function getYears(date1,date2){
@@ -315,15 +311,16 @@
       
       let fromDate = $('#fromDate').val();
       var toDate = $(this).val();
-    
+      console.log(fromDate);
+      console.log(toDate);
       if(employment=='PAST'){
-         const date1 = new Date(fromDate);
-         const date2 = new Date(toDate);
+         const start_date = new Date(fromDate);
+         const end_date = new Date(toDate);
 
-         var days = getDays(date1, date2);
-         var months = getMonths(date1, date2);
-         var years = getYears(date1, date2);
-        console.log(days+'-'+months+'-'+years);
+         // var days = getDays(start_date, end_date);
+         var months = getMonths(start_date, end_date);
+         var years = getYears(start_date, end_date);
+        console.log(months+'-'+years);
          
       }else{
 

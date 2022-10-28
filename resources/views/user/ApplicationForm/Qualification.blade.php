@@ -117,10 +117,11 @@
                                     </tr>
                                  </thead>
                                  <tbody style="font-size: 12px;">
+                                    <?php $i=1; ?>
                                  @foreach($user_qualification as $value)
                                     <tr>
-                                       <td></td>
-                                       <td>{{ $value->id }}</td>
+                                       <td></td>                                       
+                                       <td>{{ $i }}</td>
                                        <td>{{ !empty($value->qualification_type) ? $value->qualification_type : '-'}}</td>
                                        <td>{{ !empty($value->qualification_name) ? $value->qualification_name : '-'}}</td>
                                        <td>{{ !empty($value->subject_name) ? $value->subject_name : '-'}}</td>
@@ -144,38 +145,9 @@
 
                                                 <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
                                        <td>{{ !empty($value->optionalSubjects) ? $value->optionalSubjects : '-'}}</td> -->
+                                       <?php $i++; ?>
                                     </tr>
-                                 @endforeach
-                                 
-                                 @foreach($user_qualification as $value)
-                                    <tr>
-                                       <td></td>
-                                       <td>{{ $value->id }}</td>
-                                       <td>{{ !empty($value->qualification_type) ? $value->qualification_type : '-'}}</td>
-                                       <td>{{ !empty($value->qualification_name) ? $value->qualification_name : '-'}}</td>
-                                       <td>{{ !empty($value->subject_name) ? $value->subject_name : '-'}}</td>
-                                       <td>{{ !empty($value->university_name) ? $value->university_name : '-'}}</td>                                    
-                                       <td>{{ !empty($value->typeResult) ? $value->typeResult : '-'}}</td>                                    
-                                       <td>{{ !empty($value->doq) ? $value->doq : '-'}}</td>                                    
-                                       <td>{{ !empty($value->attempts) ? $value->attempts : '-'}}</td>                                    
-                                       <td>{{ !empty($value->percentage) ? $value->percentage : '-'}}</td>                                    
-                                       <td>{{ !empty($value->courseDurations) ? $value->courseDurations : '-'}}</td>                                    
-                                       <td>{{ !empty($value->class) ? $value->class : '-'}}</td>                                    
-                                       <td>{{ !empty($value->mode) ? $value->mode : '-'}}</td> 
-                                       <td>
-                                                <a type="button" class="btn btn-xs btn-info"
-                                                data-bs-toggle="modal"  onclick="editQualification(this)"
-                                                   action="{{ route('qualification.edit', base64_encode($value->id)) }}"
-                                                   >
-                                                    {{ trans('global.edit') }}
-                                                </a>   
-                                                                      
-                                       </td>
-
-                                                <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
-                                       <td>{{ !empty($value->optionalSubjects) ? $value->optionalSubjects : '-'}}</td> -->
-                                    </tr>
-                                 @endforeach
+                                 @endforeach                                
                                  </tbody>
                               </table>
                               </div>
@@ -196,6 +168,7 @@
 </div>
     <!--Edit Qualification Modal  -->
 @endsection
+
 @section('js')
  <script type="text/javascript">
  
@@ -203,10 +176,9 @@
    $(function () 
    {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            // @can('')
-            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+            
+            var deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
         
-
             let deleteButton = {
                 text: deleteButtonTrans,
                 url: "{{ route('qualification.massDestroy') }}",
@@ -232,7 +204,7 @@
                 }
             }
             dtButtons.push(deleteButton)
-            // @endcan()
+           
 
             $.extend(true, $.fn.dataTable.defaults, {
                 // order: [[ 1, 'ASC' ]],
@@ -240,7 +212,7 @@
             });
 
 
-            $('.datatable-qualification:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+            $('.datatable-qualification:not(.ajaxTable)').DataTable({ buttons: dtButtons });
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
                 $($.fn.dataTable.tables(true)).DataTable()
                     .columns.adjust();
@@ -253,17 +225,19 @@
         
          var Qualificationtype = type;
          var encode = btoa(Qualificationtype);
-         
+         // console.log(encode);
          var url = '{{ route("services.getQualificationName", ":Qualificationtype") }}';
          url = url.replace(':Qualificationtype', encode);
             $.ajax({
                url: url,
                type: 'get',
                success : function(data){
-                  if(edit=null){
+                  // console.log(edit);
+                  if(edit==null){
                      $('#qualificationname').empty();
                      valueFlush(['qualificationname','subjectId']);
                      if(data){
+                        // console.log(data);
                            $.each(data, function(key, val) { 
                            $('#qualificationname').append('<option value="'+key+'">'+val+'</option>');
                         });
@@ -284,11 +258,8 @@
                }
             });
    }
-      
-   
-     
-      
-   function qualificationnamechange(name,type=null)
+        
+   function qualificationnamechange(name,edit=null)
    {
          var Qualificationname = name;
          var encode = btoa(Qualificationname);
@@ -299,9 +270,9 @@
                url: url,
                type: 'get',
                success : function(data){
-                  // console.log(data.length);
+                  
                   const arr = Object.entries(data);
-                  if(edit=null){
+                  if(edit==null){
                   if(arr.length > 1){                       
                      valueFlush(['subjectId']);
                         $('#subjectId').empty();
@@ -334,9 +305,7 @@
             });
    }
 
-
-   
-   function statechange(stateid,type=null){
+   function statechange(stateid,edit=null){
    
       var state = stateid;
       var encode = btoa(state);
@@ -348,7 +317,7 @@
                   type: 'get',
                   success : function(data){
                      
-                     if(edit=null){
+                     if(edit==null){
                         if(data){
                            valueFlush(['universitycode']);
                               $.each(data, function(key, val) {
@@ -371,14 +340,14 @@
                });
    }
 
-   function qual_status(qual_type,type=null){
-      if(edit=null){
+   function qual_status(qual_type,edit=null){
+      if(edit==null){
          if(qual_type == 'APPEARED'){
-            valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths','classGradeLookupId','modeLookupId']);
+            valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths']);
             $('#DateofQualification').prop('disabled','disabled');
             $('#DateofQualification').val("");
          }else{
-            valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths','classGradeLookupId','modeLookupId']);
+            valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths']);
             $('#DateofQualification').prop('disabled',false);
          }
       }else{
@@ -402,21 +371,50 @@
                 contentType: false,
                 processData: false,
                 success: (response) => {
-                    console.log(response);
+                  //   console.log(response);
                     $('#editQualificationModal').html(response.html);
                     $('#editQualificationModal').modal('toggle');                 
                 },
                 error: function(response) {
                 }
             })
-      }
-
-     
+   }    
   
-  
-        $(document).ready(function() 
+   $(document).on('click','#editqualificationsubmit',function(e)
    {
-         $("#qualificationform").validate({
+      e.preventDefault();
+      data = $('#updatequalificationform').serialize();     
+               $.ajax({
+                              url: $('#updatequalificationform').attr('action'),
+                              data:data,
+                              type: 'PUT',
+                              success : function(data){
+                                 if (data.ValidatorErrors) {
+                                 $.each(data.ValidatorErrors, function(index, jsoNObject) {
+                                    $.each(jsoNObject, function(key, val) {
+                                       toastr.error(val);
+                                    });
+                                    return false;
+                                 });
+                                 }
+                                 if (data.status) {
+                                 if(data.status==='error') toastr.error(data.data);
+                                 else if(data.status==='success'){
+                                    toastr.success(data.data);
+                                    window.location.reload();
+                                    }
+                                 }
+                              },
+                              error:function (response) {
+                                 let data = response.responseJSON;
+                                 toastr.error(data);
+                              }
+                     });
+   });
+           
+  
+   $(document).ready(function (e){
+      $("#qualificationform").validate({
             // Specify validation rules
             rules: {
                qualificationtype : "required",
@@ -482,11 +480,9 @@
             // Make sure the form is submitted to the destination defined
             // in the "action" attribute of the form when valid
             submitHandler: function(form) {
-               var action = $this.attr('action');
-             
+                           
                $.ajax({
-
-                              url: action,
+                              url: "{{ route('qualification.store')}}",
                               data: $(form).serialize(),
                               type: 'POST',
                               success : function(data){
@@ -513,42 +509,10 @@
                      });
             }
          });
-   });
 
-   $(document).on('click','#editqualificationsubmit',function(e)
-   {
-      e.preventDefault();
-      data = $('#updatequalificationform').serialize();     
-               $.ajax({
-                              url: $('#updatequalificationform').attr('action'),
-                              data:data,
-                              type: 'PUT',
-                              success : function(data){
-                                 if (data.ValidatorErrors) {
-                                 $.each(data.ValidatorErrors, function(index, jsoNObject) {
-                                    $.each(jsoNObject, function(key, val) {
-                                       toastr.error(val);
-                                    });
-                                    return false;
-                                 });
-                                 }
-                                 if (data.status) {
-                                 if(data.status==='error') toastr.error(data.data);
-                                 else if(data.status==='success'){
-                                    toastr.success(data.data);
-                                    window.location.reload();
-                                    }
-                                 }
-                              },
-                              error:function (response) {
-                                 let data = response.responseJSON;
-                                 toastr.error(data);
-                              }
-                     });
    });
-           
-  
 
 </script> 
 @include('include.user.UserCustomJs')
+
 @endsection

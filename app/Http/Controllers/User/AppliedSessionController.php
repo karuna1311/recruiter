@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\DocumentUploadService;
-use App\Models\MasterPgd;
+use App\Models\UserReservation;
 use App\Models\SessionMaster;
 use App\Models\Payment;
 use Auth;
@@ -17,12 +17,12 @@ class AppliedSessionController extends Controller
     public function index()
     {
         abort_if(Gate::denies('applied_session'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
-    	$masterData=MasterPgd::select('session_master_id')->first();
+    	$masterData=UserReservation::select('session_master_id')->first();
     	$sessionData=SessionMaster::where('id',$masterData->session_master_id)->select('id','session_name')->first();
         return view('user.AppliedSession.index',compact('sessionData'));
     }
     public function applicationReport($sessionId){
-    	$previewData=MasterPgd::where('session_master_id',$sessionId)->first(); 
+    	$previewData=UserReservation::where('session_master_id',$sessionId)->first(); 
         $documentData=DocumentUploadService::getDocumentList($previewData);
         $user=Auth::user();
         $userData = ['name'=>$user->name,'mobile'=>$user->mobile,'email'=>$user->email,'dob'=>$user->dob,'rollno'=>$user->rollno,'neetappno'=>$user->neetappno,'arank'=>$user->arank,'neet_marks'=>$user->neet_marks];

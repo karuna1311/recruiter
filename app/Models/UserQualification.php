@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\subject;
+use Illuminate\Database\Eloquent\Model; 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class UserQualification extends Model
 {
@@ -28,4 +29,18 @@ class UserQualification extends Model
         'compulsorySubjects',
         'optionalSubjects'
     ];
+
+    public function getSubjectNameFromSubjects(){
+        $this->hasOne('App\Models\subject','subject_id','subject');
+    }
+    
+    
+
+    // public function sqlquery(){
+    //     // UserQualification::select('*')        
+    //     //  ->join('subject', 'subject.subject_id', '=', 'user_qualification.subject')
+    //     //  ->select('user_qualification.qualificationtype', 'user_qualification.qualificationname','subject.subject_name')
+    //     //  ->get();
+    //     return $this->subject='1';
+    // }
 }

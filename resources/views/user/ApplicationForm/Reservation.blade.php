@@ -4,7 +4,7 @@
    <div class="col-12">
       <div class="page-title-box">
          <h4 class="page-title">Application Form</h4>
-      </div>
+      </div>   
    </div>
    <div class="col-12">
       <div class="tab-content">
@@ -43,19 +43,17 @@
                   <div class="col-md-3">
                      <select class="form-control inpField" name="cate"  id="Category">
                         <option value="">[SELECT]</option>
-                        @if(isset($reservationData->cate))
-                        <option value="{{$reservationData->cate}}" selected>{{$reservationData->cate}}</option>
-                        @elseif(isset($reservationData->cate))
-                        <option value="OPEN" {{ $reservationData->cate==='OPEN' ? 'selected' : '' }}>OPEN</option>
-                        <option value="SC" {{ $reservationData->cate==='SC' ? 'selected' : '' }}>SC</option>
-                        <option value="ST" {{ $reservationData->cate==='ST' ? 'selected' : '' }}>ST</option>
-                        <option value="DT-VJ(A)" {{ $reservationData->cate==='DT-VJ(A)' ? 'selected' : '' }}>DT-VJ(A)</option>
-                        <option value="NT(B)" {{ $reservationData->cate==='NT(B)' ? 'selected' : '' }}>NT(B)</option> 
-                        <option value="NT(C)" {{ $reservationData->cate==='NT(C)' ? 'selected' : '' }}>NT(C)</option> 
-                        <option value="NT(D)" {{ $reservationData->cate==='NT(D)' ? 'selected' : '' }}>NT(D)</option>
-                        <option value="SBC" {{ $reservationData->cate==='SBC' ? 'selected' : '' }}>SBC</option> 
-                        <option value="OBC" {{ $reservationData->cate==='OBC' ? 'selected' : '' }}>OBC</option>
-                        <option value="EWS" {{ $reservationData->cate==='EWS' ? 'selected' : '' }}>EWS</option>
+                        @if(isset($reservationData->cate))                        
+                            <option value="OPEN" {{ $reservationData->cate==='OPEN' ? 'selected' : '' }}>OPEN</option>
+                            <option value="SC" {{ $reservationData->cate==='SC' ? 'selected' : '' }}>SC</option>
+                            <option value="ST" {{ $reservationData->cate==='ST' ? 'selected' : '' }}>ST</option>
+                            <option value="DT-VJ(A)" {{ $reservationData->cate==='DT-VJ(A)' ? 'selected' : '' }}>DT-VJ(A)</option>
+                            <option value="NT(B)" {{ $reservationData->cate==='NT(B)' ? 'selected' : '' }}>NT(B)</option> 
+                            <option value="NT(C)" {{ $reservationData->cate==='NT(C)' ? 'selected' : '' }}>NT(C)</option> 
+                            <option value="NT(D)" {{ $reservationData->cate==='NT(D)' ? 'selected' : '' }}>NT(D)</option>
+                            <option value="SBC" {{ $reservationData->cate==='SBC' ? 'selected' : '' }}>SBC</option> 
+                            <option value="OBC" {{ $reservationData->cate==='OBC' ? 'selected' : '' }}>OBC</option>
+                            <option value="EWS" {{ $reservationData->cate==='EWS' ? 'selected' : '' }}>EWS</option>
                         @endif                    
                      </select>
                   </div>
@@ -185,8 +183,8 @@
                      </div>
                      <div class=" col-md-3">
                         <select class="form-control" name="caste_cert_issue_district"  id="CasteCertInssDist">
-                        @foreach($districtData as $key=>$value)
-                        <option value="{{ $key }}" {{ (isset($reservationData->caste_cert_issue_district) && $reservationData->caste_cert_issue_district==$key) ? 'selected' : '' }}>{{ $value }}</option>
+                        @foreach($districtData as $key=>$value)                            
+                            <option value="{{ $key }}" {{ (isset($reservationData->caste_cert_issue_district) && $reservationData->caste_cert_issue_district==$key) ? 'selected' : '' }}>{{ $value }}</option>
                         @endforeach
                         </select>
                      </div>
@@ -533,28 +531,29 @@ value="{{ old('retirement_date',isset($reservationData->retirement_date) ? $rese
                </div>
 
                <div class="row form-group br-bt-1 mt-2 
-{{ (isset($reservationData->sports_person) && $reservationData->sports_person=='YES') ? 'show' : 'hide' }} SportDetails">
+                    {{ (isset($reservationData->sports_person) && $reservationData->sports_person=='YES') ? 'show' : 'hide' }} SportDetails">
                   <div class="col-md-3 text-right">
                      <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionType_dev') }}:</label>
                   </div>
                   <div class="col-md-3 text-left">
-                     <select class="form-control select2" name="type_competition" id="typeOfCompetition">
+                     <select class="form-control select2" name="type_competition" id="typeOfCompetition">                        
                      @foreach($competition_type as $key=>$value)
-                        <option value="{{ $key }}"
-                          {{ (isset($reservationData->type_competition) && $reservationData->type_competition==$key) ? 'selected' : '' }}
+                         <option value="{{ $key }}" {{ (isset($reservationData->type_competition) && $reservationData->type_competition==$key) ? 'selected' : '' }} 
                          >{{ $value }}</option>
-                        @endforeach
+                    @endforeach
                      </select>
-                     </select>
+                     
                   </div>
                    <div class="col-md-3 text-right">
                      <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionLevel_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionLevel_dev') }}:</label>
                   </div>
                   <div class="col-md-3 text-right">
                       <select class="form-control" name="level_competition" id="LevelOfCompetition">
-                           <OPTION VALUE="" SELECTED>SELECT</OPTION>
-                           <OPTION  {{ (isset($reservationData->level_competition) && $reservationData->level_competition==='NATIONAL LEVEL') ? 'selected' : '' }}  VALUE="NATIONAL LEVEL">NATIONAL LEVEL</OPTION>
-                           <OPTION {{ (isset($reservationData->level_competition) && $reservationData->level_competition==='INTERNATIONAL LEVEL') ? 'selected' : '' }} VALUE="INTERNATIONAL LEVEL">INTERNATIONAL LEVEL</OPTION>
+                           <OPTION VALUE="">SELECT</OPTION>
+                           <OPTION {{ (!empty($reservationData->level_competition) && $reservationData->level_competition==='NATIONAL LEVEL') ? 'selected' : '' }} 
+                             VALUE="NATIONAL LEVEL">NATIONAL LEVEL</OPTION>
+                           <OPTION {{ (!empty($reservationData->level_competition) && $reservationData->level_competition==='INTERNATIONAL LEVEL') ? 'selected' : '' }}
+                            VALUE="INTERNATIONAL LEVEL">INTERNATIONAL LEVEL</OPTION>
                         </select>
                   </div>
                    <div class="col-md-3 text-right">
@@ -564,8 +563,7 @@ value="{{ old('retirement_date',isset($reservationData->retirement_date) ? $rese
                      <select class="form-control" name="position_medal" id="positionMedal">  
                      @foreach($position_medal as $key=>$value)
                         <option value="{{ $key }}"
-                          {{ (isset($reservationData->position_medal) && $reservationData->position_medal== $key) ? 'selected' : '' }}
-                         >{{ $value }}</option>
+                          {{ (isset($reservationData->position_medal) && $reservationData->position_medal== $key) ? 'selected' : '' }}>{{ $value }}</option>
                         @endforeach                     
                      </select>
                   </div>
@@ -848,7 +846,7 @@ value="{{ old('competition_year',isset($reservationData->competition_year) ? $re
    //Meritorious_Sports_Person
 
    $(document).on('change', '#Meritorious_Sports_Person', function() {
-      valueFlush(['typeOfCompetition', 'LevelOfCompetition', 'positionMedal', 'CompetitionYear']);   
+    
        var Meritorious_Sports_Person = $(this).val();
       if (Meritorious_Sports_Person == "YES") {
            $('.SportDetails').css('display', 'flex');
@@ -1389,8 +1387,8 @@ value="{{ old('competition_year',isset($reservationData->competition_year) ? $re
                         if (data.status) {
                           if(data.status==='error') toastr.error(data.data);
                           else if(data.status==='success'){
-                             toastr.success(data.data);
-                            //  window.location.replace();
+                             toastr.success(data.data);                            
+                            window.location.replace("{{route('qualification.index')}}");
                            }
                         }
                    },

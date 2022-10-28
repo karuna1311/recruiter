@@ -4,6 +4,16 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
 
+
+Route::get('/clear-cache', function() {
+	Artisan::call('cache:clear');
+	Artisan::call('route:cache');
+	Artisan::call('config:cache');
+	Artisan::call('view:clear');
+	echo 'cleared';
+
+});
+
 Route::get('/', function () {
     return redirect('login');
 });
@@ -32,12 +42,16 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	Route::post('qualification/destroy','QualificationController@massDestroy')->name('qualification.massDestroy');
 	Route::resource('experience', 'ExperienceController');
 	Route::post('experience/destroy','ExperienceController@massDestroy')->name('experience.massDestroy');
-	Route::resource('collegeInfo', 'CollegeInformationController');
-	Route::resource('medicalCouncil', 'MedicalCouncilController');
 
-	Route::get('/securityDeposite', 'SecurityDepositeController@index')->name('securityDeposite.index');
-	Route::post('/securityDeposite/{securityDeposite}', 'SecurityDepositeController@update')->name('securityDeposite.update');
-	Route::post('/getSecurityDeposite', 'SecurityDepositeController@getSecurityDeposite')->name('securityDeposite.amount');
+
+	Route::resource('postavailable', 'PostAvailableController');
+	Route::post('checkEligibility/{id}', 'PostAvailableController@checkJobAvailability')->name('PostAvailable.checkJob');
+	Route::post('applyJob/{id}', 'PostAvailableController@applyJob')->name('PostAvailable.applyJob');
+	
+
+	// Route::get('/securityDeposite', 'SecurityDepositeController@index')->name('securityDeposite.index');
+	// Route::post('/securityDeposite/{securityDeposite}', 'SecurityDepositeController@update')->name('securityDeposite.update');
+	// Route::post('/getSecurityDeposite', 'SecurityDepositeController@getSecurityDeposite')->name('securityDeposite.amount');
 
 	Route::resource('preview', 'PreviewController');
 	Route::resource('declaration', 'DeclarationController');
@@ -46,8 +60,10 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	Route::get('/sessionApply/{id}', 'SessionController@sessionApply')->name('session.apply');
 	Route::post('/unlockProfile', 'SessionController@unlockProfile')->name('session.unlock');
 	//
-	Route::get('/payment', 'PaymentController@index')->name('payment.index');
-	Route::get('/paymentStore/{sessionId}', 'PaymentController@store')->name('payment.store');
+	Route::resource('payment', 'PaymentController');
+	Route::post('/payment/form/{data}', 'PaymentController@form')->name('payment.form');
+	Route::post('/payment/totalfees', 'PaymentController@totalFees')->name('payment.totalfees');
+	Route::get('/payment/updatePaymentStatus','PaymentController@show')->name('payment.updatePaymentStatus');
 	//
 	Route::get('/document', 'DocumentUploadController@index')->name('document.index');
 	Route::post('/documentUpload/{document}', 'DocumentUploadController@upload')->name('document.upload');
@@ -57,8 +73,8 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	Route::get('/applicationReport/{sessionId}', 'AppliedSessionController@applicationReport')->name('appliedSessions.applicationReport');
 });
 
-Route::post('/paymentUpdate/{transaction}', 'App\Http\Controllers\User\PaymentController@update')->name('payment.update');
-Route::post('/updatePushResponse', 'App\Http\Controllers\User\PaymentController@updatePushResponse')->name('payment.updatePushResponse');
+// Route::post('/paymentUpdate/{transaction}', 'App\Http\Controllers\User\PaymentController@update')->name('payment.update');
+// Route::post('/updatePushResponse', 'App\Http\Controllers\User\PaymentController@updatePushResponse')->name('payment.updatePushResponse');
 
 Route::post('/getLocation', 'App\Http\Controllers\Location\LocationController@index')->name('location.index');
 Route::get('/getState', 'App\Http\Controllers\Location\LocationController@getState')->name('location.getState');

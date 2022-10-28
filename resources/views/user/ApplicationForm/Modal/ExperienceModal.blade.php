@@ -22,65 +22,61 @@
                                         </select>
                                 </div>
 
-                                <div class="col-md-6 mt-3 mb-3">
+                                <div class="col-md-6 mt-3 editpostNameLookupId">
+                                 <label >Post Name <span class="asrtick">*</span></label>
+                                 <select class="form-control select2" name="postNameLookupId" id="editpostNameLookupId">                                       
+                                 @foreach($post_name as $key=>$value)
+                                     <option {{ (isset($data->postNameLookupId) && $data->postNameLookupId==$key) ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
+                                 @endforeach                                      
+                                 </select>
+                             </div>
+
+                                {{-- <div class="col-md-6 mt-3 mb-3">
                                         <label >Whether selected from MPSC? <span class="asrtick">*</span></label>
                                         <select class="form-control " name="flgMpscSelection" id="editflgMpscSelection">
                                         <option value="">Select</option>
                                         <option {{ (isset($data->flgMpscSelection) && $data->flgMpscSelection==='YES') ? 'selected' : '' }} value="YES">YES</option>
                                         <option {{ (isset($data->flgMpscSelection) && $data->flgMpscSelection==='NO') ? 'selected' : '' }} value="NO">NO</option>
                                         </select>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="row">
-                                    <div class="col-md-6 mt-3 editpostNameLookupId {{ (isset($data->flgMpscSelection) && $data->flgMpscSelection == 'YES') ? 'show' : 'hide' }}">
-                                        <label >Post Name <span class="asrtick">*</span></label>
-                                        <select class="form-control select2" name="postNameLookupId" id="editpostNameLookupId">                                       
-                                        @foreach($post_name as $key=>$value)
-                                            <option {{ (isset($data->postNameLookupId) && $data->postNameLookupId==$key) ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
-                                        @endforeach                                      
-                                        </select>
-                                    </div>
+                                
 
                                 <div class="col-md-6 mt-3">
                                     <label >Institution / Department / Organisation / Court <span class="asrtick">*</span></label>
                                     <input type="text" class="form-control" name="officeName" id="editofficeName" maxlength="500" value="{{ old('officeName',isset($data->officeName) ? $data->officeName : '' ) }}">
                                 </div>
+
+                                <div class="col-md-6">
+                                 <label style="float: left; width: 250px;">Is Office / Institution owned by Govt. of Maharashtra? <span class="asrtick">*</span></label>
+                                     <select class="form-control select2" name="flgOfficeGovOwned">
+                                     <option value="">Select</option>
+                                     <option {{ (isset($data->flgOfficeGovOwned) && $data->flgOfficeGovOwned==='YES') ? 'selected' : '' }} value="YES">YES</option>
+                                     <option {{ (isset($data->flgOfficeGovOwned) && $data->flgOfficeGovOwned==='NO') ? 'selected' : '' }} value="NO">NO</option>
+                                     </select>
+                             </div>
                            
                             </div>
 
                             <div class="row">
-                                    <div class="col-md-6">
-                                        <label style="float: left; width: 250px;">Is Office / Institution owned by Govt. of Maharashtra? <span class="asrtick">*</span></label>
-                                            <select class="form-control select2" name="flgOfficeGovOwned">
-                                            <option value="">Select</option>
-                                            <option {{ (isset($data->flgMpscSelection) && $data->flgMpscSelection==='YES') ? 'selected' : '' }} value="YES">YES</option>
-                                            <option {{ (isset($data->flgMpscSelection) && $data->flgMpscSelection==='NO') ? 'selected' : '' }} value="NO">NO</option>
-                                            </select>
-                                    </div>
+                                   
 
-                                    <div class="col-md-6 mb-3">
+                                 <div class="col-md-6 mb-3">
                                     <label >Designation (Post Held) <span class="asrtick">*</span></label>
                                     <input type="text" class="form-control" name="designation" maxlength="200" value="{{ old('designation',isset($data->designation) ? $data->designation : '' ) }}">
                                  </div>
-                            </div>
-                            <div class="row">
-                            <div class="col-md-6 mb-3" >
-                                    <label >5.6&nbsp;Nature Of Job <span class="asrtick">*</span></label>
+
+                                 <div class="col-md-6 mb-3" >
+                                    <label >Nature Of Job <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="jobNatureLookupId" id="editjobNatureLookupId">
                                     @foreach($job_nature as $key=>$value)
                                           <option {{ (isset($data->jobNatureLookupId) && $data->jobNatureLookupId== $key) ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
                                        @endforeach                                     
                                     </select>
                                  </div>
-                                 <div class="col-md-6 mb-3" >
-                                    <label >Whether the post is Gazetted? <span class="asrtick">*</span></label>
-                                    <select class="form-control select2" name="flgGazettedPost" id="editflgGazettedPostId">
-                                       <option value="">Select</option>
-                                       <option {{ (isset($data->flgGazettedPost) && $data->flgGazettedPost==='YES') ? 'selected' : '' }} value="YES">YES</option>
-                                       <option {{ (isset($data->flgGazettedPost) && $data->flgGazettedPost==='NO') ? 'selected' : '' }} value="NO">NO</option>
-                                    </select>
-                                 </div>
                             </div>
+                       
                             <div class="row">                            
                             <div class="col-md-6 mb-3 edittypeGroupLookupId {{ (isset($data->flgGazettedPost) && $data->flgGazettedPost == 'YES') ? 'show' : 'hide' }}">
                                     <label>Group <span class="asrtick">*</span></label>
@@ -111,12 +107,12 @@
                                  </div>
 
                                  <div class="col-md-4 mb-3 editappointmentContent">
-                                    <label style="margin-left: 15px;">5.8.1&nbsp;Appointment Letter No <span class="redColor">*</span></label>
+                                    <label style="margin-left: 15px;">Appointment Letter No <span class="redColor">*</span></label>
                                     <input type="text" class="form-control" name="appointmentLetterNo" id="editappointmentLetterNo"  value="{{ old('appointmentLetterNo',isset($data->appointmentLetterNo) ? $data->appointmentLetterNo : '' ) }}">
                                  </div>
 
                                  <div class="col-md-4 mb-3 editappointmentContent">
-                                    <label style="float: left;">5.8.2&nbsp;Letter Date <span class="redColor">*</span></label>
+                                    <label style="float: left;">Letter Date <span class="redColor">*</span></label>
                                     <input type="date" class="form-control" name="letterDate" id="editletterDate" value="{{ old('letterDate',isset($data->letterDate) ? $data->letterDate : '' ) }}">
                                  </div>
                             </div>
@@ -153,15 +149,15 @@
                             <div class="row">
                             <div class="col-md-4 mb-3">
                                     <label>Years</label>
-                                    <input type="text" class="form-control" name="expYears" id="editexpYears" disabled="" value="{{ old('expYears',isset($data->expYears) ? $data->expYears : '' ) }}">
+                                    <input type="text" class="form-control" name="expYears" readonly id="editexpYears"  value="{{ old('expYears',isset($data->expYears) ? $data->expYears : '' ) }}">
                                  </div>
                                  <div class="col-md-4 mb-3">
                                     <label>Months</label>
-                                    <input type="text" class="form-control" name="expMonths" id="editexpMonths" disabled="" value="{{ old('expMonths',isset($data->expMonths) ? $data->expMonths : '' ) }}">
+                                    <input type="text" class="form-control" name="expMonths" readonly id="editexpMonths"  value="{{ old('expMonths',isset($data->expMonths) ? $data->expMonths : '' ) }}">
                                  </div>
                                  <div class="col-md-4 mb-3">
                                     <label>Days</label>
-                                    <input type="text" class="form-control" name="expDays" id="editexpDays" disabled="" value="{{ old('expDays',isset($data->expDays) ? $data->expDays : '' ) }}">
+                                    <input type="text" class="form-control" name="expDays" readonly id="editexpDays"  value="{{ old('expDays',isset($data->expDays) ? $data->expDays : '' ) }}">
                                  </div>
                             </div>
                             <div class="card-footer">
@@ -172,4 +168,61 @@
                 </div>
             </div>
         </div>
+
+        <script>
+         
+   $('#editfromDate,#edittoDate').on('change',function()
+   {
+      var employment = $('#edittypeEmploymentLookupId').val();
+      // console.log(employment);
+      let fromDate      = $('#editfromDate').val();
+            if(employment=='PRESENT')
+            {
+               valueFlush(['editexpYears','editexpMonths','editexpDays']);
+               let  today	= new Date();
+
+               let  dd 		      = String(today.getDate()).padStart(2, '0');
+               let  mm 		      = String(today.getMonth() + 1).padStart(2, '0'); //janvier = 0
+               let  yyyy 		   = today.getFullYear();
+               let toDate        = yyyy+'-'+mm+'-'+dd;
+               var secondDate = moment(toDate,'YYYY-MM-DD');
+
+            }else{
+               valueFlush(['editexpYears','editexpMonths','editexpDays']);
+               var toDate = $('#edittoDate').val();
+               var secondDate = moment(toDate, 'YYYY-MM-DD');
+               // console.log(secondDate);             
+            }
+       
+      var firstDate = moment(fromDate, 'YYYY-MM-DD');
+      var years = secondDate.diff(firstDate, 'year');
+      firstDate.add(years, 'years');
+      var months = secondDate.diff(firstDate, 'months');
+      firstDate.add(months, 'months');
+      var days = secondDate.diff(firstDate, 'days');
+      if(isNaN(years)){years=0;}
+      if(isNaN(months)){months=0;}
+      if(isNaN(days)){days=0;}
+            // console.log(years);
+            // console.log(months);
+            // console.log(days);
+      $('#updateexperienceform #editexpYears').val(years);
+      $('#updateexperienceform #editexpMonths').val(months);
+      $('#updateexperienceform #editexpDays').val(days);
+   });
+
+   // edit modal
+   $(document).on('change', '#edittypeEmploymentLookupId', function() {
+      valueFlush(['edittoDate']); 
+      var typeEmploymentLookupId = $(this).val();
+      if (typeEmploymentLookupId == "PRESENT") {
+         $('.edittoDate').hide();
+      } else {
+         $('.edittoDate').show();
+      }
+   });
+
+
+
+         </script>
                            

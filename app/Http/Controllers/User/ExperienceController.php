@@ -20,6 +20,8 @@ class ExperienceController extends Controller
      */
     public function index()
     {
+
+        $user_id =Auth::user()->id;
         $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
         $job_nature = lookup::select('id','label')->where('type','LIKE','%job_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         $appointment_nature = lookup::select('id','label')->where('type','LIKE','%appointment_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
@@ -31,6 +33,7 @@ class ExperienceController extends Controller
         ->leftjoin('lookup_options as post','user_experience.postNameLookupId','=','post.id')
         ->leftjoin('lookup_options as job_nature','user_experience.jobNatureLookupId','=','job_nature.id')
         ->leftjoin('lookup_options as appointment','user_experience.apointmentNatureLookupId','=','appointment.id')
+        ->where('user_id',$user_id)
         ->get();
        
         return view('user.ApplicationForm.experience',compact('post_name','job_nature','appointment_nature','user_experience'));
@@ -56,10 +59,18 @@ class ExperienceController extends Controller
     {        
         try {
             $user=Auth::user();
-            $data = $request->except('_token');
-            $data['user_id'] = $user->id;
+
+            if($user->status_lock == '0'){
+
+                $data = $request->except('_token');
+                $data['user_id'] = $user->id;
             
             $insert = UserExperience::create($data);
+
+            }else if($user->status_lock =='1'){
+                return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
+            }            
+
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);
@@ -94,7 +105,7 @@ class ExperienceController extends Controller
         $appointment_nature = lookup::select('id','label')->where('type','LIKE','%appointment_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
        
         $user_experience = UserExperience::Select('*')->get();
-       
+        // dd($data);
          $html_view = view('user.ApplicationForm.Modal.ExperienceModal',compact('data','user_experience','post_name',
          'job_nature',
          'appointment_nature'))->render();
@@ -113,8 +124,18 @@ class ExperienceController extends Controller
     public function update(UserExperienceRequest $request, $token)
     {
         try {            
-            $id = base64_decode($token);
-            $update = UserExperience::where('id',$id)->update($request->except('_token','_method'));
+
+            $user=Auth::user();
+
+            if($user->status_lock == '0'){
+                $id = base64_decode($token);
+                // dd($request->except('_token','_method'));
+                $update = UserExperience::where('id',$id)->update($request->except('_token','_method'));
+            }else if($user->status_lock =='1'){
+                return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
+            }             
+            
+
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);

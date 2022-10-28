@@ -36,7 +36,7 @@ return [
         ],
         'uploads' => [
             'driver' => 'local',
-            'root' => 'D:/xampp/htdocs/upload1/'.env('APP_NAME'),
+            'root' => 'C:/xampp/htdocs/recruiter_admin/storage/app/public/PGD/',
         ],
 
         'public' => [

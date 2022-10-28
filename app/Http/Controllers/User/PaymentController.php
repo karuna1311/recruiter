@@ -101,7 +101,7 @@ class PaymentController extends Controller
             }
         }
 
-        // dd($jobfees);
+        // dd($jobgroupfees);
         // echo "<br>";
         // dd(var_dump((array)$jobgroupfees[0]['job_id']));
         

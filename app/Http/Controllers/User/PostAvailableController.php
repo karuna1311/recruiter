@@ -80,14 +80,19 @@ class PostAvailableController extends Controller
         
         $temp_errors = [];
         $result = array();
+
+        $job_id_exists = [];
       $job_id = base64_decode($enc_id);  
     //   dd($job_id);
         foreach($instructionArray as $value)
         {
+            array_push($job_id_exists,$value['job_id']);
+          
             if($value['job_id']==$job_id) 
             {
                 
-                switch (strtolower($value['personal_type'])) {
+                switch (strtolower($value['personal_type'])) 
+                {
 
                     case 'personal_reservation':
                     
@@ -208,68 +213,72 @@ class PostAvailableController extends Controller
                         
                     }  
 
-                }
-                // else{
+            }
+            // else{
+                
+        
                     
-                //     $res_error_count== $res_error_count--;
-                //     $qual_error_count== $qual_error_count--;
-                //     $exp_error_count== $exp_error_count--;
-                //     $no_criteria = 'No Personal Type Found';
-                    
-                // }            
-            }      
-
+                           
+            // }      
+               
             $checkCandidate =  EligibleCandidates::where('user_id', '=',$user_id)
                                     ->where('job_id', '=',$job_id)
                                     ->exists();
 
               
+                                    // dd($job_id_exists);
+            if($res_error_count== 0 && $qual_error_count==0 && $exp_error_count==0 && $per_res_error_count == 0 && in_array($job_id,$job_id_exists))
+            {
 
-            if($res_error_count== 0 && $qual_error_count==0 && $exp_error_count==0 && $per_res_error_count == 0){
+                    if($checkCandidate){
+                    $store =   EligibleCandidates::where('user_id', '=',$user_id)
+                                        ->where('job_id', '=',$job_id)
+                                        ->update(['status' => 1]);
+                    }else{
+                        $store =   EligibleCandidates::insert([
+                            'user_id' => $user_id,
+                            'job_id' => $job_id,
+                            'status' => 1
+                        ]);                                   
+                    }             
 
-                if($checkCandidate){
-                  $store =   EligibleCandidates::where('user_id', '=',$user_id)
-                                    ->where('job_id', '=',$job_id)
-                                    ->update(['status' => 1]);
-                }else{
-                    $store =   EligibleCandidates::insert([
-                        'user_id' => $user_id,
-                        'job_id' => $job_id,
-                        'status' => 1
-                    ]);                                   
-                }             
-
-            if ($store) {
-                return response()->Json([
-                    'res_success' => $res_success,
-                    'per_res_success' => $per_res_success,
-                    'qual_success' => $qual_success,
-                    'exp_success' => $exp_success,
-                    'success' => 1,
-                    'error' => 0,
-                ]);
-            }
-
+                    if ($store) {
+                        return response()->Json([
+                            'res_success' => $res_success,
+                            'per_res_success' => $per_res_success,
+                            'qual_success' => $qual_success,
+                            'exp_success' => $exp_success,
+                            'success' => 1,
+                            'error' => 0,
+                        ]);
+                    }
+            }else if(!in_array($job_id,$job_id_exists)){
+                        $no_criteria = 'No Criteria Made by Admin';
+                        return response()->Json([                    
+                            'zero_criteria' => $no_criteria,                 
+                            'error'     => 1
+                            ]);
             }else{     
 
-                if($checkCandidate){
-                 $store =   EligibleCandidates::where('user_id', '=',$user_id)
-                                    ->where('job_id', '=',$job_id)
-                                    ->update(['status' => 0]);
-                }else{
-                  $store =  EligibleCandidates::insert([
-                        'user_id' => $user_id,
-                        'job_id' => $job_id,
-                        'status' => 0
-                    ]);                                   
-                } 
+                    if($checkCandidate)
+                    {
+                    $store =   EligibleCandidates::where('user_id', '=',$user_id)
+                                        ->where('job_id', '=',$job_id)
+                                        ->update(['status' => 0]);
+                    }else
+                    {
+                    $store =  EligibleCandidates::insert([
+                            'user_id' => $user_id,
+                            'job_id' => $job_id,
+                            'status' => 0
+                        ]);                                   
+                    } 
 
                 return response()->Json([
                                         'res_error' => $res_error,
                                         'per_res_error' => $per_res_error,
                                         'qual_error' => $qual_error,
-                                        'exp_error' => $exp_error,
-                                        // 'zero_criteria' => $no_criteria,
+                                        'exp_error' => $exp_error,                                           
                                         'res_success' => $res_success,
                                         'per_res_success' => $per_res_success,
                                         'qual_success' => $qual_success,
@@ -277,7 +286,8 @@ class PostAvailableController extends Controller
                                         'success' => 0,
                                         'error'     => 1
                                         ]);
-            }
+            } 
+        }       
             
     }
     

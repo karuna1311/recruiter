@@ -80,7 +80,7 @@ class ReservationRequest extends FormRequest
             'ncl_cert_appli_issue_taluka' => 'required_if:ncl_cert,APPLIED BUT NOT RECEIVED',
             
             'ph' => 'required',
-            'per_disability' => 'required_if:ph,YES|integer|between:40,100',
+            'per_disability' => 'required_if:ph,YES',
             'ph_type' => 'required_if:ph,YES',
             
             

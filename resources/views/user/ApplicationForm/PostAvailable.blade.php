@@ -8,6 +8,7 @@
                   </div>
                   <div class="col-12">
                      <div class="tab-content">
+                     <?php $sr = 0 ?>
                         <form>
                            <fieldset class="form-fieldset">
                               <legend>Available Post </legend>
@@ -17,82 +18,30 @@
                                       <tr>
                                          <th>Sr. No.</th>
                                          <th>Post Name</th>
-                                         <th>Post Count</th>
+                                         <th>Year</th>
+                                         <th>Post Description</th>
                                          <th>Remark</th>
                                          <th>Action</th>
                                       </tr>
                                    </thead>
                                    <tbody>
-                                    <tr>
-                                      <td>1.</td>
-                                      <td>Deputy General Manager <br><span class="text-muted">उप महाव्यवस्थापक</span> </td>
-                                      <td>1</td>
-                                      <td>SC Candidate are not eligible</td>
-                                      <td>-</td>
-                                   </tr>
-                                   <tr>
-                                      <td>2.</td>
-                                      <td>Assistant General Manager<br><span class="text-muted">सहाय्यक महाव्यवस्थापक</span> </td>
-                                      <td>1</td>
-                                      <td>Eligible For This Post</td>
-                                      <td><button type="button" class="btn btn-apply btn-success mb-1"><i class="uil-check"></i> Apply</button></td>
-                                   </tr>
-                                   <tr>
-                                      <td>3.</td>
-                                      <td>Assistant General Manager (Chief Compliance Officer)<br><span class="text-muted">सहाय्यक महाव्यवस्थापक (मुख्य अनुपालन अधिकारी)</span> </td>
-                                      <td>1</td>
-                                      <td>Eligible For This Post</td>
-                                      <td><button type="button" class="btn btn-apply btn-success mb-1"><i class="uil-check"></i> Apply</button></td>
-                                   </tr>
-                                   <tr>
-                                      <td>4.</td>
-                                      <td>Senior Manager (Chief Risk Officer)<br><span class="text-muted">वरिष्ठ व्यवस्थापक (मुख्य जोखीम अधिकारी)</span> </td>
-                                      <td>1</td>
-                                      <td>SC Candidate are not eligible</td>
-                                      <td>-</td>
-                                   </tr>
-                                   <tr>
-                                      <td>5.</td>
-                                      <td>Senior Manager (Internal Audit)<br><span class="text-muted">वरिष्ठ व्यवस्थापक (अंतर्गत लेखा तपासणी)</span> </td>
-                                      <td>1</td>
-                                      <td>Eligible For This Post</td>
-                                      <td><button type="button" class="btn btn-apply btn-success mb-1"><i class="uil-check"></i> Apply</button></td>
-                                   </tr>
-                                   <tr>
-                                      <td>6.</td>
-                                      <td>Branch Manager<br><span class="text-muted">शाखा व्यवस्थापक</span> </td>
-                                      <td>1</td>
-                                      <td>Eligible For This Post</td>
-                                      <td><button type="button" class="btn btn-apply btn-success mb-1"><i class="uil-check"></i> Apply</button></td>
-                                   </tr>
-                                   <tr>
-                                      <td>7.</td>
-                                      <td>Assistant Manager (Internal Audit)<br><span class="text-muted">सहाय्यक व्यवस्थापक (अंतर्गत लेखा तपासणी)</span> </td>
-                                      <td>1</td>
-                                      <td>Eligible For This Post</td>
-                                      <td><button type="button" class="btn btn-apply btn-success mb-1"><i class="uil-check"></i> Apply</button></td>
-                                   </tr>
-                                   <tr>
-                                      <td>8.</td>
-                                      <td>Assistant Manager <br><span class="text-muted">सहाय्यक व्यवस्थापक </span> </td>
-                                      <td>10</td>
-                                      <td>Eligible For This Post</td>
-                                      <td><button type="button" class="btn btn-apply btn-success mb-1"><i class="uil-check"></i> Apply</button></td>
-                                   </tr>
-                                   <tr>
-                                      <td>9.</td>
-                                      <td>Assistant Manager (IT Support)<br><span class="text-muted">सहाय्यक व्यवस्थापक (आय्.टी. सपोर्ट)</span> </td>
-                                      <td>1</td>
-                                      <td>Eligible For This Post</td>
-                                      <td><button type="button" class="btn btn-apply btn-success mb-1"><i class="uil-check"></i> Apply</button></td>
-                                   </tr>
-                                   <tr>
-                                      <td>10.</td>
-                                      <td>Assistant Manager (IT Networking)<br><span class="text-muted">सहाय्यक व्यवस्थापक (आय्.टी. नेटवर्कींग)</span> </td>
-                                      <td>1</td>
-                                      <td>Eligible For This Post</td>
-                                      <td><button type="button" class="btn btn-apply btn-success mb-1"><i class="uil-check"></i> Apply</button></td>
-                                   </tr>
+                                    
+                                      <?php foreach($jobs as $value){ ?>
+                                      
+                                             <tr id="row_{{$value->id}}" data-id="{{ $value->id }}">
+                                                <td>{{ $value->id }}</td>
+                                                <td>{{ $value->name}} <br><span class="text-muted">{{ $value->name_dvng}}</span> </td>
+                                                <td>{{ $value->year}}</td>
+                                                <td>{{ $value->description}} </td>                                      
+                                                <td id="remark_{{$value->id}}"></td>                                      
+                                                <td>
+                                                <a href="{{ route('PostAvailable.checkJob',[base64_encode($value->id)]) }}" method="POST" class="btn btn-primary checkjob" value="{{ $value->id }}" id="job_{{ $value->id }}">Check</a>
+                                                <a href="{{ route('PostAvailable.applyJob',[base64_encode($value->id)]) }}" method="POST" class="btn btn-info applyJob disabled" value="{{ $value->id }}" id="apply_{{ $value->id }}" >Apply</a>
+                                                
+                                             </td>
+                                             </tr>
+                                  
+                                         <?php }  $sr++; ?>                          
                                    </tbody>
                                 </table> 
                              </div>
@@ -109,8 +58,124 @@
                   </div>
                </div>
             </div>
-            @include('include.userFooter')
+            
          </div>
       </div>
       @include('include.user.UserCustomJs')
+      @section('js')
+      <script>
+            $('.checkjob').click(function (e){
+               e.preventDefault();
+
+               $.ajaxSetup({
+                        headers: {
+                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+               });
+               
+               action = $(this).attr('href');
+               row_value = $(this).attr('value');
+               // console.log('row_value:'+row_value);
+                $.ajax({
+                    type: "post",
+                    url: action,                   
+                    success: function(response){     
+                     console.log(response);                      
+                        count = 1;
+                    
+                        if(response.per_res_error!=undefined){
+                           $.each( response.per_res_error[0], function( index, value ){                            
+                              $('#remark_'+row_value).append(count+'.'+value+'<br>');
+                              count++;
+                           });
+                        } 
+                        
+                        if(response.exp_error!=undefined){
+                           $.each( response.exp_error[0], function( index, value ){                            
+                              $('#remark_'+row_value).append(count+'.'+value+'<br>');
+                              count++;
+                           });
+                        }
+
+                        if(response.qual_error!=undefined){
+                           $.each( response.qual_error[0], function( index, value ){                            
+                              $('#remark_'+row_value).append(count+'.'+value+'<br>');
+                              count++;
+                           });
+                        }
+                        if(response.res_error!=undefined){
+                           $.each( response.res_error[0], function( index, value ){                              
+                              $('#remark_'+row_value).append(count+'.'+value+'<br>');
+                              count++;
+                           });
+                        }
+
+                        if(response.per_res_success!=undefined && response.success==1){
+                           $.each( response.per_res_success[0], function( index, value ){                            
+                              $('#remark_'+row_value).append(count+'.'+value+'<br>');
+                              count++;
+                           });
+                        }
+
+                        if(response.res_success!=undefined && response.success==1 ){
+                           $.each( response.res_success[0], function( index, value ){                            
+                              $('#remark_'+row_value).append(count+'.'+value+'<br>');
+                              count++;
+                           });
+                        }
+
+                        if(response.qual_success!=undefined && response.success==1  ){
+                           $.each( response.qual_success[0], function( index, value ){                            
+                              $('#remark_'+row_value).append(count+'.'+value+'<br>');
+                              count++;
+                           });
+                        }
+                        if(response.exp_success!=undefined && response.success==1 ){
+                           $.each( response.exp_success[0], function( index, value ){                              
+                              $('#remark_'+row_value).append(count+'.'+value+'<br>');
+                              count++;
+                           });
+                        }
+
+                        if(response.error == 0 && response.success == 1){
+                           $('#apply_'+row_value).removeClass('disabled');
+                        }else{
+                           $('#apply_'+row_value).addClass('disabled');
+                        }
+                    }
+                });
+            });
+
+            $('.applyJob').click(function (e){
+               e.preventDefault();
+               $.ajaxSetup({
+                        headers: {
+                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+               });
+               
+               id = $(this).attr('id');
+              
+               if($('#'+id).hasClass('disabled')){                  
+                  toastr.warning('Your are not eligible for this Post');
+               }else{
+                  action = $(this).attr('href');  
+                  
+                  $.ajax({
+                    type: "post",
+                    url: action,                   
+                    success: function(response){   
+                      
+                      if(response.status=='error'){
+                        toastr.warning(response.msg)
+                      }else if(response.status=='success'){
+                        toastr.success(response.msg)
+                      }
+                    }
+                });               
+               }
+              
+            });
+      </script>
+      @endsection()
 @endsection

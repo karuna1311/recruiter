@@ -30,6 +30,13 @@ class User extends Authenticatable
         'base64_pwd',
         'is_active',
         'ip_address',
+        'declare1',
+        'declare2',
+        'declare3',
+        'declare4',
+        'declare5',
+        'photo',
+        'sign'
     ];
     public function payment()
     {

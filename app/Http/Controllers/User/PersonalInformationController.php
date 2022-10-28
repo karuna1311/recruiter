@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PersonalInfoRequest;
-use App\Models\MasterPgd;
+use App\Models\UserReservation;
 use App\Models\User;
 use App\Http\Controllers\Location\LocationController;
 use Auth;
@@ -17,7 +17,7 @@ class PersonalInformationController extends Controller
     public function index()
     {
         abort_if(Gate::denies('personal_info'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
-        $personalInfoData=MasterPgd::select('id','cname_change','cname_change_value','fname','mname','gender',
+        $personalInfoData=UserReservation::select('id','cname_change','cname_change_value','fname','mname','gender',
         'alternate_mobile','adhar_card_no','permanent_address_1','permanent_address_2',
         'permanent_address_3','permanent_city',
         'permanent_state','permanent_district','permanent_taluka','permanent_pin_code',        
@@ -43,7 +43,7 @@ class PersonalInformationController extends Controller
     {
         try {
             $user=Auth::user();
-            $insertPersonalInfo = MasterPgd::create($request->validated());
+            $insertPersonalInfo = UserReservation::create($request->validated());
             User::where('id',$user->id)->update(['application_status'=>'1']);
         }
         catch(Exception $e) {
@@ -55,15 +55,22 @@ class PersonalInformationController extends Controller
     {
         //
     }
-    public function edit(PersonalInfoRequest $request,MasterPgd $MasterPgd)
+    public function edit(PersonalInfoRequest $request,UserReservation $UserReservation)
     {
 
     }
-    public function update(PersonalInfoRequest $request, MasterPgd $personalInfo)
+    public function update(PersonalInfoRequest $request, UserReservation $personalInfo)
     {
-        // print_r($request->all());die();
+        
         try {
-            $updatetPersonalInfo = $personalInfo->update($request->except('_token'));
+            $user=Auth::user();
+
+            if($user->status_lock =='0'){
+                
+                $updatetPersonalInfo = $personalInfo->update($request->except('_token'));
+            }else{
+                return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
+            }
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);

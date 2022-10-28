@@ -55,32 +55,20 @@
                   </li>
                   <!-- @endcan -->
 
-
-                  <!-- @can('pre_college_info')
                   <li>
-                     <a href="{{route('collegeInfo.index')}}"> <i class="uil-building"></i> <span>Previous College Information</span></a>
+                     <a href="{{route('postavailable.index')}}"> <i class="uil-presentation-check"></i> <span>Job Post</span></a>
                   </li>
-                  @endcan
-                  @can('medical_council')
-                  <li>
-                     <a href="{{route('medicalCouncil.index')}}"> <i class="uil-medical-square-full"></i> <span>Medical Council Registration</span></a>
-                  </li>
-                  @endcan
-                  @can('security_deposite')
-                  <li>
-                     <a href="{{route('securityDeposite.index')}}"> <i class="uil-keyhole-square-full"></i> <span>Security Deposite</span></a>
-                  </li>
-                  @endcan -->
-                  @can('preview')
+                  
                   <li>
                      <a href="{{route('preview.index')}}"> <i class="uil-presentation-check"></i> <span>Preview</span></a>
-                  </li>
-                  @endcan
-                  @can('declaration')
+                  </li>             
                   <li>
                      <a href="{{route('declaration.index')}}"> <i class="uil-check-circle"></i> <span>Declaration of Candidates</span></a>
                   </li>
-                  @endcan
+                  <li>
+                     <a href="{{route('payment.index')}}"> <i class="uil-presentation-check"></i> <span>Payment</span></a>
+                  </li>
+                 
                </ul>
             </div>
          </li.

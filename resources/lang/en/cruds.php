@@ -36,6 +36,8 @@ return [
             'email_eng' => 'Email-ID',
             'email_dev' => 'ई-मेल',
             'alternateContact_eng' => 'Alternate Contact No',
+            'age_eng' => 'Age',
+            'age_dev' => 'वय',
             'alternateContact_dev' => 'अतिरिक्त',
             'aadhar_eng' => 'Aadhar Card No.',
             'aadhar_dev' => 'आधार कार्ड क्र.',

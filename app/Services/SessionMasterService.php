@@ -2,7 +2,7 @@
 
 namespace App\Services;
 use Auth;
-use App\Models\MasterPgd;
+use App\Models\UserReservation;
 use App\Models\SessionMaster;
 use App\Models\ScheduleMaster;
 use Carbon\Carbon;
@@ -25,7 +25,7 @@ class SessionMasterService
     	$neetMarks=$user->neet_marks;
         $neetYear=$user->neet_year;
         if($sessionData->session_year!=$neetYear) return ['status'=>'error','data'=>'Not Eligible.(NEET passing year)'];
-    	$masterDataObj=MasterPgd::first();
+    	$masterDataObj=UserReservation::first();
         $masterData=$masterDataObj->toArray();
         $applicableCheck=self::checkApplicableCriteria($sessionData->id,$masterData);
         if(count($applicableCheck) && $applicableCheck['status']!='success') return $applicableCheck;
@@ -43,7 +43,7 @@ class SessionMasterService
            
     }
     public static function getActiveSessionWithCutoff(){
-    	$masterData=MasterPgd::select('ph','cate','security_deposite_amount')->first();
+    	$masterData=UserReservation::select('ph','cate','security_deposite_amount')->first();
         $activeSession=self::getActiveSession();
         foreach($activeSession as $key=>$session){
         	$cuttOfRange=self::getCandidateCutOff($session->cutoff_json,$masterData->ph,$masterData->cate);
@@ -61,7 +61,7 @@ class SessionMasterService
     }
     public static function checkPaymentEligibilityzzz()
     {
-        $masterData=MasterPgd::select('session_master_id','security_deposite_amount')->get();
+        $masterData=UserReservation::select('session_master_id','security_deposite_amount')->get();
 
         $getActiveSession=self::getActiveSession();
         $isEligible=$getActiveSession->contains('id',$masterData->session_master_id);
@@ -71,9 +71,10 @@ class SessionMasterService
         if($isEligible) return $getActiveSession;
         return $isEligible;
     }
+    
     public static function checkPaymentEligibility()
     {
-        $masterData=MasterPgd::pluck('security_deposite_amount','session_master_id')->all();
+        $masterData=UserReservation::pluck('security_deposite_amount','session_master_id')->all();
         $dt=Carbon::now();
         $scheduleData=ScheduleMaster::with('sessionData:id,session_name,fee_json')->where('name','Payment')->whereIn('session',array_keys($masterData))->whereRaw('"'.$dt.'" between `start_date` and `end_date`')->select('name','session','start_date','end_date')->get();
         foreach($scheduleData as $key=>$schedule){
@@ -84,7 +85,7 @@ class SessionMasterService
         return $scheduleData;
     }
     public static function checkPaymentEligibilitySession($sessionId){
-        $masterData=MasterPgd::select('session_master_id')->first();
+        $masterData=UserReservation::select('session_master_id')->first();
         $dt=Carbon::now();
         if(($sessionId==$masterData->session_master_id) && ScheduleMaster::where([['session',$sessionId],['name','Payment']])->whereRaw('"'.$dt.'" between `start_date` and `end_date`')->exists())  return '1'; else return '0';
     }

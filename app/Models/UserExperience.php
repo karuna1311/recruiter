@@ -36,4 +36,5 @@ class UserExperience extends Model
         'expMonths',
         'expDays',
     ];
+
 }

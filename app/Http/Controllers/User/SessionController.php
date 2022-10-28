@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Otp\OtpController;
 use App\Services\SessionMasterService;
 use App\Models\SessionMaster;
-use App\Models\MasterPgd;
+use App\Models\UserReservation;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Response;
@@ -38,7 +38,7 @@ class SessionController extends Controller
     		$user=Auth::user();
     		$user->application_status='7';
     		$user->save();
-    		MasterPgd::where([['user_id',$user->id],['is_active','1']])->update(['status_lock'=>'0','session_master_id'=>'0']);
+    		UserReservation::where([['user_id',$user->id],['is_active','1']])->update(['status_lock'=>'0','session_master_id'=>'0']);
     		return Response::json(['status'=>'success','data'=>'Unlock success']);
     	}catch(Exception $e){
     		Response::json(['status'=>'error','data'=>$e->getMessage()]);

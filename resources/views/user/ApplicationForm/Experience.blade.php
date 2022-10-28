@@ -21,14 +21,14 @@
                                        <option value="PRESENT">PRESENT</option>
                                     </select>
                                  </div>
-                                 <div class="col-md-3 mt-3">
+                                 {{-- <div class="col-md-3 mt-3">
                                     <label >Whether selected from MPSC? <span class="asrtick">*</span></label>
                                     <select class="form-control " name="flgMpscSelection" id="flgMpscSelection">
                                        <option value="">Select</option>
                                        <option value="YES">YES</option>
                                        <option value="NO">NO</option>
                                     </select>
-                                 </div>
+                                 </div> --}}
                                  <div class="col-md-3 mt-3 postNameLookupId">
                                     <label >Post Name <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="postNameLookupId" id="postNameLookupId">                                       
@@ -53,31 +53,31 @@
                                  </div>
 
                                  <div class="col-md-3 mb-3" >
-                                    <label >5.6&nbsp;Nature Of Job <span class="asrtick">*</span></label>
+                                    <label >Nature Of Job <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="jobNatureLookupId" id="jobNatureLookupId">
                                     @foreach($job_nature as $key=>$value)
                                           <option value="{{ $key }}">{{ $value }}</option>
                                        @endforeach                                     
                                     </select>
                                  </div>
-                                 <div class="col-md-3 mb-3" >
+                                 {{-- <div class="col-md-3 mb-3" >
                                     <label >Whether the post is Gazetted? <span class="asrtick">*</span></label>
                                     <select class="form-control" name="flgGazettedPost" id="flgGazettedPostId">
                                        <option value="">Select</option>
                                        <option value="YES">YES</option>
                                        <option value="NO">NO</option>
                                     </select>
-                                 </div>
+                                 </div> --}}
                               </div>
                               <div class="row">
-                                 <div class="col-md-3 mb-3 typeGroupLookupId">
+                                 {{-- <div class="col-md-3 mb-3 typeGroupLookupId">
                                     <label>Group <span class="asrtick">*</span></label>
                                     <select class="form-control" name="typeGroup" id="typeGroupLookupId">
                                        <option value="">Select</option>
                                        <option value="Group A"> Group A</option>
                                        <option value="Group B">Group B</option>
                                     </select>
-                                 </div>
+                                 </div> --}}
 
                                  <div class="col-md-3 mb-3">
                                     <label >Nature Of Appointment <span class="asrtick">*</span></label>
@@ -98,12 +98,12 @@
                                  </div>
 
                                  <div class="col-md-3 mb-3 appointmentContent">
-                                    <label style="margin-left: 15px;">5.8.1&nbsp;Appointment Letter No <span class="redColor">*</span></label>
+                                    <label style="margin-left: 15px;">Appointment Letter No <span class="redColor">*</span></label>
                                     <input type="text" class="form-control" name="appointmentLetterNo" id="appointmentLetterNo"  value="">
                                  </div>
 
                                  <div class="col-md-3 mb-3 appointmentContent">
-                                    <label style="float: left;">5.8.2&nbsp;Letter Date <span class="redColor">*</span></label>
+                                    <label style="float: left;">Letter Date <span class="redColor">*</span></label>
                                     <input type="date" class="form-control" name="letterDate" id="letterDate">
                                  </div>
 
@@ -141,15 +141,15 @@
                                  </div>
                                  <div class="col-md-1 mb-3">
                                     <label>Years</label>
-                                    <input type="text" class="form-control" name="expYears" id="expYears" disabled="" value="">
+                                    <input type="numeric" class="form-control expYears" readonly  name="expYears" id="expYears">
                                  </div>
                                  <div class="col-md-1 mb-3">
                                     <label>Months</label>
-                                    <input type="text" class="form-control" name="expMonths" id="expMonths" disabled="" value="">
+                                    <input type="numeric" class="form-control expMonths" readonly name="expMonths" id="expMonths">
                                  </div>
                                  <div class="col-md-1 mb-3">
                                     <label>Days</label>
-                                    <input type="text" class="form-control" name="expDays" id="expDays" disabled="" value="">
+                                    <input type="numeric" class="form-control expDays" readonly name="expDays" id="expDays">
                                  </div>
                               </div>
 
@@ -175,15 +175,16 @@
                                        <!-- <th>Years</th>
                                        <th>Months</th>
                                        <th>Days</th> -->
-                                       <th>Whether selected from MPSC?</th>
+                                       {{-- <th>Whether selected from MPSC?</th> --}}
                                        <th>Action</th>
                                     </tr>
                                  </thead>
                                  <tbody style="font-size: 12px;">
+                                    <?php $i=1; ?>
                                  @foreach($user_experience as $value)
                                     <tr>
                                        <td></td>
-                                       <td>{{ $value->id }}</td>
+                                       <td>{{ $i }}</td>
                                        <td>{{ !empty($value->officeName) ? $value->officeName : '-'}}</td>
                                        <td>{{ !empty($value->designation) ? $value->designation : '-'}}</td>
                                        <td>{{ !empty($value->appointment) ? $value->appointment : '-'}}</td>
@@ -194,7 +195,7 @@
                                        <td>{{ !empty($value->monthlyGrossSalary) ? $value->monthlyGrossSalary : '-'}}</td>                                    
                                        <td>{{ !empty($value->fromDate) ? $value->fromDate : '-'}}</td>                                    
                                        <td>{{ !empty($value->toDate) ? $value->toDate : '-'}}</td>                                    
-                                       <td>{{ !empty($value->flgMpscSelection) ? $value->flgMpscSelection : '-'}}</td>
+                                       {{-- <td>{{ !empty($value->flgMpscSelection) ? $value->flgMpscSelection : '-'}}</td> --}}
                                        <td>
                                                 <a type="button" class="btn btn-xs btn-info"
                                                 data-bs-toggle="modal"  onclick="editExperience(this)"
@@ -208,6 +209,7 @@
                                                 <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
                                        <td>{{ !empty($value->optionalSubjects) ? $value->optionalSubjects : '-'}}</td> -->
                                     </tr>
+                                    <?php $i++; ?>
                                  @endforeach
                                  </tbody>
                               </table>
@@ -224,11 +226,11 @@
    </div>
 </div>
 
-<!-- Edit Qualification modal -->
+<!-- Edit Experience modal -->
 <div class="modal" id="editExperienceModal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
    
 </div>
-    <!--Edit Qualification Modal  -->
+    <!--Edit Experience Modal  -->
 @endsection
 @section('js')
 <script type="text/javascript">
@@ -237,7 +239,7 @@
    $(function () 
    {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            // @can('')
+           
             let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
         
 
@@ -266,7 +268,7 @@
                 }
             }
             dtButtons.push(deleteButton)
-            // @endcan()
+         
 
             $.extend(true, $.fn.dataTable.defaults, {
                 // order: [[ 1, 'ASC' ]],
@@ -281,51 +283,64 @@
             });
    });
  
-
-   function getDays(date1, date2) {
-
-      console.log(date(date1,"dd-mm-YYYY"));
-      console.log(date(date2,"dd-mm-YYYY"));
-      return false;
-         var d1d = date1.getDay();
-         var d2d = date2.getDay();
-         var d1Y = date1.getFullYear();
-        var d2Y = date2.getFullYear();
-        var d1M = date1.getMonth();
-        var d2M = date2.getMonth();
-        return (d2d+d2M+12*d2Y)-(d1d+d1M+12*d1Y);
-   }
-
-   function getMonths(date1,date2){    
-           return  date2.getMonth() - date1.getMonth() + 
-   (12 * (date2.getFullYear() - date1.getFullYear()))
-
-   }
-
-   function getYears(date1,date2){
-      return diffInYr = date2.getFullYear() - date1.getFullYear();
-   }
-
-   $('#toDate').on('change',function(){
+   $('#fromDate,#toDate').on('change',function()
+   {
       var employment = $('#typeEmploymentLookupId').val();
-      
-      let fromDate = $('#fromDate').val();
-      var toDate = $(this).val();
-      console.log(fromDate);
-      console.log(toDate);
-      if(employment=='PAST'){
-         const start_date = new Date(fromDate);
-         const end_date = new Date(toDate);
+      // console.log(employment);
+      let fromDate      = $('#fromDate').val();
+            if(employment=='PRESENT')
+            {
+               let  today	= new Date();
 
-         // var days = getDays(start_date, end_date);
-         var months = getMonths(start_date, end_date);
-         var years = getYears(start_date, end_date);
-        console.log(months+'-'+years);
-         
-      }else{
+               let  dd 		      = String(today.getDate()).padStart(2, '0');
+               let  mm 		      = String(today.getMonth() + 1).padStart(2, '0'); //janvier = 0
+               let  yyyy 		   = today.getFullYear();
+               let toDate        = yyyy+'-'+mm+'-'+dd;
+               var secondDate = moment(toDate,'YYYY-MM-DD');
 
-      }
+            }else{
+               var toDate = $('#toDate').val();
+               var secondDate = moment(toDate, 'YYYY-MM-DD');
+               // console.log(secondDate);             
+            }
+       
+      var firstDate = moment(fromDate, 'YYYY-MM-DD');
+      var years = secondDate.diff(firstDate, 'year');
+      firstDate.add(years, 'years');
+      var months = secondDate.diff(firstDate, 'months');
+      firstDate.add(months, 'months');
+      var days = secondDate.diff(firstDate, 'days');
+      if(isNaN(years)){years=0;}
+      if(isNaN(months)){months=0;}
+      if(isNaN(days)){days=0;}
+	
+      $('#experienceForm #expYears').val(years);
+      $('#experienceForm #expMonths').val(months);
+      $('#experienceForm #expDays').val(days);
    });
+
+   // $('#toDate').on('change',function(){
+   //    var employment = $('#typeEmploymentLookupId').val();
+      
+   //    let fromDate = $('#fromDate').val();
+   //    var toDate = $(this).val();
+   
+   //    var firstDate = moment(fromDate, 'YYYY-MM-DD');
+   //    var secondDate = moment(toDate, 'YYYY-MM-DD');
+   //    var years = secondDate.diff(firstDate, 'year');
+   //    firstDate.add(years, 'years');
+   //    var months = secondDate.diff(firstDate, 'months');
+   //    firstDate.add(months, 'months');
+   //    var days = secondDate.diff(firstDate, 'days');
+   //    if(isNaN(years)){years=0;}
+   //    if(isNaN(months)){months=0;}
+   //    if(isNaN(days)){days=0;}
+	
+   //    $('#experienceForm #expYears').val(years);
+   //    $('#experienceForm #expMonths').val(months);
+   //    $('#experienceForm #expDays').val(days);
+
+   // });
 
    $(document).on('change', '#typeEmploymentLookupId', function() {
       valueFlush(['toDate']); 
@@ -336,65 +351,56 @@
          $('.toDate').show();
       }
    });
-// edit modal
-   $(document).on('change', '#edittypeEmploymentLookupId', function() {
-      valueFlush(['edittoDate']); 
-      var typeEmploymentLookupId = $(this).val();
-      if (typeEmploymentLookupId == "PRESENT") {
-         $('.edittoDate').hide();
-      } else {
-         $('.edittoDate').show();
-      }
-   });
+
 
    //flgMpscSelection
-   $(document).on('change', '#flgMpscSelection', function() {
-         // valueFlush(['postNameLookupId']); 
-         var flgMpscSelection = $(this).val();
-            if (flgMpscSelection == "NO") {
-               $('.postNameLookupId').hide();
-            } else {
-               $('.postNameLookupId').show();
-            }
-   });
+   // $(document).on('change', '#flgMpscSelection', function() {
+   //       // valueFlush(['postNameLookupId']); 
+   //       var flgMpscSelection = $(this).val();
+   //          if (flgMpscSelection == "NO") {
+   //             $('.postNameLookupId').hide();
+   //          } else {
+   //             $('.postNameLookupId').show();
+   //          }
+   // });
 
-   $(document).on('change', '#editflgMpscSelection', function() {
-         // valueFlush(['postNameLookupId']); 
-         var flgMpscSelection = $(this).val();
-            if (flgMpscSelection == "NO") {
-               $('.editpostNameLookupId').hide();
-            } else {
-               $('.editpostNameLookupId').show();
-            }
-   });
+   // $(document).on('change', '#editflgMpscSelection', function() {
+   //       // valueFlush(['postNameLookupId']); 
+   //       var flgMpscSelection = $(this).val();
+   //          if (flgMpscSelection == "NO") {
+   //             $('.editpostNameLookupId').hide();
+   //          } else {
+   //             $('.editpostNameLookupId').show();
+   //          }
+   // });
 
 
    //flgGazettedPost
-   $(document).on('change', '#flgGazettedPostId', function() {
-   //  valueFlush(['typeGroupLookupId']); 
-      var flgGazettedPost = $(this).val();
+   // $(document).on('change', '#flgGazettedPostId', function() {
+   // //  valueFlush(['typeGroupLookupId']); 
+   //    var flgGazettedPost = $(this).val();
       
-      if (flgGazettedPost == "NO") {
-         $('.typeGroupLookupId').hide();
-      } else {
-         $('.typeGroupLookupId').show();
-      }
-   });
+   //    if (flgGazettedPost == "NO") {
+   //       $('.typeGroupLookupId').hide();
+   //    } else {
+   //       $('.typeGroupLookupId').show();
+   //    }
+   // });
 
-   $(document).on('change', '#editflgGazettedPostId', function() {
-   //  valueFlush(['typeGroupLookupId']); 
-      var flgGazettedPost = $(this).val();
+   // $(document).on('change', '#editflgGazettedPostId', function() {
+   // //  valueFlush(['typeGroupLookupId']); 
+   //    var flgGazettedPost = $(this).val();
       
-      if (flgGazettedPost == "NO") {
-         $('.edittypeGroupLookupId').hide();
-      } else {
-         $('.edittypeGroupLookupId').show();
-      }
-   });
+   //    if (flgGazettedPost == "NO") {
+   //       $('.edittypeGroupLookupId').hide();
+   //    } else {
+   //       $('.edittypeGroupLookupId').show();
+   //    }
+   // });
    
    function apointmentNaturechange(token,type=null){   
       if(type==null){
-         valueFlush(['editappointmentLetterNo','editletterDate']);  
+         valueFlush(['appointmentLetterNo','letterDate']);  
             var apointmentNatureLookupId = token;
             
             if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "258" || apointmentNatureLookupId == "272" || apointmentNatureLookupId == "271") {
@@ -410,7 +416,7 @@
             }   
       }
       else{
-         valueFlush(['appointmentLetterNo','letterDate']);  
+         valueFlush(['editappointmentLetterNo','editletterDate']);  
       var apointmentNatureLookupId = token;
       
       if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "258" || apointmentNatureLookupId == "272" || apointmentNatureLookupId == "271") {
@@ -443,7 +449,7 @@
                 error: function(response) {
                 }
             })
-      }
+   }
 
    $(document).ready(function() 
    {
@@ -451,12 +457,12 @@
             // Specify validation rules
             rules: {
                employmentType : "required",
-               flgMpscSelection : "required",    
+               // flgMpscSelection : "required",    
                officeName : "required",    
                flgOfficeGovOwned : "required",    
                designation : "required",    
                jobNatureLookupId : "required",    
-               flgGazettedPost : "required",        
+               // flgGazettedPost : "required",        
                apointmentNatureLookupId : "required",                   
                payScale : "required",    
                gradePay : "required",    

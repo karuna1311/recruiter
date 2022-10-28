@@ -68,6 +68,7 @@
                      <input type="text" class="form-control"  id="dob" maxlength="10" value="{{ old('dob', isset($userData) ? $userData['dob'] : '--') }}"  readonly>
                   </div>
                </div>
+               
                <div class="row form-group ">
                   <div class="col-md-2 text-right">
                      <label class="d-block">{{ trans('cruds.personalInformation.fields.Mobile_eng') }}:<font class="astr">*</font><br> {{ trans('cruds.personalInformation.fields.Mobile_dev') }} :</label>
@@ -96,6 +97,16 @@
                      <input type="text" class="form-control" name="adhar_card_no" id="adharcardno" maxlength="12" value="{{ old('adhar_card_no', isset($personalInfoData) ? $personalInfoData->adhar_card_no : '') }}">
                   </div>
                </div>
+
+               <div class="row form-group ">
+                  <div class="col-md-2 text-right">
+                     <label class="d-block">{{ trans('cruds.personalInformation.fields.age_eng') }}:<br> {{ trans('cruds.personalInformation.fields.age_dev') }} :</label>
+                  </div>
+                  <div class="col-md-4">                     
+                     <input type="text" class="form-control" name="age"  id="age" maxlength="10" value=""  readonly>
+                  </div>               
+               </div>
+
             </fieldset>
             <fieldset class="form-fieldset mt-3">
                <legend>{{ trans('cruds.personalInformation.fields.PermanentAdd_eng') }}<span class="text-muted">{{ trans('cruds.personalInformation.fields.PermanentAdd_dev') }}</span></legend>
@@ -305,8 +316,23 @@
     }
    $(document).ready(function() {
       $.validator.addMethod("notOnlyZero", function (value, element, param) {
-    return this.optional(element) || parseInt(value) > 0;
-});
+            return this.optional(element) || parseInt(value) > 0;
+      });
+
+      var ageDate       = $('#dob').val();
+      var firstDate     = moment(ageDate, 'YYYY-MM-DD');      
+      let  today	= new Date();
+      let  dd 		      = String(today.getDate()).padStart(2, '0');
+      let  mm 		      = String(today.getMonth() + 1).padStart(2, '0'); //janvier = 0
+      let  yyyy 		   = today.getFullYear();
+      let toDate        = yyyy+'-'+mm+'-'+dd; 
+
+      var secondDate = moment(toDate,'YYYY-MM-DD');
+      var years = secondDate.diff(firstDate, 'year');
+      if(isNaN(years)){years=0;}
+ 
+         $('#age').val(years);
+    
 
         $('#personalform').validate({
             rules: {

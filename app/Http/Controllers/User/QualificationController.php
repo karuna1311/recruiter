@@ -28,15 +28,17 @@ class QualificationController extends Controller
     {
        
         // abort_if(Gate::denies('qualification'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
+       
+        $user_id =Auth::user()->id;
         $qualification = QualificationType::Select('qualification_type_name','qualification_type_code')->orderby('sort_order','ASC')->get();
         $stateData = LocationController::getState();
         $grade = lookup::select('id','label')->where('type','LIKE','%qualification_grade%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         $mode = lookup::Select('id','label')->where('type','LIKE','%qualification_mode%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         
-        
-        // dd($grade);
         // user qualification
-        $user_qualification = UserQualification::Select('user_qualification.id','user_qualification.typeResult','user_qualification.doq','user_qualification.attempts','user_qualification.percentage','user_qualification.courseDurations','user_qualification.compulsorySubjects','user_qualification.optionalSubjects','subject.subject_name as subject_name','university.name as university_name','class.label as class',
+        $user_qualification = UserQualification::Select('user_qualification.id','user_qualification.typeResult','user_qualification.doq',
+        'user_qualification.attempts','user_qualification.percentage','user_qualification.courseDurations','user_qualification.compulsorySubjects',
+        'user_qualification.optionalSubjects','subject.subject_name as subject_name','university.name as university_name','class.label as class',
         'mode.label as mode','qualificationtype.qualification_type_name as qualification_type','qualificationname.qualification_name as qualification_name')
         ->leftjoin('qualificationtype','user_qualification.qualificationtype','=','qualificationtype.qualification_type_code')
         ->leftjoin('qualificationname','user_qualification.qualificationname','=','qualificationname.qualification_name_code')
@@ -44,8 +46,10 @@ class QualificationController extends Controller
         ->leftjoin('university','user_qualification.university','=','university.id')
         ->leftjoin('lookup_options as class','user_qualification.classGrade','=','class.id')
         ->leftjoin('lookup_options as mode','user_qualification.mode','=','mode.id')
+        ->where('user_id',$user_id)
         ->get();
           
+        
         return view('user.ApplicationForm.qualification',compact('qualification','stateData','grade','mode','user_qualification'));
     }
 
@@ -70,10 +74,18 @@ class QualificationController extends Controller
      
         try {
             $user=Auth::user();
-            $data = $request->except('token');
-            $data['user_id'] = $user->id;
-            
-            $insert = UserQualification::create($data);
+
+            if($user->status_lock == '0'){
+
+                $data = $request->except('token');
+                $data['user_id'] = $user->id;
+                
+                $insert = UserQualification::create($data);
+
+            }else if($user->status_lock =='1'){
+                return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
+            }            
+          
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);
@@ -125,7 +137,7 @@ class QualificationController extends Controller
         'qualification_name_list',
     'university_list'))->render();
 
-
+        
         return response()->json(['html'=>$html_view]);
     }
 
@@ -138,9 +150,17 @@ class QualificationController extends Controller
      */
     public function update(UserQualificationRequest $request, $token)
     {        
-        try {            
-            $id = base64_decode($token);
+        try { 
+            $user=Auth::user();
+            
+            if($user->status_lock == '0'){
+                $id = base64_decode($token);
             $update = UserQualification::where('id',$id)->update($request->except('_token','_method'));
+
+            }else if($user->status_lock =='1'){
+                return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
+            }             
+            
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);

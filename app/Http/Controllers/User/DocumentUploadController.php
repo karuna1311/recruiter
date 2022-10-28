@@ -19,8 +19,7 @@ class DocumentUploadController extends Controller
     	$documentData=DocumentUploadService::getEligibleDocuments();
         return view('user.DocumentUpload.index',compact('documentData'));
     }
-    public function upload(DocumentUploadRequest $request,DocumentMaster $document){
-        //print_r($request->all());die();
+    public function upload(DocumentUploadRequest $request,DocumentMaster $document){        
     	try {
 			$documentData=DocumentUploadService::uploadDocument($request->documentFile,$document->document_code,$document->id,$request->documentType);
 			$documentData['documentId']=$document->id;

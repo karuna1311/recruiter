@@ -27,12 +27,12 @@ class UserExperienceRequest extends FormRequest
     {
         return [
             'employmentType' => "required",
-            'flgMpscSelection' => "required",
+            // 'flgMpscSelection' => "required",
             'officeName' => "required",
             'flgOfficeGovOwned' => "required",
             'designation' => "required",
             'jobNatureLookupId' => "required",
-            'flgGazettedPost' => "required",
+            // 'flgGazettedPost' => "required",
             'apointmentNatureLookupId' => "required",
             'payScale' => "required",
             'gradePay' => "required",

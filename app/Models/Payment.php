@@ -9,7 +9,7 @@ use App\Traits\Auditable;
 class Payment extends Model
 {
     use HasFactory,Auditable;
-    Protected $table = 'payments';
-    protected $fillable = ['user_id','session_master_id','order_id','bank_transaction_no','amount'];
+    Protected $table = 'payment_info';
+    protected $fillable = ['user_id','job_id','order_id','bank_ref_no','amount','tracking_id','order_status','payment_response_json'];
 }
 

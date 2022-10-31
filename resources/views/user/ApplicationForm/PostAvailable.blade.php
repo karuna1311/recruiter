@@ -82,6 +82,10 @@
                     success: function(response){     
                      console.log(response);                      
                         count = 1;
+
+                        if(response.error==1 && response.zero_criteria!=undefined){
+                           toastr.error(response.zero_criteria);
+                        }
                     
                         if(response.per_res_error!=undefined){
                            $.each( response.per_res_error[0], function( index, value ){                            
@@ -142,6 +146,8 @@
                         }else{
                            $('#apply_'+row_value).addClass('disabled');
                         }
+
+
                     }
                 });
             });

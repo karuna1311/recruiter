@@ -82,8 +82,8 @@ class PostAvailableController extends Controller
         $result = array();
 
         $job_id_exists = [];
-      $job_id = base64_decode($enc_id);  
-    //   dd($job_id);
+        $job_id = base64_decode($enc_id);  
+    
         foreach($instructionArray as $value)
         {
             array_push($job_id_exists,$value['job_id']);
@@ -97,7 +97,7 @@ class PostAvailableController extends Controller
                     case 'personal_reservation':
                     
                         $response = self::match_personal_reservation($value['criteria'],$student_json,$value['type']); 
-                    //    dd($response); 
+                    
                         if(strtolower($value['type'])=='or'){
                             if($response[0]['per_res_success']>=$response[0]['admin_criteria_count']){
                                 array_push($per_res_success,['success'=>'candidate is eligible in Personal details with reservation section']);
@@ -115,7 +115,6 @@ class PostAvailableController extends Controller
                                 $per_res_error_count++;
                             }
                         }
-
 
                     break;
                     case 'reservation':
@@ -213,20 +212,24 @@ class PostAvailableController extends Controller
                         
                     }  
 
-            }
-            // else{
-                
-        
-                    
-                           
-            // }      
-               
-            $checkCandidate =  EligibleCandidates::where('user_id', '=',$user_id)
+
+                    $checkCandidate =  EligibleCandidates::where('user_id', '=',$user_id)
                                     ->where('job_id', '=',$job_id)
                                     ->exists();
+                    // echo $job_id;
+                    // echo "<br>";
+                    // print_r($job_id_exists);
+                    // echo "<br>";
 
-              
-                                    // dd($job_id_exists);
+        //     if(!in_array($job_id,$job_id_exists))
+        //     {
+        //         $no_criteria = 'No Criteria Made by Admin';
+        //         return response()->Json([                    
+        //             'zero_criteria' => $no_criteria,                 
+        //             'error'     => 1
+        //             ]);
+        //     }
+        //    else
             if($res_error_count== 0 && $qual_error_count==0 && $exp_error_count==0 && $per_res_error_count == 0 && in_array($job_id,$job_id_exists))
             {
 
@@ -252,13 +255,8 @@ class PostAvailableController extends Controller
                             'error' => 0,
                         ]);
                     }
-            }else if(!in_array($job_id,$job_id_exists)){
-                        $no_criteria = 'No Criteria Made by Admin';
-                        return response()->Json([                    
-                            'zero_criteria' => $no_criteria,                 
-                            'error'     => 1
-                            ]);
-            }else{     
+            }           
+            else{     
 
                     if($checkCandidate)
                     {
@@ -287,7 +285,17 @@ class PostAvailableController extends Controller
                                         'error'     => 1
                                         ]);
             } 
+
         }       
+        }       
+        if(!in_array($job_id,$job_id_exists))
+        {
+            $no_criteria = 'No Criteria Made by Admin';
+            return response()->Json([                    
+                'zero_criteria' => $no_criteria,                 
+                'error'     => 1
+                ]);
+        }
             
     }
     
@@ -388,8 +396,7 @@ class PostAvailableController extends Controller
                         )
                         {
                       
-                            if(self::num_cond($value,$comparison,strtolower($array_student[$fieldname])))
-                            // self::num_cond(strtolower($array_student[$fieldname]),$comparison,$value)
+                            if(self::num_cond($value,$comparison,strtolower($array_student[$fieldname])))                            
                             {                                    
                                 $count_success++;                                  
                             }else{
@@ -409,8 +416,7 @@ class PostAvailableController extends Controller
                 if(array_key_exists($fieldname,$array_student) &&($fieldname == array_search($array_student[$fieldname],$array_student))
                 )
                 {                    
-                    if(self::num_cond($value,$comparison,strtolower($array_student[$fieldname])))
-                    // self::num_cond(strtolower($array_student[$fieldname]),$comparison,$value)
+                    if(self::num_cond($value,$comparison,strtolower($array_student[$fieldname])))                    
                     {                                    
                         $count_success++;                                  
                     }else{
@@ -436,8 +442,6 @@ class PostAvailableController extends Controller
         $result = array();
         $array_criteria = json_decode($criteria);
         
-        // $array_student = (array)$student_data->qualification;   
-
         if(strtolower($type)=='or'){
             $admin_criteri_count = 1;
 
@@ -719,7 +723,8 @@ class PostAvailableController extends Controller
         }   
     }
 
-    public function applyJob($id){
+    public function applyJob($id)
+    {
         $job_id = base64_decode($id);
         $user_id = $this->getUserID();
         

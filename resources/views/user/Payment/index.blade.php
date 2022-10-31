@@ -29,19 +29,24 @@
                           </tr>
                         </thead>
                         <tbody>
-                           @foreach($jobfees as $value)
-                           <tr data-id="{{ $value->id }}">
-                              <td>{{ $value->id}}</td>
-                              <td>{{ App\Traits\Convertors::jobName($value->job_id)}}</td>
-                              <td>{{!empty($value->description) ? $value->description :'-'}}</td>
-                              <td>{{ !empty($value->caste) ? $value->caste :'-'}}</td>
-                              <td>{{ !empty($value->sub_caste) ? $value->sub_caste :'-'}}</td>
-                              <td  >{{ !empty($value->fees) ? $value->fees :'-' }}</td>                              
-                              <td data-fees="jobwisefees_{{$value->id}}">
-                                 <input type="checkbox" class="check" name="postwisejob_id[]" onclick="jobwisetotal({{ $value->fees }},$(this).prop('checked'),{{ $value->id }})" value="{{ $value->id }}"></td>
-                           </tr>                        
-                           @endforeach
-                            
+                           @if(in_array(null,$jobfees))                        
+                           <tr>
+                              <td colspan="7">No Fees updated by Admin</td>
+                           </tr>
+                           @else
+                              @foreach($jobfees as $value)
+                                 <tr data-id="{{ $value->id }}">
+                                    <td>{{ $value->id}}</td>
+                                    <td>{{ App\Traits\Convertors::jobName($value->job_id)}}</td>
+                                    <td>{{!empty($value->description) ? $value->description :'-'}}</td>
+                                    <td>{{ !empty($value->caste) ? $value->caste :'-'}}</td>
+                                    <td>{{ !empty($value->sub_caste) ? $value->sub_caste :'-'}}</td>
+                                    <td  >{{ !empty($value->fees) ? $value->fees :'-' }}</td>                              
+                                    <td data-fees="jobwisefees_{{$value->id}}">
+                                       <input type="checkbox" class="check" name="postwisejob_id[]" onclick="jobwisetotal({{ $value->fees }},$(this).prop('checked'),{{ $value->id }})" value="{{ $value->id }}"></td>
+                                 </tr>                        
+                              @endforeach
+                           @endif 
                         </tbody>
                      </table>
                   </div>
@@ -64,18 +69,25 @@
                           </tr>
                         </thead>
                         <tbody>
-                           @foreach($jobgroupfees as $value)
-                           <tr data-id="{{ $value->id }}">
-                              <td >{{ $value->id}}</td>
-                              <td >{{!empty($value->group_name) ? $value->group_name :'-'}}</td>
-                              <td >{{ !empty($value->job_id) ? App\Traits\Convertors::multipleJobName($value->job_id) : '-' }}</td>                              
-                              <td >{{ !empty($value->caste) ? $value->caste :'-'}}</td>
-                              <td >{{ !empty($value->sub_caste) ? $value->sub_caste :'-'}}</td>
-                              <td >{{ !empty($value->description) ? $value->description :'-'}}</td>
-                              <td >{{ !empty($value->fees) ? $value->fees :'-' }}</td>                              
-                              <td  data-fees="jobwisefees_{{$value->id}}"><input name="grouppostjob_id[]" type="checkbox" class="check" onclick="jobgroupwisetotal({{ $value->fees }},$(this).prop('checked'),{{ $value->id }})" value="{{ $value->id}}"></td>
-                           </tr>                        
-                           @endforeach                          
+                           @if(in_array(null,$jobgroupfees))                        
+                           <tr>
+                              <td colspan="8">No Fees updated by Admin</td>
+                           </tr>
+                           @else
+                                 @foreach($jobgroupfees as $value)
+                                    <tr data-id="{{ $value->id }}">
+                                       <td >{{ $value->id}}</td>
+                                       <td >{{!empty($value->group_name) ? $value->group_name :'-'}}</td>
+                                       <td >{{ !empty($value->job_id) ? App\Traits\Convertors::multipleJobName($value->job_id) : '-' }}</td>                              
+                                       <td >{{ !empty($value->caste) ? $value->caste :'-'}}</td>
+                                       <td >{{ !empty($value->sub_caste) ? $value->sub_caste :'-'}}</td>
+                                       <td >{{ !empty($value->description) ? $value->description :'-'}}</td>
+                                       <td >{{ !empty($value->fees) ? $value->fees :'-' }}</td>                              
+                                       <td  data-fees="jobwisefees_{{$value->id}}"><input name="grouppostjob_id[]" type="checkbox" class="check" onclick="jobgroupwisetotal({{ $value->fees }},$(this).prop('checked'),{{ $value->id }})" value="{{ $value->id}}"></td>
+                                    </tr>                        
+                                 @endforeach                          
+                           @endif 
+                           
                        
                          </tbody>
                      </table>

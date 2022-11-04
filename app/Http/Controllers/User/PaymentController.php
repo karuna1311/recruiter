@@ -36,13 +36,13 @@ class PaymentController extends Controller
         $candidate_data = array(); 
         $jobfees = array(); 
         $jobgroupfees = array(); 
-        
+        // dd($user_id);
         $job_applied = EligibleCandidates::Select('applied_job_by_user.job_id','applied_job_by_user.json')                                
-                                ->leftjoin('applied_job_by_user','applied_job_by_user.job_id','=','eligible_candidates.job_id')
+                                ->join('applied_job_by_user','applied_job_by_user.job_id','=','eligible_candidates.job_id')
                                 ->where('eligible_candidates.user_id',$user_id)
                                 ->where('eligible_candidates.status',1)
                                 ->get();
-        
+        // dd($job_applied);
         foreach($job_applied as $value){
             $json_decode                  = json_decode($value->json);          
            $data['job_id']                = $value->job_id;  
@@ -60,7 +60,7 @@ class PaymentController extends Controller
                 ->where('job_id',$value['job_id'])
                 ->where('sub_caste',$ph)
                 ->first();
-               
+            
                 $groupfees  = AdminJobGroupPayment::Select('id','fees','job_id','group_name','caste','sub_caste')                
                 ->whereJsonContains('job_id',(string)$value['job_id']) // (["3","5"],3)
                 ->where('sub_caste',$ph)
@@ -89,7 +89,8 @@ class PaymentController extends Controller
                 $fees  = AdminJobPayment::Select('id','fees','job_id','caste','sub_caste','description')
                 ->where('job_id',$value['job_id'])
                 ->where('caste',$value['caste'])
-                ->first();                
+                ->first();    
+
 
                 $groupfees  = AdminJobGroupPayment::Select('id','fees','job_id','group_name','caste','sub_caste')
                 ->whereJsonContains('job_id',(string)$value['job_id']) // (["3","5"],3)
@@ -100,7 +101,8 @@ class PaymentController extends Controller
                 array_push($jobgroupfees,$groupfees);
             }
         }
-
+        
+        // dd($jobfees);
         // dd($jobgroupfees);
         // echo "<br>";
         // dd(var_dump((array)$jobgroupfees[0]['job_id']));

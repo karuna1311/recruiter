@@ -28,9 +28,8 @@ class PaymentController extends Controller
 {
     public function index()
     {
-    	// abort_if(Gate::denies('payment'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
-    	// $scheduleData=SessionMasterService::checkPaymentEligibility();
-
+    	
+ 
         // show candidate applied job based on that candidate will pay the fees of that job
         $user_id = Auth::User()->id;
         $candidate_data = array(); 
@@ -102,6 +101,8 @@ class PaymentController extends Controller
             }
         }
         
+       $jobfees[] = !empty($jobfees) ?  $jobfees : null ;
+       $jobgroupfees[] = !empty($jobgroupfees) ?  $jobgroupfees : null ;
         // dd($jobfees);
         // dd($jobgroupfees);
         // echo "<br>";

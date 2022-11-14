@@ -10,8 +10,8 @@
                      <h4 class="tx-color-01 mg-b-5">Sign In Here</h4>
                      <p class="tx-color-03 tx-16 mg-b-10">Login for already Registered Candidates</p>
                      <div class="form-group mb-3">
-                        <label>Enter Email-Id <span class="text-muted">ईमेल-आयडी</span></label>
-                        <input type="text" class="form-control" placeholder="Please Email-Id " name="email" id="email">
+                        <label>Enter Email-Id/Mobile  <span class="text-muted">ईमेल-आयडी/मोबाईल</span></label>
+                        <input type="text" class="form-control" placeholder="Please Email-Id " name="username" id="email">
                      </div>
                      <div class="form-group mb-0 " id="PasswordField">
                         <label>Enter Password</label>
@@ -104,11 +104,11 @@
    }
      $("#login_form").validate({
        rules: {
-           email: {required: true},
+           username: {required: true},
            password: {required: true},
          },
        messages: {
-         email: {required: "Please enter email id."},
+        username: {required: "Please enter Email id/Mobile."},
          password: {required: "Please enter password"},
      },
      submitHandler: function (form) {

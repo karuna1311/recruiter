@@ -35,8 +35,8 @@
                                                 <td>{{ $value->description}} </td>                                      
                                                 <td id="remark_{{$value->id}}"></td>                                      
                                                 <td>
-                                                <a href="{{ route('PostAvailable.checkJob',[base64_encode($value->id)]) }}" method="POST" class="btn btn-primary checkjob" value="{{ $value->id }}" id="job_{{ $value->id }}">Check</a>
-                                                <a href="{{ route('PostAvailable.applyJob',[base64_encode($value->id)]) }}" method="POST" class="btn btn-info applyJob disabled" value="{{ $value->id }}" id="apply_{{ $value->id }}" >Apply</a>
+                                                <a href="{{ route('postavailable.checkJob',[base64_encode($value->id)]) }}" method="POST" class="btn btn-primary checkjob" value="{{ $value->id }}" id="job_{{ $value->id }}">Check</a>
+                                                <a href="{{ route('postavailable.applyJob',[base64_encode($value->id)]) }}" method="POST" class="btn btn-info applyJob disabled" value="{{ $value->id }}" id="apply_{{ $value->id }}" >Apply</a>
                                                 
                                              </td>
                                              </tr>

@@ -15,7 +15,6 @@ class UserReservation extends Model
     public $table = 'user_reservation';
 
     protected $fillable = ['user_id','session_master_id','cname_change','cname_change_value','fname','mname','gender','age','alternate_mobile','adhar_card_no','permanent_address_1','permanent_address_2','permanent_address_3','permanent_city','permanent_state','permanent_district','permanent_taluka','permanent_pin_code','address_not_same','present_address_1','present_address_2','present_address_3','present_city','present_state','present_district','present_taluka','present_pin_code',
-    'nriq','nrim','nriw',
     'nation','domicle_maharashtra','region_of_residence','cate','caste_certificate','caste_cert_no','caste_cert_issue_district','caste_cert_appli_no','caste_cert_appli_date','caste_cert_appli_issue_dist','caste_cert_appli_issue_taluka','caste_validity','caste_validity_no','caste_validity_issue_district','caste_validity_appli_no','caste_validity_appli_date','caste_validity_appli_issue_dist','caste_validity_appli_issue_taluka','ncl_cert','ncl_cert_no','ncl_cert_issue_dist','ncl_cert_date','ncl_cert_appli_no','ncl_cert_appli_date','ncl_cert_appli_issue_dist','ncl_cert_appli_issue_taluka','annual_family_income','ews','ews_cert_status','ews_cert_no','ews_cert_issue_dist','ews_cert_appli_no','ews_cert_appli_date','ews_cert_appli_issue_dist','ews_cert_appli_issue_taluka',
     'ph','ph_type',
     'per_disability',
@@ -24,13 +23,15 @@ class UserReservation extends Model
    'forces_division',
    'join_date',
    'retirement_date',
-   'service_period',
+   'service_months',
+   'service_days',
+   'service_years',
    'sports_person',
    'type_competition',
    'level_competition',
    'position_medal',
    'competition_year',
-    'minority','minority_quota',
+   'bankemp', 'marathispeaking',
     'declaration_status','status_lock'];
 
 
@@ -299,14 +300,14 @@ class UserReservation extends Model
     {
        $this->attributes['orphan'] = $value ? strtoupper($value) : null;
     }
-    public function setMinorityAttribute($value)
-    {
-       $this->attributes['minority'] = $value ? strtoupper($value) : null;
-    }
-    public function setMinorityQuotaAttribute($value)
-    {
-       $this->attributes['minority_quota'] = $value ? strtoupper($value) : null;
-    }
+   //  public function setMinorityAttribute($value)
+   //  {
+   //     $this->attributes['minority'] = $value ? strtoupper($value) : null;
+   //  }
+   //  public function setMinorityQuotaAttribute($value)
+   //  {
+   //     $this->attributes['minority_quota'] = $value ? strtoupper($value) : null;
+   //  }
     public function setInserviceQuotaAttribute($value)
     {
        $this->attributes['inservice_quota'] = $value ? strtoupper($value) : null;

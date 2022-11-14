@@ -15,8 +15,9 @@ class DocumentUploadController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('document_upload'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('document_upload'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
     	$documentData=DocumentUploadService::getEligibleDocuments();
+		
         return view('user.DocumentUpload.index',compact('documentData'));
     }
     public function upload(DocumentUploadRequest $request,DocumentMaster $document){        

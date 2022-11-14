@@ -4,12 +4,14 @@ namespace App\Http\Controllers\User;
 
 use Response;
 use Exception;
+use App\Models\User;
 use App\Models\lookup;
 use Illuminate\Http\Request;
 use App\Models\UserExperience;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\UserExperienceRequest;
+use App\Http\Requests\User\UserExperienceRequest;
+
 
 class ExperienceController extends Controller
 {
@@ -22,12 +24,12 @@ class ExperienceController extends Controller
     {
 
         $user_id =Auth::user()->id;
-        $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
+        $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('sort_order','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
         $job_nature = lookup::select('id','label')->where('type','LIKE','%job_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         $appointment_nature = lookup::select('id','label')->where('type','LIKE','%appointment_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
        
-        $user_experience = UserExperience::Select('user_experience.id as id','employmentType','flgMpscSelection','post.label as post_name','officeName',
-        'flgOfficeGovOwned','designation','job_nature.label as job_nature','appointment.label as appointment','time','appointmentLetterNo',
+        $user_experience = UserExperience::Select('user_experience.id as id','employmentType','post.label as post_name','officeName'
+        ,'designation','job_nature.label as job_nature','appointment.label as appointment','time','appointmentLetterNo',
         'letterDate','payScale','gradePay','basicPay','monthlyGrossSalary','fromDate','toDate','expYears','expMonths','expDays'
         )
         ->leftjoin('lookup_options as post','user_experience.postNameLookupId','=','post.id')
@@ -36,7 +38,7 @@ class ExperienceController extends Controller
         ->where('user_id',$user_id)
         ->get();
        
-        return view('user.ApplicationForm.experience',compact('post_name','job_nature','appointment_nature','user_experience'));
+        return view('user.ApplicationForm.Experience',compact('post_name','job_nature','appointment_nature','user_experience'));
     }
 
     /**
@@ -57,16 +59,44 @@ class ExperienceController extends Controller
      */
     public function store(UserExperienceRequest $request)
     {        
+        // dd($request->all());
         try {
             $user=Auth::user();
 
             if($user->status_lock == '0'){
 
-                $data = $request->except('_token');
-                $data['user_id'] = $user->id;
-            
-            $insert = UserExperience::create($data);
+                $postname = $request->postNameLookupId;
+                if($postname==433){
 
+                    $sort_order_post = lookup::where('type','post_name')->select('sort_order')->orderBy('sort_order', 'desc')->first();
+
+                    $incre_sort_order = intval($sort_order_post->sort_order) + 1;
+                    
+
+                  $insert_lookup =   lookup::create([
+                        'module' => 'profile_creation',
+                        'type' => 'post_name',
+                        'parent_id' => 0,
+                        'label' => $request->designation,
+                        'sort_order' => $incre_sort_order
+                    ]);
+                    $lastId = $insert_lookup->id;
+                    $data = $request->except('_token');
+                    $data['postNameLookupId'] = $lastId;
+                    $data['user_id'] = $user->id;
+                   
+                    $insert = UserExperience::create($data);
+                    if($user->application_status >= 3) User::where('id',$user->id)->update(['application_status'=>'4']);
+                }else{
+                    $data = $request->except('_token');
+                    
+                    $data['user_id'] = $user->id;
+               
+                    $insert = UserExperience::create($data);
+                    if($user->application_status >= 3) User::where('id',$user->id)->update(['application_status'=>'4']);
+                }
+               
+              
             }else if($user->status_lock =='1'){
                 return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
             }            
@@ -97,7 +127,7 @@ class ExperienceController extends Controller
      */
     public function edit($id)
     {
-         // abort_if(Gate::denies('login_edit'), response()->json(['status' => 'error','url'=> route('admin.login-instruction.index'),'data' => 'You don`t have permission to Edit']));
+         
          $token = base64_decode($id);
          $data = UserExperience::find($token);
          $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
@@ -105,7 +135,7 @@ class ExperienceController extends Controller
         $appointment_nature = lookup::select('id','label')->where('type','LIKE','%appointment_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
        
         $user_experience = UserExperience::Select('*')->get();
-        // dd($data);
+        
          $html_view = view('user.ApplicationForm.Modal.ExperienceModal',compact('data','user_experience','post_name',
          'job_nature',
          'appointment_nature'))->render();
@@ -124,17 +154,39 @@ class ExperienceController extends Controller
     public function update(UserExperienceRequest $request, $token)
     {
         try {            
-
+            
             $user=Auth::user();
+                    if($user->status_lock == '0'){
+                        $postname = $request->postNameLookupId;
+                        if($postname==433){
 
-            if($user->status_lock == '0'){
-                $id = base64_decode($token);
-                // dd($request->except('_token','_method'));
-                $update = UserExperience::where('id',$id)->update($request->except('_token','_method'));
+                            $sort_order_post = lookup::where('type','post_name')->select('sort_order')->orderBy('sort_order', 'desc')->first();
+
+                            $incre_sort_order = intval($sort_order_post->sort_order) + 1;
+                            
+                        $insert_lookup =   lookup::create([
+                            'module' => 'profile_creation',
+                            'type' => 'post_name',
+                            'parent_id' => 0,
+                            'label' => $request->designation,
+                            'sort_order' => $incre_sort_order
+                        ]);
+                        $lastId = $insert_lookup->id;
+                        $data = $request->except('_token','_method');
+                        $data['postNameLookupId'] = $lastId;
+                    
+
+                        $id = base64_decode($token);                
+                        $update = UserExperience::where('id',$id)->update($data);
+                    }else{
+                        $data = $request->except('_token','_method');
+                        $id = base64_decode($token);                
+                        $update = UserExperience::where('id',$id)->update($data);
+
+                    }  
             }else if($user->status_lock =='1'){
                 return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
-            }             
-            
+            }            
 
         }
         catch(Exception $e) {

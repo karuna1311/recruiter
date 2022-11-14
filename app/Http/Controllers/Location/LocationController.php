@@ -40,14 +40,26 @@ class LocationController extends Controller
         return state::select('state_name','state_id')->orderBy('state_id')->pluck('state_name','state_id')->prepend('[SELECT]','')->all();
     }
     public static function getDistrict($state){
-        
-        return district::where('state_id',$state)->select('district_name','district_id')->pluck('district_name','district_id')->prepend('[SELECT]','')->all();
+      
+        if($state==null){
+            return district::select('district_name','district_id')->pluck('district_name','district_id')->prepend('[SELECT]','')->all();
+        }else{
+            return district::where('state_id',$state)->select('district_name','district_id')->pluck('district_name','district_id')->prepend('[SELECT]','')->all();
+        }
          
     }
     public static function getSubDistrict($district){
-        return taluka::where('district_id',$district)->select('subdistrict_name','subdistrict_id')->pluck('subdistrict_name','subdistrict_id')->prepend('[SELECT]','')->all();
+        if($district==null){
+            return taluka::select('subdistrict_name','subdistrict_id')->pluck('subdistrict_name','subdistrict_id')->prepend('[SELECT]','')->all();
+        }else{
+            return taluka::where('district_id',$district)->select('subdistrict_name','subdistrict_id')->pluck('subdistrict_name','subdistrict_id')->prepend('[SELECT]','')->all();
+        }
     }
     public static function getPincode($subDistrict){
-        return village::where('subdistrict_id',$subDistrict)->select('pincode')->pluck('pincode','pincode')->prepend('[SELECT]','')->all();
+       if($subDistrict==null){
+           return village::select('pincode')->pluck('pincode','pincode')->prepend('[SELECT]','')->all();
+       }else{
+           return village::where('subdistrict_id',$subDistrict)->select('pincode')->pluck('pincode','pincode')->prepend('[SELECT]','')->all();
+       }
     }
 }

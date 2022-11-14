@@ -27,7 +27,6 @@
                <li class="nav-sub-item"><a href="login" target="_blank" class="nav-sub-link">UG</a></li>
             </ul>
          </li> -->
-         <li class="nav-item"><a href="login" class="nav-link">PGD Courses</a></li>
          <li class="nav-item"><a href="contact" class="nav-link">Contact Us</a></li>
       </ul>
    </div>

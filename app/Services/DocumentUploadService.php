@@ -12,6 +12,7 @@ class DocumentUploadService
 		$candidateData=UserReservation::first()->toArray();
 		$documentData=DocumentMaster::where('is_active','1')->get();
 		$uploadedData=DocumentUpload::where([['user_id',$candidateData['user_id']],['session_master_id',$candidateData['session_master_id']],['is_active','1']])->pluck('document_type','document_id')->all();
+		
 		foreach($documentData as $key => $document){
 			if (array_key_exists($document->id, $uploadedData) && Storage::disk('uploads')->exists('Documents/'.$candidateData['user_id'].'/'.$document->document_code.'.pdf')) {
 				$documentData[$key]->documentUploaded=base64_encode(Storage::disk('uploads')->get('Documents/'.$candidateData['user_id'].'/'.$document->document_code.'.pdf'));
@@ -23,6 +24,7 @@ class DocumentUploadService
 		}
 		return $documentData;
 	}
+
 	public static function uploadDocument($file,$documentCode,$documentId,$documentType)
 	{
 		$candidateData=UserReservation::select('user_id','session_master_id')->first();
@@ -33,6 +35,7 @@ class DocumentUploadService
     	else $docfile='0';
     	return ['documentFile'=>$docfile];
 	}
+
 	public static function getDocumentList($masterData){
 		$candidateData=$masterData->toArray();
 		$documentData=DocumentMaster::where('is_active','1')->select('id','document_code','document_name','document_config')->get();

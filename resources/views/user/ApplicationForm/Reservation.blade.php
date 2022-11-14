@@ -43,7 +43,21 @@
                   <div class="col-md-3">
                      <select class="form-control inpField" name="cate"  id="Category">
                         <option value="">[SELECT]</option>
-                        @if(isset($reservationData->cate))                        
+                        @if(   !empty($reservationData->cate) &&  $reservationData->cate ==='OPEN' && ($reservationData->domicle_maharashtra==='NO'))                        
+                            <option value="OPEN" {{ $reservationData->cate==='OPEN' ? 'selected' : '' }}>OPEN</option>                        
+                        
+                        @elseif(!empty($reservationData->cate) &&  $reservationData->cate ==='OPEN' && $reservationData->domicle_maharashtra==='YES')
+                        <option value="OPEN" {{ $reservationData->cate==='OPEN' ? 'selected' : '' }}>OPEN</option>
+                        <option value="SC" {{ $reservationData->cate==='SC' ? 'selected' : '' }}>SC</option>
+                        <option value="ST" {{ $reservationData->cate==='ST' ? 'selected' : '' }}>ST</option>
+                        <option value="DT-VJ(A)" {{ $reservationData->cate==='DT-VJ(A)' ? 'selected' : '' }}>DT-VJ(A)</option>
+                        <option value="NT(B)" {{ $reservationData->cate==='NT(B)' ? 'selected' : '' }}>NT(B)</option> 
+                        <option value="NT(C)" {{ $reservationData->cate==='NT(C)' ? 'selected' : '' }}>NT(C)</option> 
+                        <option value="NT(D)" {{ $reservationData->cate==='NT(D)' ? 'selected' : '' }}>NT(D)</option>
+                        <option value="SBC" {{ $reservationData->cate==='SBC' ? 'selected' : '' }}>SBC</option> 
+                        <option value="OBC" {{ $reservationData->cate==='OBC' ? 'selected' : '' }}>OBC</option>
+                        <option value="EWS" {{ $reservationData->cate==='EWS' ? 'selected' : '' }}>EWS</option>
+                        @else
                             <option value="OPEN" {{ $reservationData->cate==='OPEN' ? 'selected' : '' }}>OPEN</option>
                             <option value="SC" {{ $reservationData->cate==='SC' ? 'selected' : '' }}>SC</option>
                             <option value="ST" {{ $reservationData->cate==='ST' ? 'selected' : '' }}>ST</option>
@@ -115,9 +129,9 @@
                      </div>
                      <div class=" col-md-3">
                         <select class="form-control" name="ews_cert_issue_dist"  id="EWSCertIssuingDistrict">
-                        @foreach($districtData as $key=>$value)
-                        <option value="{{ $key }}" {{ (isset($reservationData->ews_cert_issue_dist) && $reservationData->ews_cert_issue_dist===$key) ? 'selected' : '' }}>{{ $value }}</option>
-                        @endforeach
+                            @foreach($districtData as $key=>$value)
+                                <option value="{{ $key }}" {{ (isset($reservationData->ews_cert_issue_dist) && $reservationData->ews_cert_issue_dist===$key) ? 'selected' : '' }}>{{ $value }}</option>
+                            @endforeach
                         </select>
                      </div>
                      <div class=" col-md-12 text-center">
@@ -371,22 +385,7 @@
                      </div>
                   </div>
 
-                   <div class="row form-group br-bt-1 religionDetails {{ (isset($reservationData->minority) && $reservationData->minority==='YES') ? 'show' : 'hide' }}" >
-                  <div class="col-md-6 text-right ">
-                     <label  class="d-block" for="orphan"> {{ trans('cruds.Reservation.fields.religion_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.religion_dev') }}:</label>
-                  </div>
-                  <div class="col-sm-3 ">
-                     <select class="form-control inpField"  id="religion" name="minority_quota"  >
-                        <option value="">[SELECT]</option>
-                        <option value="MUSLIM" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='MUSLIM') ? 'selected' : '' }}>Muslim </option>                              
-                        <option value="CHRIST" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='CHRIST') ? 'selected' : '' }}>CHRISTIAN </option>
-                        <option value="JAIN" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='JAIN') ? 'selected' : '' }}>Jain</option>
-                        <option value="BUDDHIST" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='BUDDHIST') ? 'selected' : '' }}>BUDDHIST</option>
-                        <option value="OTHERS" {{ (isset($reservationData->minority_quota) && $reservationData->minority_quota==='OTHERS') ? 'selected' : '' }}>Others</option>
-                     </select>
-                     <h5 class="errorHide" id="err_religion"></h5>
-                  </div>
-               </div>
+           
                </div>
             </fieldset>
             <fieldset class="form-fieldset ">
@@ -508,9 +507,20 @@ value="{{ old('retirement_date',isset($reservationData->retirement_date) ? $rese
                   <div class="col-md-6 text-right">
                      <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.PeriodOfService_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.PeriodOfService_dev') }}:</label>
                   </div>
-                  <div class="col-md-3 text-right">
-                     <input type="text" class="form-control" name="service_period" id="PeriodOfService" value="{{ old('service_period',isset($reservationData->service_period) ? $reservationData->service_period : '' ) }}">
-                  </div>
+                
+
+                   <div class="col-md-1 mb-3">
+                    <label> Years</label>
+                    <input type="numeric" class="form-control" readonly  value="{{ old('service_years',isset($reservationData->service_years) ? $reservationData->service_years : '' ) }}" name="service_years" id="periodYears">
+                 </div>
+                 <div class="col-md-1 mb-3">
+                    <label> Months</label>
+                    <input type="numeric" class="form-control" readonly value="{{ old('service_months',isset($reservationData->service_months) ? $reservationData->service_months : '' ) }}" name="service_months" id="periodMonths">
+                 </div>
+                 <div class="col-md-1 mb-3">
+                    <label> Days</label>
+                    <input type="numeric" class="form-control" readonly value="{{ old('service_days',isset($reservationData->service_days) ? $reservationData->service_days : '' ) }}" name="service_days" id="periodDays">
+                 </div>
                </div>
 
             </fieldset>
@@ -536,7 +546,7 @@ value="{{ old('retirement_date',isset($reservationData->retirement_date) ? $rese
                      <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionType_dev') }}:</label>
                   </div>
                   <div class="col-md-3 text-left">
-                     <select class="form-control select2" name="type_competition" id="typeOfCompetition">                        
+                     <select class="form-control " name="type_competition" id="typeOfCompetition">                        
                      @foreach($competition_type as $key=>$value)
                          <option value="{{ $key }}" {{ (isset($reservationData->type_competition) && $reservationData->type_competition==$key) ? 'selected' : '' }} 
                          >{{ $value }}</option>
@@ -614,7 +624,6 @@ value="{{ old('competition_year',isset($reservationData->competition_year) ? $re
    $(document).on('change', '#domicile', function() {
       document.getElementById('Category').value = "";
       $('.certificateDetails').show();
-      $('.incomeAnnual').show();
       var domicile = $(this).val();
 
        var nation = $('#Nationality').val();
@@ -631,12 +640,11 @@ value="{{ old('competition_year',isset($reservationData->competition_year) ? $re
        }
        else
        {
-           $('.CatDetail').hide(); 
+        //    $('.CatDetail').hide(); 
        }
    });
 
    $(document).on('change', '#Category', function() {
-       $('.incomeAnnual').css('display', 'flex');
        $('.sccertdetails').hide();
        $('.NCLApplied').hide();
        $('.ewscertavaildetails').hide();
@@ -653,6 +661,7 @@ value="{{ old('competition_year',isset($reservationData->competition_year) ? $re
        'CasteValAppDate','CasteValAppDist','CasteValAppTal','NCL','NCLCertNO','NCLCertDist','nclCertDate','NCLAppNO',
        'NCLAppDate','NCLCertIssDist','NCLCertIssuingTal','certStatus','EwsCertificateNO','EWSCertIssuingDistrict',
        'EwsApplicationNO','EwsApplicationDate','EwsEwsAppDistrict','EwsIssuingTaluka']);
+
        var cat = $(this).val();
        var nation = $('#Nationality').val();
        var domicile = $('#domicile').val();
@@ -834,7 +843,7 @@ value="{{ old('competition_year',isset($reservationData->competition_year) ? $re
    //
     //exserviceman
    $(document).on('change', '#exServiceman', function() {
-      valueFlush(['joinDate','retirementDate', 'PeriodOfService']);   
+       valueFlush(['joinDate','retirementDate', 'PeriodOfService','periodYears','periodMonths','periodDays']); 
        var exServiceman = $(this).val();
       if (exServiceman == "YES") {
            $('.serviceDetails').css('display', 'flex');
@@ -845,8 +854,32 @@ value="{{ old('competition_year',isset($reservationData->competition_year) ? $re
    });
    //Meritorious_Sports_Person
 
-   $(document).on('change', '#Meritorious_Sports_Person', function() {
-    
+   $(document).on('change','#retirementDate',function(){
+        var retirement_date = $(this).val();
+        var join_date = $('#joinDate').val();
+
+        var admission = moment(join_date, 'YYYY-MM-DD'); 
+        var discharge = moment(retirement_date, 'YYYY-MM-DD');
+
+        var years = discharge.diff(admission, 'year');
+        admission.add(years, 'years');
+        var months = discharge.diff(admission, 'months');
+        admission.add(months, 'months');
+        var days = discharge.diff(admission, 'days');
+
+        if(isNaN(years)){years=0;}
+        if(isNaN(months)){months=0;}
+        if(isNaN(days)){days=0;}
+      
+      $('#reservationform #periodYears').val(years);
+      $('#reservationform #periodMonths').val(months);
+      $('#reservationform #periodDays').val(days);
+
+   });
+
+   $(document).on('change', '#Meritorious_Sports_Person', function() 
+   {
+       valueFlush(['typeOfCompetition','positionMedal','LevelOfCompetition', 'CompetitionYear']); 
        var Meritorious_Sports_Person = $(this).val();
       if (Meritorious_Sports_Person == "YES") {
            $('.SportDetails').css('display', 'flex');
@@ -855,13 +888,8 @@ value="{{ old('competition_year',isset($reservationData->competition_year) ? $re
            $('.SportDetails').hide();
        }
    });
-   //
+ 
 
-   function valueFlush(arryOfElements){
-     $.each(arryOfElements, function(key, val) {
-         $('#'+val).val('');
-     });
-   }
     $(document).ready(function() {
         $('#reservationform').validate({
             rules: {            

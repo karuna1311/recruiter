@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -26,28 +26,33 @@ class UserExperienceRequest extends FormRequest
     public function rules()
     {
         return [
-            'employmentType' => "required",
-            // 'flgMpscSelection' => "required",
+            'employmentType' => "required",            
             'officeName' => "required",
-            'flgOfficeGovOwned' => "required",
-            'designation' => "required",
-            'jobNatureLookupId' => "required",
-            // 'flgGazettedPost' => "required",
-            'apointmentNatureLookupId' => "required",
-            'payScale' => "required",
-            'gradePay' => "required",
-            'basicPay' => "required",
-            'monthlyGrossSalary' => "required",
-            'fromDate' => "required",
-            'toDate' => 'required_if:employmentType,PAST',
-            'typeGroup' => 'required_if:flgGazettedPost,YES',
-            'postNameLookupId' => 'required_if:flgMpscSelection,YES',
+            'jobNatureLookupId' => "required",           
+            'apointmentNatureLookupId' => "required",            
+            'fromDate' => "required|date|before_or_equal:today",
+            'toDate' => 'required_if:employmentType,PAST|before_or_equal:today|after_or_equal:fromDate',
+            'postNameLookupId' => 'required',
+            'designation' => "required_if:postNameLookupId,433",
             'appointmentLetterNo' => 'required_if:apointmentNatureLookupId,269,258,272,271',
-            'letterDate' => 'required_if:apointmentNatureLookupId,258',
+            'letterDate' => 'required_if:apointmentNatureLookupId,258,before_or_equal:today',
             'time' => 'required_if:apointmentNatureLookupId,269',          
 
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'letterDate.before'=>'The Letter date must be a date before today. ',
+            'toDate.before'=>'The To date must be a date before today. ',
+            'designation.required_if'=>'Please Enter the designation , Which is not in the list ',
+          
+           
+        ];
+    }
+
+
 
     protected function failedValidation(Validator $validator)
     {

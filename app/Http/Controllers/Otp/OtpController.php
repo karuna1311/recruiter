@@ -43,6 +43,7 @@ class OtpController extends Controller
             $response=Mail::to($email)->send($OtpMail);
             return'success';
         }catch(Exception $e){
+            dd($e);
             return $e->getMessage();
         }
     }

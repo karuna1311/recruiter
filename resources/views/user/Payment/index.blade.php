@@ -52,7 +52,7 @@
                   </div>
                </div>
             </fieldset>
-            <fieldset class="form-fieldset mt-3">
+            {{-- <fieldset class="form-fieldset mt-3">
                <input type="hidden" id="groupamount_id" name="group_amount[]" class="form-control">                
                            <legend>Application Fees </legend>
                         <table class="table table-bordered table-centered mb-0 tableData">
@@ -109,7 +109,7 @@
                            </tr>
                         </tbody>
                      </table>
-            </fieldset> 
+            </fieldset>  --}}
          </form>
       </div>
    </div>

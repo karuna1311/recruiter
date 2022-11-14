@@ -1,5 +1,12 @@
 @extends('layouts.UserDashboard')
 @section('content')
+<style type="text/css">
+   .tableScroll{
+      overflow-x: scroll;
+       width: 100%;
+       display: block;
+   }
+</style>
 <div class="row">
    <div class="col-12">
       <div class="page-title-box">
@@ -10,78 +17,20 @@
       <div class="card card-widget card-events">
          <!-- card-header -->
          <div class="card-body">
-            <div class="accordion custom-accordion" id="custom-accordion-one">
-               <!-- // NEET INFORMATION -->
-               <div class="card mb-0">
-                  <div class="card-header" id="headingSeven">
-                     <h5 class="m-0 w-100">
-                        <a class="custom-accordion-title collapsed d-block py-1"
-                           data-bs-toggle="collapse" href="#collapseOne"
-                           aria-expanded="true" aria-controls="collapseOne">
-                        <i class="uil-building"></i> NEET-PGD Details <i
-                           class="mdi mdi-chevron-down accordion-arrow"></i>
-                        </a>
-                     </h5>
-                  </div>
-                  <div id="collapseOne" class="collapse show"
-                     aria-labelledby="headingSeven"
-                     data-bs-parent="#custom-accordion-one">
-                     <div class="card-body">
-                        
-                        <fieldset class="form-fieldset mt-3">
-                           <legend>PREVIOUS ATTEMPT OF NEET PG</legend>
-                           <div class="row form-group br-bt-1">
-                              <div class="col-md-2 text-right">
-                                 <label class="d-block">{{ trans('cruds.registration.NeetRollNo_eng') }}<br>{{ trans('cruds.registration.NeetRollNo_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$userData['rollno']}}</b></p>
-                              </div>
-
-                              <div class="col-md-2 text-right">
-                                 <label class="d-block">{{ trans('cruds.registration.NeetAppNo_eng') }}<br>{{ trans('cruds.registration.NeetAppNo_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$userData['neetappno']}}</b></p>
-                              </div>
-                              <div class="col-md-2 text-right">
-                                 <label class="d-block">{{ trans('cruds.personalInformation.fields.DateOfBirth_eng') }}<br> {{ trans('cruds.personalInformation.fields.DateOfBirth_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$userData['dob']}}</b></p>
-                              </div>
-                              <div class="col-md-2 text-right">
-                                 <label class="d-block">{{ trans('cruds.registration.NeetRank_eng') }}<br> {{ trans('cruds.registration.NeetRank_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$userData['arank']}}</b></p>
-                              </div>
-                              <div class="col-md-2 text-right">
-                                 <label class="d-block">{{ trans('cruds.registration.NeetMark_eng') }}<br> {{ trans('cruds.registration.NeetMark_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$userData['neet_marks']}}</b></p>
-                              </div>
-
-                           </div>
-                        </fieldset>
-                     </div>
-                  </div>
-                  <!-- //End Previous College Information -->
-               </div>
+            <div class="accordion custom-accordion"id="custom-accordion-one">
                <!-- //Personal Information -->
                <div class="card mb-0">
-                  <div class="card-header" id="headingFour">
+                  <div class="card-header"id="headingFour">
                      <h5 class="m-0 w-100">
                         <a class="custom-accordion-title d-block py-1"
-                           data-bs-toggle="collapse" href="#collapseFour"
-                           aria-expanded="false" aria-controls="collapseFour">
+                           data-bs-toggle="collapse"href="#collapseFour"
+                           aria-expanded="false"aria-controls="collapseFour">
                         <i class="uil-comment-alt-edit"></i> Personal Information <i
                            class="mdi mdi-chevron-down accordion-arrow"></i>
                         </a>
                      </h5>
                   </div>
-                  <div id="collapseFour" class="collapse"
+                  <div id="collapseFour"class="collapse show"
                      aria-labelledby="headingFour"
                      data-bs-parent="#custom-accordion-one">
                      <div class="card-body">
@@ -91,19 +40,19 @@
                               <div class="col-md-6 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.name_eng') }}  <br>{{ trans('cruds.personalInformation.fields.name_dev') }}:</label>
                               </div>
-                              <div class=" col-md-6">
-                                 <p id="firstname" class="uppercase primary_color"><b>{{$userData['name']}}</b></p>
+                              <div class="col-md-6">
+                                 <p id="firstname"class="uppercase primary_color"><b>{{$userData['name']}}</b></p>
                               </div>
                            </div>
                            <div class="row form-group ">
                               <div class="col-md-6 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.namchange_eng') }} <br>{{ trans('cruds.personalInformation.fields.namchange_dev') }} ?:</label>
                               </div>
-                              <div class=" col-md-3">
+                              <div class="col-md-3">
                                  <p class="uppercase primary_color"><b>{{$previewData->cname_change??'--'}}</b></p>
-                              </div>
+                              </div>                                                     
                               @if($previewData->cname_change=='YES')
-                              <div class="col-md-3 " >
+                              <div class="col-md-3 ">
                                  <p class="uppercase primary_color">Updated Name: <b>{{$previewData->cname_change_value??'--'}}</b></p>
                               </div>
                               @endif
@@ -133,19 +82,19 @@
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.DateOfBirth_eng') }} :<br> {{ trans('cruds.personalInformation.fields.DateOfBirth_dev') }}:</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class="uppercase primary_color"  ><b>{{$userData['dob']}}</b></p>
+                                 <p class="uppercase primary_color" ><b>{{$userData['dob']}}</b></p>
                               </div>
                               <div class="col-md-2 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.Mobile_eng') }} <br> {{ trans('cruds.personalInformation.fields.Mobile_dev') }} :</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class="uppercase primary_color"  ><b>{{$userData['mobile']}}</b></p>
+                                 <p class="uppercase primary_color" ><b>{{$userData['mobile']}}</b></p>
                               </div>
                               <div class="col-md-2 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.email_eng') }} <br> {{ trans('cruds.personalInformation.fields.email_dev') }}:</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class=" primary_color"><b>{{$userData['email']}}</b></p>
+                                 <p class="primary_color"><b>{{$userData['email']}}</b></p>
                               </div>
                            </div>
                            <div class="row form-group ">
@@ -196,13 +145,13 @@
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.state_eng') }} <br> {{ trans('cruds.personalInformation.fields.state_dev') }} :</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$previewData->permanent_state??'--'}}</b></p>
+                                 <p class="uppercase primary_color"><b>{{ App\Traits\Convertors::getStateByID($previewData->permanent_state)??'--'}}</b></p>
                               </div>
                               <div class="col-md-2 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.district_eng') }} <br> {{ trans('cruds.personalInformation.fields.district_dev') }} :</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$previewData->permanent_district??'--'}}</b></p>
+                                 <p class="uppercase primary_color"><b>{{  App\Traits\Convertors::getDistrictById($previewData->permanent_district)??'--'}}</b></p>
                               </div>
                            </div>
                            <div class="row form-group ">
@@ -210,7 +159,7 @@
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.taluka_eng') }} <br> {{ trans('cruds.personalInformation.fields.taluka_dev') }} :</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$previewData->permanent_taluka??'--'}}</b></p>
+                                 <p class="uppercase primary_color"><b>{{   App\Traits\Convertors::getTalukaById( $previewData->permanent_taluka )??'--'}}</b></p>
                               </div>
                               <div class="col-md-2 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.PinCode_eng') }} <br> {{ trans('cruds.personalInformation.fields.PinCode_dev') }} :</label>
@@ -221,7 +170,7 @@
                            </div>
                         </fieldset>
                         @if($previewData->address_not_same=='1')
-                        <fieldset class="form-fieldset mt-3  mb-3" id="presentAddressDiv">
+                        <fieldset class="form-fieldset mt-3  mb-3"id="presentAddressDiv">
                            <legend>Present Address <span class="text-muted">वर्तमान पत्ता</span></legend>
                            <div class="row form-group">
                               <div class="col-md-2 text-right">
@@ -254,21 +203,21 @@
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.state_eng') }} <br> {{ trans('cruds.personalInformation.fields.state_dev') }} :</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$previewData->present_state??'--'}}</b></p>
+                                 <p class="uppercase primary_color"><b>{{ App\Traits\Convertors::getStateByID($previewData->present_state ) ??'--'}}</b></p>
                               </div>
                               <div class="col-md-2 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.district_eng') }} <br> {{ trans('cruds.personalInformation.fields.district_dev') }} :</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$previewData->present_district??'--'}}</b></p>
+                                 <p class="uppercase primary_color"><b>{{ App\Traits\Convertors::getDistrictById($previewData->present_district) ??'--'}}</b></p>
                               </div>
                            </div>
-                           <div class="row form-group ">
+                           <div class="row form-group">
                               <div class="col-md-2 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.taluka_eng') }} <br> {{ trans('cruds.personalInformation.fields.taluka_dev') }} :</label>
                               </div>
                               <div class="col-md-2">
-                                 <p class="uppercase primary_color"><b>{{$previewData->present_taluka??'--'}}</b></p>
+                                 <p class="uppercase primary_color"><b>{{ App\Traits\Convertors::getTalukaById($previewData->present_taluka )??'--'}}</b></p>
                               </div>
                               <div class="col-md-2 text-right">
                                  <label class="d-block">{{ trans('cruds.personalInformation.fields.PinCode_eng') }} <br> {{ trans('cruds.personalInformation.fields.PinCode_dev') }} :</label>
@@ -285,58 +234,27 @@
                <!-- //End Personal Information -->
                <!-- //Reservation -->
                <div class="card mb-0">
-                  <div class="card-header" id="headingFive">
+                  <div class="card-header"id="headingFive">
                      <h5 class="m-0 w-100">
-                        <a class="custom-accordion-title collapsed d-block py-1"
-                           data-bs-toggle="collapse" href="#collapseFive"
-                           aria-expanded="false" aria-controls="collapseFive">
-                        <i class="uil-money-stack"></i> Reservation <i
-                           class="mdi mdi-chevron-down accordion-arrow"></i>
+                        <a class="custom-accordion-title collapsed d-block py-1"data-bs-toggle="collapse"href="#collapseFive"aria-expanded="false"aria-controls="collapseFive">
+                        <i class="uil-money-stack"></i> Reservation <i class="mdi mdi-chevron-down accordion-arrow"></i>
                         </a>
                      </h5>
                   </div>
-                  <div id="collapseFive" class="collapse"
+                  <div id="collapseFive"class="collapse"
                      aria-labelledby="headingFive"
                      data-bs-parent="#custom-accordion-one">
                      <div class="card-body">
                         <fieldset class="form-fieldset mb-3">
                            <legend>{{ trans('cruds.Reservation.title_eng') }} <span class="text-muted">{{ trans('cruds.Reservation.title_dev') }}</span></legend>
-                           <div class="row  ">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.Reservation.fields.nri_eng') }} <br>{{ trans('cruds.Reservation.fields.nri_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->nriq??'--'}}</b></p>
-                              </div>
-                           </div>
-                           @if($previewData->nriq=='YES')
-                           <div class="row form-group  mt-3 " id="nridetails">
-                              <div class="col-md-3 text-right">
-                                 <label class="d-block">{{ trans('cruds.Reservation.fields.nriSelf_eng') }} <br>{{ trans('cruds.Reservation.fields.nriSelf_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->nrim??'--'}}</b></p>
-                              </div>
-                              <div class="col-md-3 text-right">
-                                 <label class="d-block">{{ trans('cruds.Reservation.fields.NriWard_eng') }}: <br>{{ trans('cruds.Reservation.fields.NriWard_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->nriw??'--'}}</b></p>
-                              </div>
-                           </div>
-                           @endif
-                        </fieldset>
-
-                        <fieldset class="form-fieldset mb-3">
                            <div class="row">
                               <div class="col-md-6 text-right">
                                  <label class="d-block">{{ trans('cruds.Reservation.fields.Nationality_eng') }} <br>{{ trans('cruds.Reservation.fields.Nationality_dev') }}:</label>
                               </div>
-                              <div class=" col-md-3">
+                              <div class="col-md-3">
                                  <p class="uppercase primary_color"><b>{{$previewData->nation??'--'}}</b></p>
                               </div>
                            </div>
-
                            <div class="row form-group natDetails ">
                               <div class="col-md-6 text-right">
                                  <label class="d-block">{{ trans('cruds.Reservation.fields.domicile_eng') }} <br>{{ trans('cruds.Reservation.fields.domicile_dev') }}</label>
@@ -353,66 +271,61 @@
                                  <p class="uppercase primary_color"><b>{{$previewData->cate??'--'}}</b></p>
                               </div>
                            </div>
-
                            <div class="certificateDetails">
                               @if($previewData->nriq=='NO')
                               <div class="row form-group  ">
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.AnnualIncome_eng') }} <br>{{ trans('cruds.Reservation.fields.AnnualIncome_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->annual_family_income??'--'}}</b></p>
                                  </div>
-                             
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.regionOfResidence_eng') }} <br>{{ trans('cruds.Reservation.fields.regionOfResidence_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->region_of_residence??'--'}}</b></p>
                                  </div>
                               </div>
                               @endif
-
                               @if($previewData->cate=='EWS')
                               <div class="row form-group ewsdetails">
-                                  <div class="col-md-6 text-right">
-                                      <label class="d-block">{{ trans('cruds.Reservation.fields.certStatus_eng') }}<br> {{ trans('cruds.Reservation.fields.certStatus_dev') }} </label>
-                                  </div>
-                                  <div class=" col-md-3">
-                                      <p class="uppercase primary_color"><b>{{$previewData->ews_cert_status??'--'}}</b></p>
-                                  </div>
+                                 <div class="col-md-6 text-right">
+                                    <label class="d-block">{{ trans('cruds.Reservation.fields.certStatus_eng') }}<br> {{ trans('cruds.Reservation.fields.certStatus_dev') }} </label>
+                                 </div>
+                                 <div class="col-md-3">
+                                    <p class="uppercase primary_color"><b>{{$previewData->ews_cert_status??'--'}}</b></p>
+                                 </div>
                               </div>
-                               @endif
-                               
+                              @endif
                               @if($previewData->ews_cert_status=='AVAILABLE')
                               <div class="row form-group   ewscertavaildetails">
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.EwsCertificateNo_eng') }} <br>{{ trans('cruds.Reservation.fields.EwsCertificateNo_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ews_cert_no??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.EWSCertIssuingDistrict_eng') }} <br>{{ trans('cruds.Reservation.fields.EWSCertIssuingDistrict_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ews_cert_issue_dist??'--'}}</b></p>
                                  </div>
                               </div>
                               @endif
-
                               @if($previewData->ews_cert_status=='APPLIED BUT NOT RECEIVED')
                               <div class="row form-group  certdetails">
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.EwsApplicationNo_eng') }}:<br>{{ trans('cruds.Reservation.fields.EwsApplicationNo_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ews_cert_appli_no??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.EwsApplicationDate_eng') }}<br>{{ trans('cruds.Reservation.fields.EwsApplicationDate_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ews_cert_appli_date??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
@@ -424,7 +337,7 @@
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.EwsIssuingTaluka_eng') }} <br>{{ trans('cruds.Reservation.fields.EwsIssuingTaluka_dev') }} :</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ews_cert_appli_issue_taluka??'--'}}</b></p>
                                  </div>
                               </div>
@@ -434,24 +347,23 @@
                                  <div class="col-md-6 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.ScCasteCert_eng') }}<br>{{ trans('cruds.Reservation.fields.ScCasteCert_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_certificate??'--'}}</b></p>
                                  </div>
                               </div>
                               @endif
-
                               @if($previewData->caste_certificate=='AVAILABLE')
                               <div class="row form-group  sccertavaildetails ">
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteCertNumber_eng') }}<br>{{ trans('cruds.Reservation.fields.CasteCertNumber_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_cert_no??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteCertInssDist_eng') }}<br>{{ trans('cruds.Reservation.fields.CasteCertInssDist_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_cert_issue_district??'--'}}</b></p>
                                  </div>
                               </div>
@@ -461,25 +373,25 @@
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteCertAteappnNo_eng') }}  <br>{{ trans('cruds.Reservation.fields.CasteCertAteappnNo_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_cert_appli_no??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteCertappDate_eng') }} <br>{{ trans('cruds.Reservation.fields.CasteCertappDate_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_cert_appli_date??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteCertDist_eng') }} <br>{{ trans('cruds.Reservation.fields.CasteCertDist_dev') }}</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_cert_appli_issue_dist??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteCertTal_eng') }}<br>{{ trans('cruds.Reservation.fields.CasteCertTal_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_cert_appli_issue_taluka??'--'}}</b></p>
                                  </div>
                               </div>
@@ -489,7 +401,7 @@
                                  <div class="col-md-6 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteValidity_eng') }}<br>{{ trans('cruds.Reservation.fields.CasteValidity_dev') }} :</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_validity??'--'}}</b></p>
                                  </div>
                               </div>
@@ -499,13 +411,13 @@
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteValNumber_eng') }}<br>{{ trans('cruds.Reservation.fields.CasteValNumber_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_validity_no??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteValDist_eng') }} <br>{{ trans('cruds.Reservation.fields.CasteValDist_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_validity_issue_district??'--'}}</b></p>
                                  </div>
                               </div>
@@ -515,25 +427,25 @@
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteValAppNo_eng') }} <br>{{ trans('cruds.Reservation.fields.CasteValAppNo_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_validity_appli_no??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteValAppDate_eng') }}<br>{{ trans('cruds.Reservation.fields.CasteValAppDate_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_validity_appli_date??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteValAppDist_eng') }} <br>{{ trans('cruds.Reservation.fields.CasteValAppDist_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_validity_appli_issue_dist??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.CasteValAppTal_eng') }} <br>{{ trans('cruds.Reservation.fields.CasteValAppTal_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->caste_validity_appli_issue_taluka??'--'}}</b></p>
                                  </div>
                               </div>
@@ -544,7 +456,7 @@
                                  <div class="col-md-6 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.NCL_eng') }}<br>{{ trans('cruds.Reservation.fields.NCL_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ncl_cert??'--'}}</b></p>
                                  </div>
                               </div>
@@ -554,19 +466,19 @@
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.NCLCertNo_eng') }}<br>{{ trans('cruds.Reservation.fields.NCLCertNo_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ncl_cert_no??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.NCLCertDist_eng') }}<br>{{ trans('cruds.Reservation.fields.NCLCertDist_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ncl_cert_issue_dist??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.nclCertDate_eng') }} <br>{{ trans('cruds.Reservation.fields.nclCertDate_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ncl_cert_date??'--'}}</b></p>
                                  </div>
                               </div>
@@ -576,25 +488,25 @@
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.NCLAppNo_eng') }} <br>{{ trans('cruds.Reservation.fields.NCLAppNo_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ncl_cert_appli_no??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.NCLAppDate_eng') }} <br>{{ trans('cruds.Reservation.fields.NCLAppDate_dev') }} :</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ncl_cert_appli_date??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.NCLCertIssDist_eng') }} <br>{{ trans('cruds.Reservation.fields.NCLCertIssDist_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ncl_cert_appli_issue_dist??'--'}}</b></p>
                                  </div>
                                  <div class="col-md-3 text-right">
                                     <label class="d-block">{{ trans('cruds.Reservation.fields.NCLCertIssuingTal_eng') }}<br>{{ trans('cruds.Reservation.fields.NCLCertIssuingTal_dev') }}:</label>
                                  </div>
-                                 <div class=" col-md-3">
+                                 <div class="col-md-3">
                                     <p class="uppercase primary_color"><b>{{$previewData->ncl_cert_appli_issue_taluka??'--'}}</b></p>
                                  </div>
                               </div>
@@ -605,27 +517,25 @@
                            <div class="row form-group br-bt-1">
                               <div class="col-md-3 text-right">
                                  <label class="d-block mb-0">{{ trans('cruds.Reservation.fields.ph_eng') }} :<br>{{ trans('cruds.Reservation.fields.ph_dev') }}:</label>
-                               
                               </div>
                               <div class="col-md-3">
                                  <p class="uppercase primary_color"><b>{{$previewData->ph??'--'}}</b></p>
                               </div>
                               <div class="col-md-3 text-right ">
-                                 <label  class="d-block mb-0" for="orphan">{{ trans('cruds.Reservation.fields.orphan_eng') }}<br>{{ trans('cruds.Reservation.fields.orphan_dev') }}  :</label>
-                                
+                                 <label  class="d-block mb-0"for="orphan">{{ trans('cruds.Reservation.fields.orphan_eng') }}<br>{{ trans('cruds.Reservation.fields.orphan_dev') }}  :</label>
                               </div>
                               <div class="col-sm-3 ">
                                  <p class="uppercase primary_color"><b>{{$previewData->orphan??'--'}}</b></p>
                               </div>
                               <div class="col-md-3 text-right ">
-                                 <label  class="d-block" for="orphan">{{ trans('cruds.Reservation.fields.MinorityQuota_eng') }}<br>{{ trans('cruds.Reservation.fields.MinorityQuota_dev') }}:</label>
+                                 <label  class="d-block"for="orphan">{{ trans('cruds.Reservation.fields.MinorityQuota_eng') }}<br>{{ trans('cruds.Reservation.fields.MinorityQuota_dev') }}:</label>
                               </div>
                               <div class="col-sm-3 ">
                                  <p class="uppercase primary_color"><b>{{$previewData->minority??'--'}}</b></p>
                               </div>
                               @if($previewData->minority=='YES') 
                               <div class="col-md-3 text-right ">
-                                 <label  class="d-block" for="orphan"> {{ trans('cruds.Reservation.fields.religion_eng') }}<br>{{ trans('cruds.Reservation.fields.religion_dev') }}:</label>
+                                 <label  class="d-block"for="orphan"> {{ trans('cruds.Reservation.fields.religion_eng') }}<br>{{ trans('cruds.Reservation.fields.religion_dev') }}:</label>
                               </div>
                               <div class="col-sm-3 ">
                                  <p class="uppercase primary_color"><b>{{$previewData->minority_quota??'--'}}</b></p>
@@ -633,393 +543,320 @@
                               @endif
                            </div>
                         </fieldset>
+                        <br>
+                        <fieldset class="form-fieldset ">
+                           <legend>Persons with Benchmark Disabilities Details <span class="text-muted">बेंचमार्क अपंग तपशील असलेल्या व्यक्ती</span></legend>
+                           <div class="row form-group br-bt-1">
+                              <div class="col-md-6 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.Reservation.fields.ph_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.ph_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3">
+                                       <p class="uppercase primary_color"><b>{{$previewData->ph??'--'}}</b></p>
+                           </div>
+                           <div class="row form-group br-bt-1 mt-2 mb-2 phDetails {{ (isset($previewData->ph) && $previewData->ph==='YES') ? 'show' : 'hide' }}">
+                              <div class="col-md-3 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.perdisability_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.perdisability_dev') }}</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                <p class="uppercase primary_color"><b>{{$previewData->per_disability??'--'}}</b></p>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.phType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.phType_dev') }}</label>
+                              </div>
+                              <div class="col-md-3 text-right">                                
+                                    <p class="uppercase primary_color"><b>{{ ($previewData->ph_type) ? App\Traits\Convertors::phType($previewData->ph_type) :'--'  }}</b></p>                                  
+                              </div>
+                           </div>
+                        </fieldset>
+                        <fieldset class="form-fieldset mt-3">
+                           <legend>Orphan Details <span class="text-muted">अनाथ तपशील</span></legend>
+                           <div class="row form-group br-bt-1">
+                              <div class="col-md-6 text-right ">
+                                 <label  class="d-block mb-0"for="orphan">{{ trans('cruds.Reservation.fields.orphan_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.Reservation.fields.orphan_dev') }}:</label>
+                              </div>
+                              <div class="col-sm-3 ">
+                                <p class="uppercase primary_color"><b>{{$previewData->orphan??'--'}}</b></p>
+                              </div>
+                           </div>
+                           <div class="row form-group br-bt-1 orphanDetails {{ (isset($previewData->orphan) && $previewData->orphan==='YES') ? 'show' : 'hide' }}">
+                              <div class="col-md-6 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.orphanType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.orphanType_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                <p class="uppercase primary_color"><b>{{$previewData->orphan_type ??'--'}}</b></p>
+                              </div>
+                           </div>
+                        </fieldset>
+                        <fieldset class="form-fieldset mt-3">
+                           <legend>Ex-serviceman <span class="text-muted">माजी सैनिक</span></legend>
+                           <div class="row form-group br-bt-1">
+                              <div class="col-md-6 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.exserviceman_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.exserviceman_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <p class="uppercase primary_color"><b>{{$previewData->ex_serviceman??'--'}}</b></p>
+                              </div>
+                           </div>
+                           <div class="row form-group br-bt-1 {{ (isset($previewData->ex_serviceman) && $previewData->ex_serviceman==='YES') ? 'show' : 'hide' }} serviceDetails">
+                              <div class="col-md-6 text-right">
+                                 <label class="d-block mb-0">Division of the Armed Forces <span class="asrtick">*</span> <br>सशस्त्र दलांची विभागणी:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <p class="uppercase primary_color"><b>{{$previewData->forces_division??'--'}}</b></p>
+                              </div>
+                           </div>
+                           <div class="row form-group br-bt-1 mt-2  {{ (isset($previewData->ex_serviceman) && $previewData->ex_serviceman==='YES') ? 'show' : 'hide' }} serviceDetails">
+                              <div class="col-md-3 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.joinDate_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.joinDate_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <p class="uppercase primary_color"><b>{{$previewData->join_date??'--'}}</b></p>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.retirement_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.retirement_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <p class="uppercase primary_color"><b>{{$previewData->retirement_date??'--'}}</b></p>
+                              </div>
+                           </div>
+                           <div class="row form-group br-bt-1 mt-2  {{ (isset($previewData->ex_serviceman) && $previewData->ex_serviceman==='YES') ? 'show' : 'hide' }} serviceDetails">
+                              <div class="col-md-6 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SpecialReservation.fields.PeriodOfService_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SpecialReservation.fields.PeriodOfService_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <p class="uppercase primary_color"><b>{{$previewData->service_years.'  Year '.$previewData->service_months.' months '.$previewData->service_days. ' days '??'--'}}</b></p>
+                              </div>
+                           </div>
+                        </fieldset>
+                        <fieldset class="form-fieldset mt-3">
+                           <legend>{{ trans('cruds.SportDetails.title_eng') }} <span class="text-muted">{{ trans('cruds.SportDetails.title_dev') }}</span></legend>
+                           <div class="row form-group br-bt-1 mt-2">
+                              <div class="col-md-6 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.sportPerson_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.sportPerson_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                <p class="uppercase primary_color"><b>{{$previewData->sports_person??'--'}}</b></p>
+                              </div>
+                           </div>
+                           <div class="row form-group br-bt-1 mt-2 
+                              {{ (isset($previewData->sports_person) && $previewData->sports_person=='YES') ? 'show' : 'hide' }} SportDetails">
+                              <div class="col-md-3 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionType_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionType_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-left">
+                                 <p class="uppercase primary_color"><b>
+                                    {{ ($previewData->type_competition) ? App\Traits\Convertors::competitionType($previewData->type_competition) :'--'  }}
+                                 </b>
+                                 </p>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionLevel_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionLevel_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <p class="uppercase primary_color"><b>{{$previewData->level_competition??'--'}}</b></p>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionMedal_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionMedal_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <p class="uppercase primary_color"><b>                                    
+                                    {{ ($previewData->position_medal) ? App\Traits\Convertors::medalname($previewData->position_medal) :'--'  }}
+                                 </b></p>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <label class="d-block mb-0">{{ trans('cruds.SportDetails.fields.CompetitionYear_eng') }}:<font class="astr">*</font><br>{{ trans('cruds.SportDetails.fields.CompetitionYear_dev') }}:</label>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                 <p class="uppercase primary_color"><b>{{$previewData->competition_year??'--'}}</b></p>
+                              </div>
+                           </div>
+                        </fieldset>
                      </div>
                   </div>
                </div>
                <!-- //End Reservation -->
-               <!-- //Inservice Quota -->
+               <!-- //Qualification -->
                <div class="card mb-0">
-                  <div class="card-header" id="headingSix">
+                  <div class="card-header"id="headingSix">
                      <h5 class="m-0 w-100">
-                        <a class="custom-accordion-title collapsed d-block py-1"
-                           data-bs-toggle="collapse" href="#collapseSix"
-                           aria-expanded="false" aria-controls="collapseSix">
-                        <i class="uil-wall"></i> Inservice Quota <i
-                           class="mdi mdi-chevron-down accordion-arrow"></i>
+                        <a class="custom-accordion-title collapsed d-block py-1"data-bs-toggle="collapse"href="#collapseSix"aria-expanded="false"aria-controls="collapseSix">
+                        <i class="uil-wall"></i> Qualification <i class="mdi mdi-chevron-down accordion-arrow"></i>
                         </a>
                      </h5>
                   </div>
-                  <div id="collapseSix" class="collapse" aria-labelledby="headingSix"
+                  <div id="collapseSix"class="collapse"aria-labelledby="headingSix"
                      data-bs-parent="#custom-accordion-one">
                      <div class="card-body">
                         <fieldset class="form-fieldset">
-                           <legend>Inservice Quota </legend>
-                           <div class="row form-group br-bt-1">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.inserviceQuota.fields.inserviceQuota_eng') }}  <br>{{ trans('cruds.inserviceQuota.fields.inserviceQuota_dev') }}:</label>
+                           <legend>Qualification </legend>
+                           <div class="row form-group br-bt-1 mt-2">
+                              <div class="col-md-12 text-right">
+                                 <table class="table table-bordered table-centered mb-0 tableScroll">
+                                    <thead class="table-dark">
+                                       <tr role="row">
+                                          <th>Sr No</th>
+                                          <th>Qualification Type</th>
+                                          <th>Name of Qualification</th>
+                                          <th>Subject / Stream / Branch</th>
+                                          <th>Board / University</th>
+                                          <th>Qualification Type</th>
+                                          <th>Date of qualification completion</th>
+                                          <th>Attempts</th>
+                                          <th>Percentage / CGPA (For Grade add respective percentage value)</th>
+                                          <th>Number of academic months</th>
+                                          <th>Class / Grade</th>
+                                          <th>Mode</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody style="font-size: 12px;">                                                                       
+                                       <?php $i=1; ?>
+                                       @foreach($qualification as $value)
+                                          <tr role="row"class="odd">                                                                                   
+                                             <td>{{ $i }}</td>
+                                             <td>{{ !empty($value->qualification_type) ? $value->qualification_type : '-'}}</td>
+                                             <td>{{ !empty($value->qualification_name) ? $value->qualification_name : '-'}}</td>
+                                             <td>{{ !empty($value->subject_name) ? $value->subject_name : '-'}}</td>
+                                             <td>{{ !empty($value->university_name) ? $value->university_name : '-'}}</td>                                    
+                                             <td>{{ !empty($value->typeResult) ? $value->typeResult : '-'}}</td>                                    
+                                             <td>{{ !empty($value->doq) ? $value->doq : '-'}}</td>                                    
+                                             <td>{{ !empty($value->attempts) ? $value->attempts : '-'}}</td>                                    
+                                             <td>{{ !empty($value->percentage) ? $value->percentage : '-'}}</td>                                    
+                                             <td>{{ !empty($value->courseDurations) ? $value->courseDurations : '-'}}</td>                                    
+                                             <td>{{ !empty($value->class) ? $value->class : '-'}}</td>                                    
+                                             <td>{{ !empty($value->mode) ? $value->mode : '-'}}</td> 
+                                             <?php $i++; ?>
+                                          </tr>
+                                       @endforeach
+                                    </tbody>
+                                 </table>
                               </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->inservice_quota??'--'}}</b></p>
-                              </div>
+                              
                            </div>
-                           @if($previewData->inservice_quota=='YES')
-                           <div class="row  quotaDetails">
-                              <div class="col-md-3 text-right">
-                                 <label class="d-block">{{ trans('cruds.inserviceQuota.fields.inservice_establishment_eng') }}<br>{{ trans('cruds.inserviceQuota.fields.inservice_establishment_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->inservice_establishment??'--'}}</b></p>
-                              </div>
-                              <div class="col-md-3 text-right">
-                                 <label class="d-block">{{ trans('cruds.inserviceQuota.fields.DateOfJoin_eng') }}  <br>{{ trans('cruds.inserviceQuota.fields.DateOfJoin_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->inservice_join_date??'--'}}</b></p>
-                              </div>
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.inserviceQuota.fields.PostingAdd_eng') }}  <br>{{ trans('cruds.inserviceQuota.fields.PostingAdd_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->inservice_posting_addr??'--'}}</b></p>
-                              </div>
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.inserviceQuota.fields.noc_eng') }}  <br>{{ trans('cruds.inserviceQuota.fields.noc_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->inservice_establish_noc??'--'}}</b></p>
-                              </div>
-                              @if($previewData->inservice_quota=='YES')
-                              <div class="col-md-6 text-right NocDate ">
-                                 <label class="d-block">{{ trans('cruds.inserviceQuota.fields.NocIssuingDate_eng') }} <br>{{ trans('cruds.inserviceQuota.fields.NocIssuingDate_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3 NocDate ">
-                                 <p class="uppercase primary_color"><b>{{$previewData->inservice_establish_noc_date??'--'}}</b></p>
-                              </div>
-                              @endif
-                              <div class="col-md-6 text-right" >
-                                 <label class="d-block">{{ trans('cruds.inserviceQuota.fields.DeptInq_eng') }}  <br>{{ trans('cruds.inserviceQuota.fields.DeptInq_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->inservice_dept_enquiry??'--'}}</b></p>
-                              </div>
-                              @if($previewData->inservice_dept_enquiry=='YES')
-                              <div class="col-md-6 text-right" >
-                                 <label class="d-block">{{ trans('cruds.inserviceQuota.fields.InqDetails_eng') }}:<br>{{ trans('cruds.inserviceQuota.fields.InqDetails_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->inservice_dept_enquiry_details??'--'}}</b></p>
-                              </div>
-                              @endif
-                           </div>
-                           @endif
                         </fieldset>
                      </div>
                   </div>
                </div>
-               <!-- End Inservice Quota -->
-               <!-- //Previous College Information -->
+               <!-- End Qualification -->
+               <!-- //Experience Information -->
                <div class="card mb-0">
-                  <div class="card-header" id="headingSeven">
+                  <div class="card-header"id="headingSeven">
                      <h5 class="m-0 w-100">
                         <a class="custom-accordion-title collapsed d-block py-1"
-                           data-bs-toggle="collapse" href="#collapseSeven"
-                           aria-expanded="false" aria-controls="collapseSeven">
-                        <i class="uil-building"></i> {{ trans('cruds.CollegeInformation.title_eng') }} <i
+                           data-bs-toggle="collapse"href="#collapseSeven"
+                           aria-expanded="false"aria-controls="collapseSeven">
+                        <i class="uil-building"></i> Experience Information <i
                            class="mdi mdi-chevron-down accordion-arrow"></i>
                         </a>
                      </h5>
                   </div>
-                  <div id="collapseSeven" class="collapse"
+                  <div id="collapseSeven"class="collapse"
                      aria-labelledby="headingSeven"
                      data-bs-parent="#custom-accordion-one">
                      <div class="card-body">
                         <fieldset class="form-fieldset">
-                           <legend>{{ trans('cruds.CollegeInformation.title_eng') }} <span class="text-muted"> {{ trans('cruds.CollegeInformation.title_dev') }}</span></legend>
-                           <div class="row form-group br-bt-1 mb-2">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.DegreeExam_eng') }}  <br>{{ trans('cruds.CollegeInformation.fields.DegreeExam_dev') }}:</label>
-                              </div>
-                              <div class="col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mbbs_passing_date??'--'}}</b></p>
-                              </div>
-                           </div>
-                            <div class="row form-group br-bt-1 mb-2">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.PercentageMBBS_eng') }}  <br>{{ trans('cruds.CollegeInformation.fields.PercentageMBBS_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mbbs_agg_per??'--'}}</b></p>
-                              </div>
-                           </div>
-                           <div class="row form-group br-bt-1 mb-3">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.DateofIntern_eng') }}  <br>{{ trans('cruds.CollegeInformation.fields.DateofIntern_dev') }}</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mbbs_internship_date??'--'}}</b></p>
-                              </div>
-                           </div>
-                            <div class="row form-group br-bt-1 mb-2">
-                          
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.DiplomaCourse_eng') }}<br>{{ trans('cruds.CollegeInformation.fields.DiplomaCourse_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mci_reg_diploma??'--'}}</b></p>
-                              </div>
-                           </div>
-                           @if($previewData->mci_reg_diploma=='COMPLETED' || $previewData->mci_reg_diploma=='ADMITTED AND PURSUING')
-                           <div class="row form-group br-bt-1  DiplomaCourseDetails">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.SubofDiploma_eng') }}<br>{{ trans('cruds.CollegeInformation.fields.SubofDiploma_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->diploma_subject??'--'}}</b></p>
+                           <legend>Experience Information</legend>
+                           <div class="row">
+                              <div class="col-md-12">
+                                  <table class="table table-bordered table-centered mb-0 tableScroll">
+                                    <thead class="table-dark">
+                                       <tr>
+                                          <th>Sr No</th>
+                                          <th>Institution / Department / Organisation / Court</th>
+                                          <th>Designation (Post Held)</th>
+                                          <th>Nature Of Appointment</th>
+                                          <th>Nature Of Job</th>
+                                          <th>Full Time / Other</th>
+                                          <th>Pay Band / Pay Scale / Professional Charge</th>
+                                          <th>Grade Pay</th>
+                                          <th>Monthly Gross Salary / Income</th>
+                                          <th>From Date</th>
+                                          <th>To Date</th>                                       
+                                       </tr>
+                                    </thead>
+                                    <tbody style="font-size: 12px;">
+                                       <?php $i=1; ?>   
+                                       @foreach($experience as $value)
+                                       <tr>                                          
+                                          <td>{{ $i }}</td>
+                                          <td>{{ !empty($value->officeName) ? $value->officeName : '-'}}</td>
+                                          <td>{{ !empty($value->designation) ? $value->designation : '-'}}</td>
+                                          <td>{{ !empty($value->appointment) ? $value->appointment : '-'}}</td>
+                                          <td>{{ !empty($value->job_nature) ? $value->job_nature : '-'}}</td>                                    
+                                          <td>{{ !empty($value->time) ? $value->time : '-'}}</td>                                    
+                                          <td>{{ !empty($value->payScale) ? $value->payScale : '-'}}</td>                                    
+                                          <td>{{ !empty($value->gradePay) ? $value->gradePay : '-'}}</td>                                                                                                           
+                                          <td>{{ !empty($value->monthlyGrossSalary) ? $value->monthlyGrossSalary : '-'}}</td>                                    
+                                          <td>{{ !empty($value->fromDate) ? $value->fromDate : '-'}}</td>                                    
+                                          <td>{{ !empty($value->toDate) ? $value->toDate : '-'}}</td>  
+                                       <?php $i++; ?>
+                                       </tr>
+                                       @endforeach   
+                                    </tbody>
+                                 </table>
                               </div>
                            </div>
-                           @endif
-                           <div class="row form-group br-bt-1">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.DegreeCourse_eng') }}<br>{{ trans('cruds.CollegeInformation.fields.DegreeCourse_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mci_reg_degree??'--'}}</b></p>
-                              </div>
-                           </div>
-                           @if($previewData->mci_reg_degree=='COMPLETED')
-                           <div class="row form-group br-bt-1">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.SubofDegree_eng') }}:<br>{{ trans('cruds.CollegeInformation.fields.SubofDegree_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->degree_subject??'--'}}</b></p>
-                              </div>
+                        </fieldset>
                         
-                           </div>
-                           @endif
-                            <div class="row form-group br-bt-1 mb-2">
-                          
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.MBBSDegree_eng') }}<br>{{ trans('cruds.CollegeInformation.fields.MBBSDegree_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mbbs_dc_in_mh_or_aiims??'--'}}</b></p>
-                              </div>
-                           </div>
-                           
-
-                           @if($previewData->mbbs_dc_in_mh_or_aiims=='YES')
-                           <div class="row form-group br-bt-1  CollegeTypeDetails">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.CollegeType_eng') }}:  <br>{{ trans('cruds.CollegeInformation.fields.CollegeType_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mbbs_college_type??'--'}}</b></p>
-                              </div>
-                           </div>
-                           @endif
-                           @if($previewData->mbbs_dc_in_mh_or_aiims=='NO' )
-                           <div class="row form-group br-bt-1">
-                             <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.GovtClg_eng') }}: <br>{{ trans('cruds.CollegeInformation.fields.GovtClg_dev') }}</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mbbs_college_outoff_ind_mah??'--'}}</b></p>
-                              </div>
-                           </div>
-                            <div class="row form-group br-bt-1 mb-2">
-                              
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.college_name_out_mh_eng') }} <br>{{ trans('cruds.CollegeInformation.fields.college_name_out_mh_dev') }} :  </label>
-                              </div>
-                              <div class="col-md-3  ">
-                                <p class="uppercase primary_color"><b>{{$previewData->mbbs_college_ind_mah??'--'}}</b></p>
-                              </div>
-                           </div>
-                            <div class="row form-group br-bt-1 mb-2">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.uni_name_out_mh_eng') }}<br> {{ trans('cruds.CollegeInformation.fields.uni_name_out_mh_dev') }}: </label>
-                              </div>
-                              <div class="col-md-3  ">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mbbs_university_ind_mah??'--'}}</b></p>
-                              </div>
-                             
-                           </div>
-                            @endif
-                            @if( $previewData->mbbs_college_type=='AIIMS OR CENTRAL GOVT INSTITUTION' )
-                            <div class="row form-group br-bt-1">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.college_name_out_mh_eng') }} <br>{{ trans('cruds.CollegeInformation.fields.college_name_out_mh_dev') }} :  </label>
-                              </div>
-                              <div class="col-md-3  ">
-                                <p class="uppercase primary_color"><b>{{$previewData->mbbs_college_ind_mah??'--'}}</b></p>
-                              </div>
-                           </div>
-                            <div class="row form-group br-bt-1 mb-2">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.uni_name_out_mh_eng') }}<br> {{ trans('cruds.CollegeInformation.fields.uni_name_out_mh_dev') }}: </label>
-                              </div>
-                              <div class="col-md-3  ">
-                                 <p class="uppercase primary_color"><b>{{$previewData->mbbs_university_ind_mah??'--'}}</b></p>
-                              </div>
-                             
-                           </div>
-                            @endif
-                           <div class="row form-group br-bt-1">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.MedicalCollege_eng') }} <br>{{ trans('cruds.CollegeInformation.fields.MedicalCollege_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->aiee??'--'}}</b></p>
-                              </div>
-                           </div>
-                         
-                        </fieldset>
-                        <!-- <fieldset class="form-fieldset mt-3">
-                           <legend>Details Of Bond Service </legend>
-                           <div class="row form-group br-bt-1 ">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.BondService_eng') }} <br>{{ trans('cruds.CollegeInformation.fields.BondService_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->bond_service??'--'}}</b></p>
-                              </div>
-                           </div>
-                           @if($previewData->bond_service=='Undertaking')
-                           <div class="row form-group br-bt-1  UndertakingDetails">
-                              <div class="custom-control custom-checkbox mb-2 d-flex" >
-                                 <input name="undertake_to_submit" id="undertake_to_submit_bond" type="checkbox" checked value="1">
-                                 <label class="custom-control-label" for="1"> {{ trans('cruds.CollegeInformation.fields.undertake_to_submit_eng') }}<br> <span class="text-muted">{{ trans('cruds.CollegeInformation.fields.undertake_to_submit_dev') }}</span>
-                                 </label>
-                              </div>
-                           </div>
-                           @endif
-                        </fieldset> -->
-                        <fieldset class="form-fieldset mt-3">
-                           <legend>PREVIOUS ATTEMPT OF NEET PG</legend>
-                           <div class="row form-group br-bt-1 justify-content-center">
-                              <div class="col-md-6 text-right">
-                                 <label class="d-block">{{ trans('cruds.CollegeInformation.fields.attemptedCandidate_eng') }}<br>{{ trans('cruds.CollegeInformation.fields.attemptedCandidate_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->neet_pg_attempt_year??'--'}}</b></p>
-                              </div>
-                           </div>
-                        </fieldset>
+      
                      </div>
                   </div>
                   <!-- //End Previous College Information -->
                </div>
                <!-- //Medical Council Registration  -->
                <div class="card mb-0">
-                  <div class="card-header" id="headingFour">
+                  <div class="card-header"id="headingFour">
                      <h5 class="m-0">
                         <a class="custom-accordion-title collapsed d-block py-1"
-                           data-bs-toggle="collapse" href="#collapseEight"
-                           aria-expanded="false" aria-controls="collapseEight">
-                        <i class="uil-medical-square-full"></i> DC Council Registration <i
+                           data-bs-toggle="collapse"href="#collapseEight"
+                           aria-expanded="false"aria-controls="collapseEight">
+                        <i class="uil-medical-square-full"></i> Job Applied <i
                            class="mdi mdi-chevron-down accordion-arrow"></i>
                         </a>
                      </h5>
                   </div>
-                  <div id="collapseEight" class="collapse"
+                  <div id="collapseEight"class="collapse"
                      aria-labelledby="headingFour"
                      data-bs-parent="#custom-accordion-one">
                      <div class="card-body">
                         <fieldset class="form-fieldset">
-                           <legend>DC Council Registration  </legend>
-                           <div class="row form-group  ">
-                              <div class="col-md-7 text-right">
-                                 <label class="d-DcCouncil">{{ trans('cruds.DcCouncil.fields.MedicalCouncil_eng') }}<br>{{ trans('cruds.DcCouncil.fields.MedicalCouncil_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->medical_council_reg??'--'}}</b></p>
-                              </div>
-                           </div>
-                           @if($previewData->medical_council_reg=='YES' || $previewData->medical_council_reg=='APPLIED')
-                           <div class="row form-group  MedicalCouncilDetails">
-                              <div class="col-md-7 text-right">
-                                 <label class="d-block">{{ trans('cruds.DcCouncil.fields.MedicalCouncilReg_eng') }} <br>{{ trans('cruds.DcCouncil.fields.MedicalCouncilReg_dev') }} :</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->medical_council_reg_no??'--'}}</b></p>
-                              </div>
-                           </div>
-                           @endif
-                           <div class="row form-group  ">
-                              <div class="col-md-7 text-right">
-                                 <label class="d-block">{{ trans('cruds.DcCouncil.fields.dci_eng') }} <br>{{ trans('cruds.DcCouncil.fields.dci_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->medical_dci_reg??'--'}}</b></p>
-                              </div>
-                           </div>
-                           <div class="row form-group  ">
-                              @if($previewData->medical_dci_reg=='YES')
-                              <div class="col-md-7 text-right">
-                                 <label class="d-block">{{ trans('cruds.DcCouncil.fields.dci_eng') }} <br>{{ trans('cruds.DcCouncil.fields.dci_dev') }}:</label>
-                              </div>
-                              <div class=" col-md-3">
-                                 <p class="uppercase primary_color"><b>{{$previewData->medical_dci_reg_no??'--'}}</b></p>
-                              </div>
-                           @endif
-                           </div>
-
+                           <legend>Job Post </legend>
+                            <table class="table table-bordered table-centered mb-0 ">
+                                    <thead class="table-dark">
+                                      <tr>
+                                         <th>Sr. No.</th>
+                                         <th>Post Name</th>
+                                         <th>Year</th>
+                                         <th>Post Description</th>                                         
+                                      </tr>
+                                   </thead>
+                                   <?php $i=1; ?>   
+                                   <tbody>                                                                                                            
+                                       @foreach($job_applied as $value)
+                                       <tr>                                          
+                                          <td>{{ $i }}</td>
+                                          <td>{{ !empty($value->name) ? $value->name : '-'}}</td>
+                                          <td>{{ !empty($value->year) ? $value->year : '-'}}</td>                                      
+                                          <td>{{ !empty($value->description) ? $value->description : '-'}}</td>                                      
+                                       <?php $i++; ?>
+                                       </tr>
+                                       @endforeach                                                                                       
+                                   </tbody>
+                                </table> 
                         </fieldset>
                      </div>
                   </div>
-                  <!--End Medical Council Registration  -->
+                  <!--End Job Applied  -->
                </div>
-
-               <div class="card mb-0">
-                  <div class="card-header" id="headingFour">
-                     <h5 class="m-0">
-                        <a class="custom-accordion-title collapsed d-block py-1"
-                           data-bs-toggle="collapse" href="#collapseNine"
-                           aria-expanded="false" aria-controls="collapseNine">
-                        <i class="uil-keyhole-square-full"></i> Security Deposite <i
-                           class="mdi mdi-chevron-down accordion-arrow"></i>
-                        </a>
-                     </h5>
-                  </div>
-                  <div id="collapseNine" class="collapse"
-                     aria-labelledby="headingFour"
-                     data-bs-parent="#custom-accordion-one">
-                     <div class="card-body">
-                        <fieldset class="form-fieldset">
-                           <legend>Security Deposite </legend>
-                            <div class="row form-group">
-                  <div class="col-md-7 text-right">
-                     <label class="d-block">{{ trans('cruds.SecurityDeposite.fields.seat_eng') }}<font class="astr">*</font><br>{{ trans('cruds.SecurityDeposite.fields.seat_dev') }}:</label>
-                  </div>
-                  <div class=" col-md-3">
-                     {{$previewData->security_deposite_seat_type??'--'}}
-                     
-                  </div>
-               </div>
-               <div class="row form-group">
-                  <div class="col-md-7 text-right">
-                     <label class="d-block">{{ trans('cruds.SecurityDeposite.fields.depositeAmount_eng') }}<font class="astr">*</font><br>{{ trans('cruds.SecurityDeposite.fields.depositeAmount_dev') }}:</label>
-                  </div>
-                  <div class=" col-md-3">
-                     <p class="uppercase primary_color"><b id="depositeAmount">{{$previewData->security_deposite_amount??'--'}}</b><b>/-</b></p>
-                  </div>
-               </div>
-
-                        </fieldset>
-                     </div>
-                  </div>
-                  <!--End Medical Council Registration  -->
-               </div>
+               
             </div>
          </div>
          <!-- card-body -->
          <div class="card-footer bg-transparent">
-            <form action="{{ route("preview.update", [$previewData->id]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route("preview.update", [$previewData->id]) }}"method="POST"enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div>
-               <input type="submit" class="btn btn-success mb-3" value="Confirm and Next"></button>
+               <input type="submit"class="btn btn-success mb-3"value="Confirm and Next"></button>
             </div>
             </form>
          </div>

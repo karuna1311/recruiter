@@ -55,10 +55,10 @@
                   </div>
                   <div class="col-md-4">
                      <select class="form-control inpField" name="gender"  id="gender">
-                     <option value="" @if(!isset($personalInfoData)) selected @endif>[SELECT]</option>
-                     <option value="MALE" {{ (isset($personalInfoData) && $personalInfoData->gender==='MALE') ? 'selected' : '' }}>MALE</option>
-                     <option value="FEMALE" {{ (isset($personalInfoData) && $personalInfoData->gender==='FEMALE') ? 'selected' : '' }}>FEMALE</option>
-                     <option value="TRANSGENDER" {{ (isset($personalInfoData) && $personalInfoData->gender==='TRANSGENDER') ? 'selected' : '' }}>TRANSGENDER</option>
+                        <option value="" @if(!isset($personalInfoData)) selected @endif>[SELECT]</option>
+                        <option value="MALE" {{ (isset($personalInfoData) && $personalInfoData->gender==='MALE') ? 'selected' : '' }}>MALE</option>
+                        <option value="FEMALE" {{ (isset($personalInfoData) && $personalInfoData->gender==='FEMALE') ? 'selected' : '' }}>FEMALE</option>
+                        <option value="TRANSGENDER" {{ (isset($personalInfoData) && $personalInfoData->gender==='TRANSGENDER') ? 'selected' : '' }}>TRANSGENDER</option>
                      </select>
                   </div>
                   <div class="col-md-2 text-right">
@@ -98,13 +98,36 @@
                   </div>
                </div>
 
-               <div class="row form-group ">
+               <div class="row form-group">
                   <div class="col-md-2 text-right">
                      <label class="d-block">{{ trans('cruds.personalInformation.fields.age_eng') }}:<br> {{ trans('cruds.personalInformation.fields.age_dev') }} :</label>
                   </div>
                   <div class="col-md-4">                     
                      <input type="text" class="form-control" name="age"  id="age" maxlength="10" value=""  readonly>
-                  </div>               
+                  </div> 
+                  
+                  <div class="col-md-2 text-right">
+                     <label class="d-block">{{ trans('cruds.personalInformation.fields.municipal_bank_eng') }}:<br> {{ trans('cruds.personalInformation.fields.municipal_bank_dev') }} :</label>                     
+                  </div>
+                  <div class="col-md-4">
+                     <select class="form-control" name="bankemp">
+                        <option value="">Select</option>
+                        <option value="YES" {{ (isset($personalInfoData) && $personalInfoData->bankemp==='YES') ? 'selected' : '' }}>YES</option>
+                        <option value="NO" {{ (isset($personalInfoData) && $personalInfoData->bankemp==='NO') ? 'selected' : '' }}>NO</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-2 text-right">
+                     <label class="d-block">{{ trans('cruds.personalInformation.fields.marathi_eng') }}:<br> {{ trans('cruds.personalInformation.fields.marathi_dev') }} :</label>                     
+                  </div>
+                  <div class="col-md-4">
+                     <select class="form-control" name="marathispeaking">
+                        <option value="">Select</option>
+                        <option value="YES" {{ (isset($personalInfoData) && $personalInfoData->marathispeaking==='YES') ? 'selected' : '' }}>YES</option>
+                        <option value="NO" {{ (isset($personalInfoData) && $personalInfoData->marathispeaking==='NO') ? 'selected' : '' }}>NO</option>
+                     </select>
+                  </div>
                </div>
 
             </fieldset>
@@ -229,7 +252,6 @@
                      </div>
                      <div class="col-md-4">
                         <select class="form-control inpField select2" name="present_state"  id="present_state" onchange="getLocation('present_dist2','district',$(this).val())">
-                        
                         @foreach ($stateData as $key=>$value)
                            <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->present_state== $key) ? 'selected' : '' }} >{{$value}}</option>
                         @endforeach
@@ -239,12 +261,11 @@
                         <label class="d-block">{{ trans('cruds.personalInformation.fields.district_eng') }}:<font class="astr">*</font><br> {{ trans('cruds.personalInformation.fields.district_dev') }} :</label>
                      </div>
                      <div class="col-md-4">
-                        <select class="form-control inpField select2" name="present_district"  id="present_dist2" onchange="getLocation('present_Taluka','subDistrict',null,$(this).val())">
-                         
-                           @if(isset($personalInfoData->present_district))                        
-                           @foreach ($districtData as $key=>$value)
-                           <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->present_district== $key) ? 'selected' : '' }} >{{$value}}</option>
-                           @endforeach
+                        <select class="form-control inpField select2" name="present_district"  id="present_dist2" onchange="getLocation('present_Taluka','subDistrict',null,$(this).val())"> 
+                        @if(isset($personalInfoData->present_district))                        
+                              @foreach ($districtData as $key=>$value)
+                              <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->present_district== $key) ? 'selected' : '' }} >{{$value}}</option>
+                              @endforeach
                         @else
                            <option value="" selected>[SELECT]</option> 
                         @endif
@@ -258,12 +279,12 @@
                      <div class="col-md-4">
                         <select class="form-control inpField select2" name="present_taluka"  id="present_Taluka" onchange="getLocation('present_PinCode','pincode',null,$('#present_dist2').val(),$(this).val())">
                          
-                           @if(isset($personalInfoData->present_taluka))                        
-                           @foreach ($talukaData as $key=>$value)
-                           <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->permanent_taluka== $key) ? 'selected' : '' }} >{{$value}}</option>
-                           @endforeach
+                        @if(isset($personalInfoData->present_taluka))                        
+                              @foreach ($talukaData as $key=>$value)
+                              <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->permanent_taluka== $key) ? 'selected' : '' }} >{{$value}}</option>
+                              @endforeach
                         @else
-                        <option value="" selected>[SELECT]</option> 
+                           <option value="" selected>[SELECT]</option> 
                         @endif
                         </select>
                      </div>

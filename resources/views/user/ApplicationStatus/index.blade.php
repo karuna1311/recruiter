@@ -10,7 +10,7 @@
       <div class="col-12">
          <div class="card card-widget card-events">
             <div class="card-header">
-               <h6 class="card-title mg-b-0">Registration Form Status <span class="examname"> (NEET PGD) </span></h6>
+               <h6 class="card-title mg-b-0">Registration Form Status <span class="examname">  </span></h6>
                @if(count($incompleteStatusArray))
                <a href="{{route($incompleteStatusArray['route'])}}" class="link-03 tx-16" href="">Go and complete your profile <span class="examlink"><b>Click Here</b></span></a>
                @endif

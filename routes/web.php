@@ -45,8 +45,8 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 
 
 	Route::resource('postavailable', 'PostAvailableController');
-	Route::post('checkEligibility/{id}', 'PostAvailableController@checkJobAvailability')->name('PostAvailable.checkJob');
-	Route::post('applyJob/{id}', 'PostAvailableController@applyJob')->name('PostAvailable.applyJob');
+	Route::post('checkEligibility/{id}', 'PostAvailableController@checkJobAvailability')->name('postavailable.checkJob');
+	Route::post('applyJob/{id}', 'PostAvailableController@applyJob')->name('postavailable.applyJob');
 	
 
 	// Route::get('/securityDeposite', 'SecurityDepositeController@index')->name('securityDeposite.index');
@@ -82,9 +82,9 @@ Route::get('/getDistrict', 'App\Http\Controllers\Location\LocationController@get
 Route::get('/getCollegeList/{collegeType}', 'App\Http\Controllers\User\CollegeListController@index')->name('collegeList.index');
 
 
-Route::get('/services/{qualificationtype}', 'App\Http\Controllers\service\ServiceController@getQualificationName')->name('services.getQualificationName');
-Route::get('/university/{id}', 'App\Http\Controllers\service\ServiceController@getUniversity')->name('services.getUniversityName');
-Route::get('/subject/{id}', 'App\Http\Controllers\service\ServiceController@getSubject')->name('services.getSubject');
+Route::get('/services/{qualificationtype}', 'App\Http\Controllers\Service\ServiceController@getQualificationName')->name('services.getQualificationName');
+Route::get('/university/{id}', 'App\Http\Controllers\Service\ServiceController@getUniversity')->name('services.getUniversityName');
+Route::get('/subject/{id}', 'App\Http\Controllers\Service\ServiceController@getSubject')->name('services.getSubject');
 
 
 

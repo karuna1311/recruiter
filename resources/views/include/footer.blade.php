@@ -1,7 +1,7 @@
 
     <footer class="footer">
       <div>
-        <span>&copy; 2022 CET CELL  </span>
+        <span>&copy; 2022 THE MUNICIPAL CO-OP BANK LTD, MUMBAI  </span>
         <span>Created by <a href="#">SMB Group Of Companies</a></span>
       </div>
       <div>

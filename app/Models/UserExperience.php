@@ -13,15 +13,11 @@ class UserExperience extends Model
 
     protected $fillable = [
         'user_id',
-        'employmentType',
-        'flgMpscSelection',
+        'employmentType',     
         'postNameLookupId',
         'officeName',
-        'flgOfficeGovOwned',
         'designation',
-        'jobNatureLookupId',
-        'flgGazettedPost',
-        'typeGroup',
+        'jobNatureLookupId',      
         'apointmentNatureLookupId',
         'time',
         'appointmentLetterNo',

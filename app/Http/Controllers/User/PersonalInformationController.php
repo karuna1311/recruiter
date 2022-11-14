@@ -16,24 +16,36 @@ class PersonalInformationController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('personal_info'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
-        $personalInfoData=UserReservation::select('id','cname_change','cname_change_value','fname','mname','gender',
+        
+        $user=Auth::user();
+        
+        $personalInfoData=UserReservation::select('id','cname_change','cname_change_value','fname','mname','gender','bankemp','marathispeaking',
         'alternate_mobile','adhar_card_no','permanent_address_1','permanent_address_2',
         'permanent_address_3','permanent_city',
         'permanent_state','permanent_district','permanent_taluka','permanent_pin_code',        
         'address_not_same',
         'present_address_1','present_address_2','present_address_3','present_city',
         'present_state','present_district','present_taluka','present_pin_code')
-     
+        ->where('user_id',$user->id)
         ->first();
-       
-        $user=Auth::user();
-        $userData = ['name'=>$user->name,'mother_name'=>$user->mother_name,'mobile'=>$user->mobile,'email'=>$user->email,'dob'=>$user->dob];
-        $stateData = LocationController::getState();
-        $districtData = LocationController::getDistrict($personalInfoData->permanent_state);
-        $talukaData = LocationController::getSubDistrict($personalInfoData->permanent_district);
         
-        return view('user.ApplicationForm.PersonalInformation',compact('stateData','districtData','talukaData','userData','personalInfoData'));
+        
+        $userData = ['name'=>$user->name,'mother_name'=>$user->mother_name,'mobile'=>$user->mobile,'email'=>$user->email,'dob'=>$user->dob];
+        
+        
+        $permanent_district = (!empty($personalInfoData->permanent_state)) ? $personalInfoData->permanent_state : null;
+        $permanent_taluka = (!empty($personalInfoData->permanent_district)) ? $personalInfoData->permanent_district : null;
+       
+        $stateData = LocationController::getState();
+        $districtData = LocationController::getDistrict($permanent_district);
+        $talukaData = LocationController::getSubDistrict($permanent_taluka);
+        
+        
+        return view('user.ApplicationForm.PersonalInformation',compact(
+            'stateData',
+            'districtData',
+            'talukaData',
+            'userData','personalInfoData'));
     }
     public function create()
     {
@@ -43,13 +55,19 @@ class PersonalInformationController extends Controller
     {
         try {
             $user=Auth::user();
-            $insertPersonalInfo = UserReservation::create($request->validated());
-            User::where('id',$user->id)->update(['application_status'=>'1']);
+            $exists = UserReservation::where('user_id',$user->id)->exists();
+            if($exists==true){
+                
+            }else{
+                $insertPersonalInfo = UserReservation::create($request->validated());
+                User::where('id',$user->id)->update(['application_status'=>'1']);
+            }
+            return Response::json(['status'=>'success','data'=>'Data submitted successfully']);
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);
         }
-        return Response::json(['status'=>'success','data'=>'Data submitted successfully']);
+        
     }
     public function show($id)
     {

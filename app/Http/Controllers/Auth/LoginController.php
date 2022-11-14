@@ -50,7 +50,8 @@ class LoginController extends Controller
           $html='<ul class="steps steps-vertical mt-4 stepsOverflow">';
           $i=0;
           foreach($instructionData as $data){
-              if($data['isDownloadable']){
+              if($data['isDownloadable'])
+              {
                   $pdfFile=(Storage::disk('uploads')->exists('Instructions/files/'.$data['fileUrl'])) ? base64_encode(Storage::disk('uploads')->get('Instructions/files/'.$data['fileUrl'])) : '';
                   $html.='<li class="step-item "><button href="#" class="step-link">
                         <span class="step-number">'.++$i.'</span>
@@ -74,17 +75,68 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-{
-    $this->validate($request, [
-        'email'           => 'required|max:255|email',
-        'password'           => 'required',
-    ]);
-    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-        // Success
-        return Response::json(['status'=>'success','data'=>'Login successfully']);
-      } else {
-        return Response::json(['status'=>'error','data'=>'Invalid Credential']);
+    {
+
+      $username = self::username();
+      $msg = [
+        'username.required' => 'The email field is required',
+        'username.email' => 'Invalid Email format',
+      ];
+      switch ($username) {
+        case 'email':
+          
+                   $this->validate($request, [
+                        'username'           => 'required|max:255|email',
+                        'password'           => 'required'
+                      ],$msg);
+            if (Auth::attempt(['email' => request()->input('username'), 'password' => $request->password]) )
+                  {
+                      // Success
+                      return Response::json(['status'=>'success','data'=>'Login successfully']);
+                  } else {
+                      return Response::json(['status'=>'error','data'=>'Wrong Credential']);
+                  }
+          break;
+        case 'mobile':
+                $this->validate($request, [
+                    'username'           => 'required|numeric|min:10',
+                    'password'           => 'required',
+                ],$msg);
+        
+        if (Auth::attempt(['mobile' => request()->input('username'), 'password' => $request->password])) 
+        {
+            // Success
+            return Response::json(['status'=>'success','data'=>'Login successfully']);
+          } else {
+            return Response::json(['status'=>'error','data'=>'Wrong Credential']);
+        }
+          
+          break;          
+        default:
+        $this->validate($request, [
+          'username'           => 'required|max:255|email',
+          'password'           => 'required'
+        ],$msg);
+      if (Auth::attempt(['email' => request()->input('username'), 'password' => $request->password]) )
+          {
+              // Success
+              return Response::json(['status'=>'success','data'=>'Login successfully']);
+          } else {
+              return Response::json(['status'=>'error','data'=>'Wrong Credential']);
+          }
+      }
+  
     }
 
-}
+    public function username()
+    {
+        $login = request()->input('username');
+
+        if(is_numeric($login)){
+            $field = 'mobile';
+        } elseif (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $field = 'email';
+        } 
+        return $field;
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use Response;
 use Exception;
+use App\Models\User;
 use App\Models\lookup;
 use App\Models\subject;
 use App\Models\university;
@@ -27,7 +28,7 @@ class QualificationController extends Controller
     public function index()
     {
        
-        // abort_if(Gate::denies('qualification'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
+        
        
         $user_id =Auth::user()->id;
         $qualification = QualificationType::Select('qualification_type_name','qualification_type_code')->orderby('sort_order','ASC')->get();
@@ -37,7 +38,7 @@ class QualificationController extends Controller
         
         // user qualification
         $user_qualification = UserQualification::Select('user_qualification.id','user_qualification.typeResult','user_qualification.doq',
-        'user_qualification.attempts','user_qualification.percentage','user_qualification.courseDurations','user_qualification.compulsorySubjects',
+        'user_qualification.attempts','user_qualification.percentage','user_qualification.compulsorySubjects',
         'user_qualification.optionalSubjects','subject.subject_name as subject_name','university.name as university_name','class.label as class',
         'mode.label as mode','qualificationtype.qualification_type_name as qualification_type','qualificationname.qualification_name as qualification_name')
         ->leftjoin('qualificationtype','user_qualification.qualificationtype','=','qualificationtype.qualification_type_code')
@@ -47,10 +48,11 @@ class QualificationController extends Controller
         ->leftjoin('lookup_options as class','user_qualification.classGrade','=','class.id')
         ->leftjoin('lookup_options as mode','user_qualification.mode','=','mode.id')
         ->where('user_id',$user_id)
+        ->orderBy('qualificationtype.sort_order','ASC')
         ->get();
           
         
-        return view('user.ApplicationForm.qualification',compact('qualification','stateData','grade','mode','user_qualification'));
+        return view('user.ApplicationForm.Qualification',compact('qualification','stateData','grade','mode','user_qualification'));
     }
 
     /**
@@ -81,7 +83,7 @@ class QualificationController extends Controller
                 $data['user_id'] = $user->id;
                 
                 $insert = UserQualification::create($data);
-
+                if($user->application_status >= 2) User::where('id',$user->id)->update(['application_status'=>'3']);
             }else if($user->status_lock =='1'){
                 return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
             }            
@@ -155,7 +157,7 @@ class QualificationController extends Controller
             
             if($user->status_lock == '0'){
                 $id = base64_decode($token);
-            $update = UserQualification::where('id',$id)->update($request->except('_token','_method'));
+                $update = UserQualification::where('id',$id)->update($request->except('_token','_method'));
 
             }else if($user->status_lock =='1'){
                 return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    

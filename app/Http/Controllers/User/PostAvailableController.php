@@ -34,9 +34,9 @@ class PostAvailableController extends Controller
 
     public function index()
     {
-        // abort_if(Gate::denies('postavailable'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
  
         $jobs = Jobs::all();
+        
         return view('user.ApplicationForm.PostAvailable',compact('jobs'));
     }
 
@@ -49,9 +49,9 @@ class PostAvailableController extends Controller
         ->first();
        
         $student_json = json_decode($studentdata);
- 
-        // dd($student_json);
-        $instructionArray=json_decode(Storage::disk('uploads')->get('Instructions/json/admin_job.json'),true);
+        
+        // dd(Storage::disk('public'));
+        $instructionArray=json_decode(Storage::disk('json')->get('/criteria/json/admin_job.json'),true);
         
         $instruction_json = $instructionArray;
         // dd($instruction_json);

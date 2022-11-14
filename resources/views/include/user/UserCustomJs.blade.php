@@ -1,8 +1,9 @@
  <script type="text/javascript">
 
-function valueFlush(arryOfElements){
+function valueFlush(arryOfElements)
+  {
      $.each(arryOfElements, function(key, val) {
-         $('#'+val).empty('');
+         $('#'+val).val('');
      });
    }
 

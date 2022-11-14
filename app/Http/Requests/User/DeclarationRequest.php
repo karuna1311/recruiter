@@ -30,7 +30,12 @@ class DeclarationRequest extends FormRequest
             'declare2' => 'required',
             'declare3' => 'required',
             'declare4' => 'required',
-            'declare5' => 'required'
+            'declare5' => 'required',
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg
+             |max:3500|dimensions:min_width=150,min_height=250,max_width=220,max_height=320',
+            'sign' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:3000|dimensions:min_width=150,min_height=100,max_width=220,max_height=220',
+            // 'img' => 'required|image',
+            // 'sign' => 'required|image'
         ];
     }
 
@@ -42,6 +47,8 @@ class DeclarationRequest extends FormRequest
             'declare3.required' => 'Declaration is required',
             'declare4.required' => 'Declaration is required',
             'declare5.required' => 'Declaration is required',
+            'img.required' => 'The Image Photo is required',
+            'sign.required' => 'The Sign Photo is required',
         ];
        
     }

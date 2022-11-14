@@ -21,38 +21,28 @@
                                        <option value="PRESENT">PRESENT</option>
                                     </select>
                                  </div>
-                                 {{-- <div class="col-md-3 mt-3">
-                                    <label >Whether selected from MPSC? <span class="asrtick">*</span></label>
-                                    <select class="form-control " name="flgMpscSelection" id="flgMpscSelection">
-                                       <option value="">Select</option>
-                                       <option value="YES">YES</option>
-                                       <option value="NO">NO</option>
-                                    </select>
-                                 </div> --}}
-                                 <div class="col-md-3 mt-3 postNameLookupId">
-                                    <label >Post Name <span class="asrtick">*</span></label>
-                                    <select class="form-control select2" name="postNameLookupId" id="postNameLookupId">                                       
+                               
+                                 <div class="col-md-3 mt-3">
+                                    <label >Select Post Name /Designation <span class="asrtick">*</span></label>
+                                    <select class="form-control" name="postNameLookupId" id="postNameLookupId">                                       
                                        @foreach($post_name as $key=>$value)
                                           <option value="{{ $key }}">{{ $value }}</option>
                                        @endforeach                                      
                                     </select>
                                  </div>
-                                 <div class="col-md-3 mt-3"><label >Institution / Department / Organisation / Court <span class="asrtick">*</span></label>
-                                 <input type="text" class="form-control" name="officeName" maxlength="500" value=""></div>
-                                 <div class="col-md-3">
-                                    <label style="float: left; width: 250px;">Is Office / Institution owned by Govt. of Maharashtra? <span class="asrtick">*</span></label>
-                                    <select class="form-control select2" name="flgOfficeGovOwned">
-                                       <option value="">Select</option>
-                                       <option value="YES">YES</option>
-                                       <option value="NO">NO</option>
-                                    </select>
-                                 </div>
-                                 <div class="col-md-3 mb-3">
-                                    <label >Designation (Post Held) <span class="asrtick">*</span></label>
+
+                                 <div class="col-md-3 mt-3 hide designation">
+                                    <label >Designation <span class="asrtick">*</span></label>
                                     <input type="text" class="form-control" name="designation" maxlength="200" value="">
                                  </div>
 
-                                 <div class="col-md-3 mb-3" >
+
+                                 <div class="col-md-3 mt-3">
+                                    <label >Institution / Department / Organisation  <span class="asrtick">*</span></label>
+                                    <input type="text" class="form-control" name="officeName" maxlength="500" value="">
+                                 </div>
+                              
+                                 <div class="col-md-3 mt-3" >
                                     <label >Nature Of Job <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="jobNatureLookupId" id="jobNatureLookupId">
                                     @foreach($job_nature as $key=>$value)
@@ -60,25 +50,10 @@
                                        @endforeach                                     
                                     </select>
                                  </div>
-                                 {{-- <div class="col-md-3 mb-3" >
-                                    <label >Whether the post is Gazetted? <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="flgGazettedPost" id="flgGazettedPostId">
-                                       <option value="">Select</option>
-                                       <option value="YES">YES</option>
-                                       <option value="NO">NO</option>
-                                    </select>
-                                 </div> --}}
+                              
                               </div>
                               <div class="row">
-                                 {{-- <div class="col-md-3 mb-3 typeGroupLookupId">
-                                    <label>Group <span class="asrtick">*</span></label>
-                                    <select class="form-control" name="typeGroup" id="typeGroupLookupId">
-                                       <option value="">Select</option>
-                                       <option value="Group A"> Group A</option>
-                                       <option value="Group B">Group B</option>
-                                    </select>
-                                 </div> --}}
-
+                              
                                  <div class="col-md-3 mb-3">
                                     <label >Nature Of Appointment <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="apointmentNatureLookupId" onchange="apointmentNaturechange($(this).val())" id="apointmentNatureLookupId">
@@ -112,8 +87,7 @@
 
                               <div class="row">
                                  <div class="col-md-3 mb-3">
-                                    <label>Pay Band / Pay Scale / Professional Charge <span class="astrick">*</span>
-                                    </label>
+                                    <label>Pay Band / Pay Scale / Professional Charge</label>
                                     <input type="text" class="form-control" maxlength="20" name="payScale" id="payScale" >
                                  </div>
                                  <div class="col-md-3 mb-3">
@@ -121,11 +95,11 @@
                                     <input type="text" class="form-control" maxlength="6" name="gradePay" id="gradePay" >
                                  </div>
                                  <div class="col-md-3 mb-3">
-                                    <label>Basic Pay / Minimum Professional Charge <span class="astrick">*</span></label>
+                                    <label>Basic Pay / Minimum Professional Charge</label>
                                     <input type="text" class="form-control" maxlength="6" name="basicPay" id="basicPay" >
                                  </div>
                                  <div class="col-md-3 mb-3">
-                                    <label>Monthly Gross Salary / Income <span class="astrick">*</span></label>
+                                    <label>Monthly Gross Salary / Income</label>
                                     <input type="text" class="form-control" maxlength="6" name="monthlyGrossSalary" id="monthlyGrossSalary" >
                                  </div>
                               </div>
@@ -152,7 +126,11 @@
                                     <input type="numeric" class="form-control expDays" readonly name="expDays" id="expDays">
                                  </div>
                               </div>
-
+                              <div class="row">
+                                 <div class="col-md-12 text-right"> 
+                                    <button type="submit" class="btn btn-success mb-1">Add new</button>
+                                 </div>
+                              </div>
                            </fieldset>
                            <br>
                            <fieldset class="form-fieldset">
@@ -172,10 +150,8 @@
                                        <th>Monthly Gross Salary / Income</th>
                                        <th>From Date</th>
                                        <th>To Date</th>
-                                       <!-- <th>Years</th>
-                                       <th>Months</th>
-                                       <th>Days</th> -->
-                                       {{-- <th>Whether selected from MPSC?</th> --}}
+                                       
+                                       
                                        <th>Action</th>
                                     </tr>
                                  </thead>
@@ -195,7 +171,7 @@
                                        <td>{{ !empty($value->monthlyGrossSalary) ? $value->monthlyGrossSalary : '-'}}</td>                                    
                                        <td>{{ !empty($value->fromDate) ? $value->fromDate : '-'}}</td>                                    
                                        <td>{{ !empty($value->toDate) ? $value->toDate : '-'}}</td>                                    
-                                       {{-- <td>{{ !empty($value->flgMpscSelection) ? $value->flgMpscSelection : '-'}}</td> --}}
+                                       
                                        <td>
                                                 <a type="button" class="btn btn-xs btn-info"
                                                 data-bs-toggle="modal"  onclick="editExperience(this)"
@@ -216,9 +192,10 @@
 
                            </fieldset>
                         </div>
-                           <div class="row form-group  mt-3 ">
-                              <div class="col-md-6 text-right"> 
-                                 <button type="submit" class="btn btn-success mb-1">Save And Next</button>
+                           <div class="row form-group  mt-3">
+
+                              <div class="col-md-12 text-center"> 
+                                 <a  href="{{ route('postavailable.index') }}" class="btn btn-success mb-1">Save and Next</a>
                               </div>
                            </div>
                         </form>
@@ -283,33 +260,50 @@
             });
    });
  
+   $('#postNameLookupId').on('change',function(){      
+      value = $(this).val();
+      if(value==433){
+         $('.designation').show();
+      }else{
+         $('.designation').hide();
+      }
+   });
+
+ 
+
+
    $('#fromDate,#toDate').on('change',function()
    {
-      var employment = $('#typeEmploymentLookupId').val();
-      // console.log(employment);
+      alert(1);
+      var employment = $('#typeEmploymentLookupId').val();      
       let fromDate      = $('#fromDate').val();
             if(employment=='PRESENT')
             {
-               let  today	= new Date();
+             let  today  = moment().format('YYYY-MM-DD');
+               // let  today	= new Date();
 
-               let  dd 		      = String(today.getDate()).padStart(2, '0');
-               let  mm 		      = String(today.getMonth() + 1).padStart(2, '0'); //janvier = 0
-               let  yyyy 		   = today.getFullYear();
-               let toDate        = yyyy+'-'+mm+'-'+dd;
-               var secondDate = moment(toDate,'YYYY-MM-DD');
+               // let  dd 		      = String(today.getDate()).padStart(2, '0');
+               // let  mm 		      = String(today.getMonth() + 1).padStart(2, '0'); //janvier = 0
+               // let  yyyy 		   = today.getFullYear();
+               // let toDate        = yyyy+'-'+mm+'-'+dd;
+               var secondDate = moment(today,'YYYY-MM-DD');           
+               $('#toDate').val(today);
 
             }else{
                var toDate = $('#toDate').val();
-               var secondDate = moment(toDate, 'YYYY-MM-DD');
-               // console.log(secondDate);             
+               var secondDate = moment(toDate, 'YYYY-MM-DD');           
             }
        
       var firstDate = moment(fromDate, 'YYYY-MM-DD');
+
       var years = secondDate.diff(firstDate, 'year');
       firstDate.add(years, 'years');
+
       var months = secondDate.diff(firstDate, 'months');
       firstDate.add(months, 'months');
+
       var days = secondDate.diff(firstDate, 'days');
+
       if(isNaN(years)){years=0;}
       if(isNaN(months)){months=0;}
       if(isNaN(days)){days=0;}
@@ -319,28 +313,6 @@
       $('#experienceForm #expDays').val(days);
    });
 
-   // $('#toDate').on('change',function(){
-   //    var employment = $('#typeEmploymentLookupId').val();
-      
-   //    let fromDate = $('#fromDate').val();
-   //    var toDate = $(this).val();
-   
-   //    var firstDate = moment(fromDate, 'YYYY-MM-DD');
-   //    var secondDate = moment(toDate, 'YYYY-MM-DD');
-   //    var years = secondDate.diff(firstDate, 'year');
-   //    firstDate.add(years, 'years');
-   //    var months = secondDate.diff(firstDate, 'months');
-   //    firstDate.add(months, 'months');
-   //    var days = secondDate.diff(firstDate, 'days');
-   //    if(isNaN(years)){years=0;}
-   //    if(isNaN(months)){months=0;}
-   //    if(isNaN(days)){days=0;}
-	
-   //    $('#experienceForm #expYears').val(years);
-   //    $('#experienceForm #expMonths').val(months);
-   //    $('#experienceForm #expDays').val(days);
-
-   // });
 
    $(document).on('change', '#typeEmploymentLookupId', function() {
       valueFlush(['toDate']); 
@@ -353,51 +325,7 @@
    });
 
 
-   //flgMpscSelection
-   // $(document).on('change', '#flgMpscSelection', function() {
-   //       // valueFlush(['postNameLookupId']); 
-   //       var flgMpscSelection = $(this).val();
-   //          if (flgMpscSelection == "NO") {
-   //             $('.postNameLookupId').hide();
-   //          } else {
-   //             $('.postNameLookupId').show();
-   //          }
-   // });
 
-   // $(document).on('change', '#editflgMpscSelection', function() {
-   //       // valueFlush(['postNameLookupId']); 
-   //       var flgMpscSelection = $(this).val();
-   //          if (flgMpscSelection == "NO") {
-   //             $('.editpostNameLookupId').hide();
-   //          } else {
-   //             $('.editpostNameLookupId').show();
-   //          }
-   // });
-
-
-   //flgGazettedPost
-   // $(document).on('change', '#flgGazettedPostId', function() {
-   // //  valueFlush(['typeGroupLookupId']); 
-   //    var flgGazettedPost = $(this).val();
-      
-   //    if (flgGazettedPost == "NO") {
-   //       $('.typeGroupLookupId').hide();
-   //    } else {
-   //       $('.typeGroupLookupId').show();
-   //    }
-   // });
-
-   // $(document).on('change', '#editflgGazettedPostId', function() {
-   // //  valueFlush(['typeGroupLookupId']); 
-   //    var flgGazettedPost = $(this).val();
-      
-   //    if (flgGazettedPost == "NO") {
-   //       $('.edittypeGroupLookupId').hide();
-   //    } else {
-   //       $('.edittypeGroupLookupId').show();
-   //    }
-   // });
-   
    function apointmentNaturechange(token,type=null){   
       if(type==null){
          valueFlush(['appointmentLetterNo','letterDate']);  
@@ -456,39 +384,31 @@
          $("#experienceForm").validate({
             // Specify validation rules
             rules: {
-               employmentType : "required",
-               // flgMpscSelection : "required",    
-               officeName : "required",    
-               flgOfficeGovOwned : "required",    
-               designation : "required",    
-               jobNatureLookupId : "required",    
-               // flgGazettedPost : "required",        
-               apointmentNatureLookupId : "required",                   
-               payScale : "required",    
-               gradePay : "required",    
-               basicPay : "required",    
-               monthlyGrossSalary : "required",    
-               fromDate : "required",   
-               typeGroup:{
-                           required: function () { return $('#flgGazettedPostId').val()==='YES';},
-                  },                
-               postNameLookupId:{
-                           required: function () { return $('#flgMpscSelection').val()==='YES';},
-                  },
-               toDate:{
-                        required: function () { return $('#typeEmploymentLookupId').val()==='PAST';},
-               },  
-               appointmentLetterNo:{
-                        required: function () { return $('#apointmentNatureLookupId').val()==='258';},
-                        // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
-               },
-                 letterDate:{
-                        required: function () { return $('#apointmentNatureLookupId').val()==='258';},
-                        // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
-               },
-               time:{
-                        required: function () { return $('#apointmentNatureLookupId').val()==='269';},
-               },             
+               // employmentType : "required",
+               
+               // officeName : "required",    
+               // flgOfficeGovOwned : "required",                   
+               // postNameLookupId : "required",
+                  // designation:{
+               //          required: function () { return $('#postNameLookupId').val()==='433';},
+               // },
+               // jobNatureLookupId : "required",    
+               // apointmentNatureLookupId : "required",                       
+               // fromDate : "required",                     
+               // toDate:{
+               //          required: function () { return $('#typeEmploymentLookupId').val()==='PAST';},
+               // },  
+               // appointmentLetterNo:{
+               //          required: function () { return $('#apointmentNatureLookupId').val()==='258';},
+               //          // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               // },
+               //   letterDate:{
+               //          required: function () { return $('#apointmentNatureLookupId').val()==='258';},
+               //          // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               // },
+               // time:{
+               //          required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               // },             
               
             },
             // Specify validation error messages
@@ -549,6 +469,7 @@
                                  else if(data.status==='success'){
                                     toastr.success(data.data);
                                     window.location.reload();
+                                    // window.location.replace("{{route('postavailable.index')}}");
                                     }
                                  }
                               },

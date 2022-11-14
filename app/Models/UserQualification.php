@@ -23,7 +23,6 @@ class UserQualification extends Model
         'doq',
         'attempts',
         'percentage',
-        'courseDurations',
         'classGrade',
         'mode',
         'compulsorySubjects',

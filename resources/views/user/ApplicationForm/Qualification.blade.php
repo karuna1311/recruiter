@@ -60,11 +60,7 @@
                                  <div class="col-md-6 mt-3 mb-1">
                                     <label >Percentage / CGPA (For Grade add respective percentage value)<br>टक्केवारी / CGPA (श्रेणीसाठी संबंधित टक्केवारी मूल्य जोडा)</label>
                                     <input type="text" class="form-control" name="percentage" id="percentageGrade">
-                                 </div>
-                                 <div class="col-md-3 mt-3 mb-1">
-                                    <label >Number of academic months<br>शैक्षणिक महिन्यांची संख्या</label>
-                                    <input type="text" class="form-control" name="courseDurations" id="courseDurationMonths">
-                                 </div>
+                                 </div>                             
                                  <div class="col-md-3  mb-1">
                                     <label >Class / Grade<br>वर्ग / श्रेणी</label>
                                     <select class="form-control select2" name="classGrade" id="classGradeLookupId">
@@ -90,6 +86,11 @@
                                     <input type="text" class="form-control" name="optionalSubjects" id="optionalSubjects">
                                  </div>
                               </div>
+                              <div class="row">
+                                 <div class="col-md-12 text-right "> 
+                                    <button type="submit" class="btn btn-success mb-1">Add New</button>                                 
+                                 </div>
+                              </div>
                            </fieldset>
                            <br>
                            <fieldset class="form-fieldset">
@@ -107,7 +108,7 @@
                                        <th >Date of qualification completion</th>
                                        <th >Attempts</th>
                                        <th >Percentage / CGPA (For Grade add respective percentage value)</th>
-                                       <th >Number of academic months</th>
+                                       
                                        <th >Class / Grade</th>
                                        <th >Mode</th>
                                        <th >ACTION</th>
@@ -129,8 +130,7 @@
                                        <td>{{ !empty($value->typeResult) ? $value->typeResult : '-'}}</td>                                    
                                        <td>{{ !empty($value->doq) ? $value->doq : '-'}}</td>                                    
                                        <td>{{ !empty($value->attempts) ? $value->attempts : '-'}}</td>                                    
-                                       <td>{{ !empty($value->percentage) ? $value->percentage : '-'}}</td>                                    
-                                       <td>{{ !empty($value->courseDurations) ? $value->courseDurations : '-'}}</td>                                    
+                                       <td>{{ !empty($value->percentage) ? $value->percentage : '-'}}</td>                                                                        
                                        <td>{{ !empty($value->class) ? $value->class : '-'}}</td>                                    
                                        <td>{{ !empty($value->mode) ? $value->mode : '-'}}</td> 
                                        <td>
@@ -152,14 +152,17 @@
                               </table>
                               </div>
                            </fieldset>
+                        </div>
+                        </div>
                            <div class="row form-group  mt-3 ">
-                              <div class="col-md-6 text-right"> 
-                                 <button type="submit" class="btn btn-success mb-1">Save And Next</button>
+                           
+                              <div class="col-md-12 text-center">                                  
+                                 <a href="{{route('experience.index') }}" class="btn btn-success .nextpage mb-1">Save and Next</a>
                               </div>
                            </div>
                         </form>
-      </div>
-   </div>
+      
+   
 </div>
 
 <!-- Edit Qualification modal -->
@@ -343,20 +346,20 @@
    function qual_status(qual_type,edit=null){
       if(edit==null){
          if(qual_type == 'APPEARED'){
-            valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths']);
+            valueFlush(['DateofQualification','attempts','percentageGrade','']);
             $('#DateofQualification').prop('disabled','disabled');
             $('#DateofQualification').val("");
          }else{
-            valueFlush(['DateofQualification','attempts','percentageGrade','courseDurationMonths']);
+            valueFlush(['DateofQualification','attempts','percentageGrade','']);
             $('#DateofQualification').prop('disabled',false);
          }
       }else{
          if(qual_type == 'APPEARED'){
-            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','editcourseDurationMonths','editclassGradeLookupId','editmodeLookupId']);
+            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','','editclassGradeLookupId','editmodeLookupId']);
             $('#editDateofQualification').prop('disabled','disabled');
             $('#editDateofQualification').val("");
          }else{
-            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','editcourseDurationMonths','editclassGradeLookupId','editmodeLookupId']);
+            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','','editclassGradeLookupId','editmodeLookupId']);
             $('#editDateofQualification').prop('disabled',false);
          }
       }
@@ -499,6 +502,7 @@
                                  else if(data.status==='success'){
                                     toastr.success(data.data);
                                     window.location.reload();
+                                    // window.location.replace("{{route('experience.index')}}");
                                     }
                                  }
                               },

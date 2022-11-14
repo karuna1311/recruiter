@@ -34,9 +34,26 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-        'uploads' => [
+        // 'uploads' => [
+        //     'driver' => 'local',
+        //     'root' => '/var/www/html/DB_upload2/recruitment',
+        // ],
+
+        // 'json' => [
+        //     'driver' => 'local',
+        //     'root' => '/var/www/html/DB_upload2/recruitment',
+        // ],
+
+        // 'uploads' => [
+        //     'driver' => 'local',
+        //     'root' => storage_path('app/public'),
+        //     'url' => env('APP_URL').'/storage',
+        // ],
+
+        'json' => [
             'driver' => 'local',
-            'root' => 'C:/xampp/htdocs/recruiter_admin/storage/app/public/PGD/',
+            // 'root' => storage_path('app/public'),
+            'root' => 'C:xampp\htdocs\recruiter_admin\storage\app\public',
         ],
 
         'public' => [

@@ -28,14 +28,14 @@ class RegistrationRequest extends FormRequest
         return [
             'salutation' => 'required',
             'name' => 'required|string|min:3',
-            'mother_name' => 'required|string|min:3',
+            'mother_name' => 'required|string|min:3|regex:/^[a-zA-Z\d]+$/',
             'dob' => 'required|date_format:'.config('panel.date_format').'|before:'.config('datevalidation.registration.dob'),
             'mobile' => 'required|regex:/\b\d{10}\b/|unique:users',
             'mobileOtp' => 'required|regex:/\b\d{6}\b/',
             'email' => 'required|email|unique:users',
-            // 'EmailOtp' => 'required|regex:/\b\d{6}\b/',
-            // 'encryptMobileOtp' => 'required',
-            // 'encryptEmailOtp'=> 'required'
+            'EmailOtp' => 'required|regex:/\b\d{6}\b/',
+            'encryptMobileOtp' => 'required',
+            'encryptEmailOtp'=> 'required'
         ];
     }
     public function messages()

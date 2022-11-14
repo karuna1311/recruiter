@@ -13,7 +13,7 @@
                             @csrf  
                             @method('PUT')
                             <div class="row">
-                                <div class="col-md-6 mt-3 mb-3">
+                                <div class="col-md-6 mt-3">
                                         <label >Employment (Present / Past) <span class="asrtick">*</span></label>
                                         <select class="form-control " name="employmentType" id="edittypeEmploymentLookupId">
                                         <option value="" selected>Select</option>
@@ -22,52 +22,34 @@
                                         </select>
                                 </div>
 
-                                <div class="col-md-6 mt-3 editpostNameLookupId">
-                                 <label >Post Name <span class="asrtick">*</span></label>
-                                 <select class="form-control select2" name="postNameLookupId" id="editpostNameLookupId">                                       
-                                 @foreach($post_name as $key=>$value)
-                                     <option {{ (isset($data->postNameLookupId) && $data->postNameLookupId==$key) ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
-                                 @endforeach                                      
-                                 </select>
-                             </div>
-
-                                {{-- <div class="col-md-6 mt-3 mb-3">
-                                        <label >Whether selected from MPSC? <span class="asrtick">*</span></label>
-                                        <select class="form-control " name="flgMpscSelection" id="editflgMpscSelection">
-                                        <option value="">Select</option>
-                                        <option {{ (isset($data->flgMpscSelection) && $data->flgMpscSelection==='YES') ? 'selected' : '' }} value="YES">YES</option>
-                                        <option {{ (isset($data->flgMpscSelection) && $data->flgMpscSelection==='NO') ? 'selected' : '' }} value="NO">NO</option>
-                                        </select>
-                                </div> --}}
+                                <div class="col-md-6 mt-3 ">
+                                    <label>
+                                       Select Post Name/ Designation <span class="asrtick">*</span>
+                                    </label>
+                                    <select class="form-control" name="postNameLookupId" id="editpostNameLookupId">                                       
+                                    @foreach($post_name as $key=>$value)
+                                       <option {{ (isset($data->postNameLookupId) && $data->postNameLookupId==$key) ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach                                      
+                                    </select>
+                                 </div>           
                             </div>
-                            <div class="row">
-                                
 
-                                <div class="col-md-6 mt-3">
-                                    <label >Institution / Department / Organisation / Court <span class="asrtick">*</span></label>
+                            <div class="row">
+                              <div class="col-md-6 editdesignation hide">
+                                 <label >Designation <span class="asrtick">*</span></label>
+                                 <input type="text" class="form-control" name="designation" maxlength="200">
+                              </div>
+
+                                <div class="col-md-6">
+                                    <label >Institution / Department / Organisation <span class="asrtick">*</span></label>
                                     <input type="text" class="form-control" name="officeName" id="editofficeName" maxlength="500" value="{{ old('officeName',isset($data->officeName) ? $data->officeName : '' ) }}">
                                 </div>
 
-                                <div class="col-md-6">
-                                 <label style="float: left; width: 250px;">Is Office / Institution owned by Govt. of Maharashtra? <span class="asrtick">*</span></label>
-                                     <select class="form-control select2" name="flgOfficeGovOwned">
-                                     <option value="">Select</option>
-                                     <option {{ (isset($data->flgOfficeGovOwned) && $data->flgOfficeGovOwned==='YES') ? 'selected' : '' }} value="YES">YES</option>
-                                     <option {{ (isset($data->flgOfficeGovOwned) && $data->flgOfficeGovOwned==='NO') ? 'selected' : '' }} value="NO">NO</option>
-                                     </select>
-                             </div>
                            
                             </div>
 
-                            <div class="row">
-                                   
-
-                                 <div class="col-md-6 mb-3">
-                                    <label >Designation (Post Held) <span class="asrtick">*</span></label>
-                                    <input type="text" class="form-control" name="designation" maxlength="200" value="{{ old('designation',isset($data->designation) ? $data->designation : '' ) }}">
-                                 </div>
-
-                                 <div class="col-md-6 mb-3" >
+                            <div class="row">                                 
+                                 <div class="col-md-6" >
                                     <label >Nature Of Job <span class="asrtick">*</span></label>
                                     <select class="form-control select2" name="jobNatureLookupId" id="editjobNatureLookupId">
                                     @foreach($job_nature as $key=>$value)
@@ -75,27 +57,17 @@
                                        @endforeach                                     
                                     </select>
                                  </div>
-                            </div>
-                       
-                            <div class="row">                            
-                            <div class="col-md-6 mb-3 edittypeGroupLookupId {{ (isset($data->flgGazettedPost) && $data->flgGazettedPost == 'YES') ? 'show' : 'hide' }}">
-                                    <label>Group <span class="asrtick">*</span></label>
-                                    <select class="form-control select2" name="typeGroup" id="edittypeGroupLookupId">
-                                       <option value="">Select</option>
-                                       <option {{ (isset($data->typeGroup) && $data->typeGroup==='Group A') ? 'selected' : '' }}  value="Group A"> Group A</option>
-                                       <option {{ (isset($data->typeGroup) && $data->typeGroup==='Group B') ? 'selected' : '' }}  value="Group B">Group B</option>
-                                    </select>
-                                 </div>
 
-                                 <div class="col-md-6 mb-3">
+                                 <div class="col-md-6">
                                     <label >Nature Of Appointment <span class="asrtick">*</span></label>
                                     <select class="form-control " name="apointmentNatureLookupId" id="editapointmentNatureLookupId" onchange="apointmentNaturechange($(this).val(),'yes')">
                                     @foreach($appointment_nature as $key=>$value)
                                           <option {{ (isset($data->apointmentNatureLookupId) && $data->apointmentNatureLookupId== $key) ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
                                        @endforeach                                     
                                     </select>
-                                 </div>                                
-                            </div>
+                                 </div> 
+                           </div>
+          
                             <div class="row">                               
                             <div class="col-md-4 mb-3 editfullTimeLookup">
                                     <label>Full Time / Other</label>
@@ -222,7 +194,15 @@
       }
    });
 
-
+   $('#editpostNameLookupId').on('change',function(){      
+      value = $(this).val();
+      // console.log(value);
+      if(value==433){
+         $('.editdesignation').show();
+      }else{
+         $('.editdesignation').hide();
+      }
+   });
 
          </script>
                            

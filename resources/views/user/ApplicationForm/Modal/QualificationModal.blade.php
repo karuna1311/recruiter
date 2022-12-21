@@ -77,10 +77,7 @@
                                     <label >Attempts<br>प्रयत्न</label>
                                     <input type="text" class="form-control" name="attempts" id="editattempts" value="{{ old('attempts',isset($data->attempts) ? $data->attempts : '' ) }}">
                                  </div>
-                                 <div class="col-md-6 mt-3 mb-1">
-                                    <label >Number of academic months<br>शैक्षणिक महिन्यांची संख्या</label>
-                                    <input type="text" class="form-control" name="courseDurations" id="editcourseDurationMonths" value="{{ old('courseDurations',isset($data->courseDurations) ? $data->courseDurations : '' ) }}">
-                                 </div>
+                                
                                 
                             </div>
                             <div class="row">                               

@@ -54,6 +54,7 @@ class PersonalInfoRequest extends FormRequest
             'present_pin_code'=>'required_if:address_not_same,1',
         ];
     }
+    
 
     public function messages()
     {
@@ -67,7 +68,7 @@ class PersonalInfoRequest extends FormRequest
             'gender.required'     =>  'Gender is required',
             'adhar_card_no.required'     =>  'Aadhar card no is required',
             'adhar_card_no.regex'     =>  'Please enter valid Aadhar card no ',
-            'bankemp.required'     =>  'Please Select Bank Employment',
+            'bankemp.required'     =>  'Are you employee with Municipal Co-Op Bank?',
             'marathispeaking.required'     =>  'Please Select Marathi Speaking',
             'permanent_address_1.required'     =>  'Permanent Address Line 1 is required',
             'permanent_address_2.required'     =>  'Permanent Address Line 2 is required',
@@ -77,8 +78,7 @@ class PersonalInfoRequest extends FormRequest
             'permanent_district.required'     =>  'Permanent District is required',
             'permanent_taluka.required'     =>  'Permanent Taluka is required',
             'permanent_pin_code.required'     =>  'Permanent Pincode is required',
-            'permanent_pin_code.regex'     =>  'Please enter valid Permanent Pincode',
-            
+            'permanent_pin_code.regex'     =>  'Please enter valid Permanent Pincode',            
             'present_address_1.required_if'     =>  'present Address Line 1 is required',
             'present_address_2.required_if'     =>  'present Address Line 2 is required',
             'present_address_3.required_if'     =>  'present Address Line 3 is required',

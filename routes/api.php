@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\API\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::post('/updatePayment','App\Http\Controllers\User\PaymentController@updatePayment')->name('payment.updatePayment');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/updatePayment','PaymentController@updatePayment')->name('payment.update');
+
 

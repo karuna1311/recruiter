@@ -8,6 +8,12 @@
    </div>
    <div class="col-12">
       <div class="tab-content">
+         @if(session('msg_error'))
+            <div class="alert alert-danger" align="center">
+               <p>{{ session('msg_error') }}</p>
+            </div>      
+         @endif
+
           <form id="qualificationform" action="{{ route('qualification.store')}}" method="POST" novalidate="novalidate">
             @csrf
                            <fieldset class="form-fieldset">
@@ -16,7 +22,7 @@
                                  <div class="col-md-3 mb-1">
                                     <label for="qualificationtype">Qualification Type <br>पात्रता प्रकार</label>
                                     <select class="form-control select2" name="qualificationtype" id="qualificationtype" onchange="qualificationtypechange($(this).val())">
-                                       <option value="Select">Select Qualification Type</option>                        
+                                       <option value="">Select Qualification Type</option>                        
                                        @foreach($qualification as $value)
                                        <option value="{{ $value->qualification_type_code }}"> {{ $value->qualification_type_name }}</option>   
                                        @endforeach                                       
@@ -43,7 +49,7 @@
                                     <select id="universitycode" class="form-control select2" name="university" id="universitycode"></select>
                                  </div>
                                  <div class="col-md-3"><label >Qualification Status <br>पात्रता स्थिती</label>
-                                    <select class="form-control select2" name="typeResult" id="typeResult" onchange="qual_status($(this).val())">
+                                    <select class="form-control" name="typeResult" id="typeResult" onchange="qual_status($(this).val())">
                                        <option value="">SELECT</option>
                                        <option value="PASSED">Passed</option>
                                        <option value="APPEARED">Appeared</option>
@@ -92,7 +98,8 @@
                                  </div>
                               </div>
                            </fieldset>
-                           <br>
+                        </form>
+                        <br>
                            <fieldset class="form-fieldset">
                               <div class="table-responsive">
                               <table class="table table-bordered table-striped table-hover datatable datatable-qualification">
@@ -139,12 +146,15 @@
                                                    action="{{ route('qualification.edit', base64_encode($value->id)) }}"
                                                    >
                                                     {{ trans('global.edit') }}
-                                                </a>   
+                                                </a>                                              
+                                                <br>
+                                                <form action="{{ route('qualification.destroy', base64_encode($value->id)) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                   <input type="hidden" name="_method" value="DELETE">
+                                                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                   <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                </form>
                                                                       
                                        </td>
-
-                                                <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
-                                       <td>{{ !empty($value->optionalSubjects) ? $value->optionalSubjects : '-'}}</td> -->
                                        <?php $i++; ?>
                                     </tr>
                                  @endforeach                                
@@ -156,11 +166,17 @@
                         </div>
                            <div class="row form-group  mt-3 ">
                            
-                              <div class="col-md-12 text-center">                                  
-                                 <a href="{{route('experience.index') }}" class="btn btn-success .nextpage mb-1">Save and Next</a>
+                              <div class="col-md-12 text-center">       
+                                 
+                                 <form action="{{ route('qualification.checkQualification') }}" method="POST">
+                                    <input type="hidden" name="_method" value="POST">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="submit" class="btn btn-xs btn-success" value="Save and Next">
+                                 </form>
+                                  
                               </div>
                            </div>
-                        </form>
+                      
       
    
 </div>
@@ -279,25 +295,25 @@
                   if(arr.length > 1){                       
                      valueFlush(['subjectId']);
                         $('#subjectId').empty();
-                        $('#subjectId').prop('disabled', false);
+                        $('#subjectId').attr('readonly', false);
                         $.each(data, function(key, val) {
                            $('#subjectId').append('<option value="'+key+'">'+val+'</option>');
                         });
-                     }else{                                         
-                     $('#subjectId').empty();
-                     $('#subjectId').prop('disabled', 'disabled');
+                     }else{     
+                        $('#subjectId').empty();                                  
+                     $('#subjectId').attr('readonly', true);
                   }
                }else{
                   if(arr.length > 1){    
                      valueFlush(['editsubjectId']);                   
                         $('#editsubjectId').empty();
-                        $('#editsubjectId').prop('disabled', false);
+                        // $('#editsubjectId').attr('readonly', false);
                         $.each(data, function(key, val) {
                            $('#editsubjectId').append('<option value="'+key+'">'+val+'</option>');
                         });
-                     }else{                                         
-                     $('#editsubjectId').empty();
-                     $('#editsubjectId').prop('disabled', 'disabled');
+                     }else{   
+                        $('#editsubjectId').empty();                                      
+                      $('#editsubjectId').append('<option value="">Select</option>');
                   }
                }
                },
@@ -346,20 +362,20 @@
    function qual_status(qual_type,edit=null){
       if(edit==null){
          if(qual_type == 'APPEARED'){
-            valueFlush(['DateofQualification','attempts','percentageGrade','']);
+            valueFlush(['DateofQualification','attempts','percentageGrade']);
             $('#DateofQualification').prop('disabled','disabled');
             $('#DateofQualification').val("");
          }else{
-            valueFlush(['DateofQualification','attempts','percentageGrade','']);
+            valueFlush(['DateofQualification','attempts','percentageGrade']);
             $('#DateofQualification').prop('disabled',false);
          }
       }else{
          if(qual_type == 'APPEARED'){
-            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','','editclassGradeLookupId','editmodeLookupId']);
+            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','editclassGradeLookupId','editmodeLookupId']);
             $('#editDateofQualification').prop('disabled','disabled');
             $('#editDateofQualification').val("");
          }else{
-            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','','editclassGradeLookupId','editmodeLookupId']);
+            valueFlush(['editDateofQualification','editattempts','editpercentageGrade','editclassGradeLookupId','editmodeLookupId']);
             $('#editDateofQualification').prop('disabled',false);
          }
       }
@@ -382,6 +398,8 @@
                 }
             })
    }    
+
+    
   
    $(document).on('click','#editqualificationsubmit',function(e)
    {
@@ -413,14 +431,13 @@
                                  toastr.error(data);
                               }
                      });
-   });
-           
-  
+   });  
+
    $(document).ready(function (e){
       $("#qualificationform").validate({
             // Specify validation rules
             rules: {
-               qualificationtype : "required",
+               qualificationtype :{required:true},
                qualificationname : "required",    
                state : "required",
                university : "required",

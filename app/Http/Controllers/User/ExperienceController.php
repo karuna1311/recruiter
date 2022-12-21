@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use Response;
+use Gate;
 use Exception;
 use App\Models\User;
 use App\Models\lookup;
@@ -11,6 +12,7 @@ use App\Models\UserExperience;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\UserExperienceRequest;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 
 class ExperienceController extends Controller
@@ -22,9 +24,9 @@ class ExperienceController extends Controller
      */
     public function index()
     {
-
+        abort_if(Gate::denies('experience'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
         $user_id =Auth::user()->id;
-        $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('sort_order','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
+        $post_name = lookup::select('label','id')->where('type','LIKE','%post_name%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();       
         $job_nature = lookup::select('id','label')->where('type','LIKE','%job_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         $appointment_nature = lookup::select('id','label')->where('type','LIKE','%appointment_nature%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
        
@@ -37,7 +39,7 @@ class ExperienceController extends Controller
         ->leftjoin('lookup_options as appointment','user_experience.apointmentNatureLookupId','=','appointment.id')
         ->where('user_id',$user_id)
         ->get();
-       
+    //    dd($user_experience);
         return view('user.ApplicationForm.Experience',compact('post_name','job_nature','appointment_nature','user_experience'));
     }
 
@@ -60,11 +62,13 @@ class ExperienceController extends Controller
     public function store(UserExperienceRequest $request)
     {        
         // dd($request->all());
+        abort_if(Gate::denies('experience'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
+        
         try {
             $user=Auth::user();
 
             if($user->status_lock == '0'){
-
+                $experienceexists = UserExperience::exists();
                 $postname = $request->postNameLookupId;
                 if($postname==433){
 
@@ -86,14 +90,19 @@ class ExperienceController extends Controller
                     $data['user_id'] = $user->id;
                    
                     $insert = UserExperience::create($data);
-                    if($user->application_status >= 3) User::where('id',$user->id)->update(['application_status'=>'4']);
+                    
+                    if(!$experienceexists){
+                        User::where('id',$user->id)->update(['application_status'=>'4']);
+                    }
                 }else{
                     $data = $request->except('_token');
                     
                     $data['user_id'] = $user->id;
                
                     $insert = UserExperience::create($data);
-                    if($user->application_status >= 3) User::where('id',$user->id)->update(['application_status'=>'4']);
+                    if(!$experienceexists){
+                        User::where('id',$user->id)->update(['application_status'=>'4']);
+                    }                    
                 }
                
               
@@ -195,14 +204,56 @@ class ExperienceController extends Controller
         return Response::json(['status'=>'success','data'=>'Data updated successfully']);
     }
 
+    public function checkExperience(){      
+        abort_if(Gate::denies('experience'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
+        try {            
+            $user=Auth::user();
+            $check = UserExperience::exists();
+            if($user->status_lock == '0'){                
+            
+                    if($check == true){
+                        // User::where('id',$user->id)->update(['application_status'=>'4']);
+                        return redirect()->route('postavailable.index');
+                    }else{
+                        return redirect()->route('experience.index')->with('msg_error','Please add minimum 1 Experience');
+                    }             
+            }else if($user->status_lock =='1'){
+                
+                if($check == true){                    
+                    return redirect()->route('postavailable.index');
+                }
+                return redirect()->route('experience.index')->with('msg_error','Your account is locked, please first unlocked it.');
+            }            
+        }
+        catch(Exception $e) {
+            return redirect()->route('experience.index')->with('msg_error',$e->getMessage());
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+   
+
     public function destroy($id)
     {
-        //
+        
+        try{
+            $experience_id = base64_decode($id);
+            $model = UserExperience::find($experience_id);
+            
+            if(!empty($model)){
+                $model->delete();
+                return redirect()->route('experience.index');
+            }else{
+                return redirect()->route('experience.index')->with('error','Server Error');
+            }
+
+        }catch(Exception $e){
+            return back()->with('msg_error' ,$e->getmessage());
+        }
     }
 }

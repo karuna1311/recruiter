@@ -12,6 +12,7 @@ use App\Models\UserExperience;
 use App\Models\UserReservation;
 use App\Models\UserQualification;
 use App\Http\Controllers\Controller;
+use App\Models\AppliedJobByUser;
 use App\Models\EligibleCandidates;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
@@ -20,20 +21,21 @@ class PreviewController extends Controller
 {
     public function index()
     {
+        abort_if(Gate::denies('preview'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
         $user=Auth::user();
         $previewData=UserReservation::where('user_id',$user->id)->first(); 
 
-        $qualification = UserQualification::Select('user_qualification.id','user_qualification.typeResult','user_qualification.doq',
+        $qualification = UserQualification::where('user_id',$user->id)->Select('user_qualification.id','user_qualification.typeResult','user_qualification.doq',
         'user_qualification.attempts','user_qualification.percentage','user_qualification.compulsorySubjects',
         'user_qualification.optionalSubjects','subject.subject_name as subject_name','university.name as university_name','class.label as class',
         'mode.label as mode','qualificationtype.qualification_type_name as qualification_type','qualificationname.qualification_name as qualification_name')->where('user_id',$user->id)
         ->leftjoin('qualificationtype','user_qualification.qualificationtype','=','qualificationtype.qualification_type_code')
         ->leftjoin('qualificationname','user_qualification.qualificationname','=','qualificationname.qualification_name_code')
-        ->leftjoin('subject','user_qualification.subject','=','subject.subject_id')
+        ->leftjoin('subject','user_qualification.subject','=','subject.id')
         ->leftjoin('university','user_qualification.university','=','university.id')
         ->leftjoin('lookup_options as class','user_qualification.classGrade','=','class.id')
         ->leftjoin('lookup_options as mode','user_qualification.mode','=','mode.id')
-                                            ->get();
+        ->get();
 
         $experience = UserExperience::where('user_id',$user->id)->Select('user_experience.id as id','employmentType','post.label as post_name','officeName'
         ,'designation','job_nature.label as job_nature','appointment.label as appointment','time','appointmentLetterNo',
@@ -43,14 +45,18 @@ class PreviewController extends Controller
         ->leftjoin('lookup_options as job_nature','user_experience.jobNatureLookupId','=','job_nature.id')
         ->leftjoin('lookup_options as appointment','user_experience.apointmentNatureLookupId','=','appointment.id')
         ->get();
+    
+        $job_applied = AppliedJobByUser::Select('job_adv.name','job_adv.year','eligible_candidates.status','applied_job_by_user.application_no','applied_job_by_user.payment_status')
+        ->join('eligible_candidates','applied_job_by_user.eligible_cand_id','=','eligible_candidates.id')
+        ->join('recruiter_admin.job_adv','job_adv.id','=','eligible_candidates.job_id')
+        ->where('eligible_candidates.user_id',$user->id)
+        ->where('eligible_candidates.status',1)
+        ->get();
 
-        $job_applied = EligibleCandidates::where('user_id',$user->id)
-            ->where('status',1)
-            ->join('recruiter_admin.job_adv','recruiter_admin.job_adv.id','=','eligible_candidates.job_id')
-            ->select('name','year','description')
-            ->get();
+
+
             
-        $userData = ['name'=>$user->name,'mobile'=>$user->mobile,'email'=>$user->email,'dob'=>$user->dob,'rollno'=>$user->rollno,'neetappno'=>$user->neetappno,'neet_marks'=>$user->neet_marks,'arank'=>$user->arank];
+        $userData = ['name'=>$user->name,'mobile'=>$user->mobile,'email'=>$user->email,'dob'=>$user->dob];
         return view('user.ApplicationForm.Preview',compact('previewData','userData','qualification','experience','job_applied'));
     }
     public function create()
@@ -72,7 +78,7 @@ class PreviewController extends Controller
     {
         try {
             $user=Auth::user();
-            if($user->application_status < 7) User::where('id',$user->id)->update(['application_status'=>'5']);
+            User::where('id',$user->id)->update(['application_status'=>'6']);
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);

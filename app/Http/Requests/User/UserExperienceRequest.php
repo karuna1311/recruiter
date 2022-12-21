@@ -30,12 +30,12 @@ class UserExperienceRequest extends FormRequest
             'officeName' => "required",
             'jobNatureLookupId' => "required",           
             'apointmentNatureLookupId' => "required",            
+            'letterDate' => 'required_if:apointmentNatureLookupId,258',
             'fromDate' => "required|date|before_or_equal:today",
             'toDate' => 'required_if:employmentType,PAST|before_or_equal:today|after_or_equal:fromDate',
             'postNameLookupId' => 'required',
             'designation' => "required_if:postNameLookupId,433",
             'appointmentLetterNo' => 'required_if:apointmentNatureLookupId,269,258,272,271',
-            'letterDate' => 'required_if:apointmentNatureLookupId,258,before_or_equal:today',
             'time' => 'required_if:apointmentNatureLookupId,269',          
 
         ];
@@ -47,8 +47,7 @@ class UserExperienceRequest extends FormRequest
             'letterDate.before'=>'The Letter date must be a date before today. ',
             'toDate.before'=>'The To date must be a date before today. ',
             'designation.required_if'=>'Please Enter the designation , Which is not in the list ',
-          
-           
+            'appointmentLetterNo.required_if' => 'Please enter Appointment Letter No'        
         ];
     }
 

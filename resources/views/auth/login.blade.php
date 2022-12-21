@@ -16,23 +16,47 @@
                      <div class="form-group mb-0 " id="PasswordField">
                         <label>Enter Password</label>
                         <input type="Password" class="form-control" name="password" id="password">
-                        <div class="text-right otplogin" id="loginotp">Login with OTP ?</div>
+                        {{-- <div class="text-right otplogin" id="loginotp">Login with OTP ?</div> --}}
                      </div>
                      <button class="btn btn-brand-02 btn-block w-150 m-auto" type="submit">Login</button>
                      <div class="tx-16 mg-t-20 tx-center">Dont have an account? <a href="{{route('register')}}"><b>Register Here</b></a></div>
                      <div class="tx-16 mg-t-20 tx-center">Forgot password? <a href="{{route('password.request')}}" target="_blank"><b>Click Here</b></a></div>
                   </form>
                </div>
-            </div>
-            <!-- sign-wrapper -->
-            <div class="media-body d-lg-flex pos-relative col-lg-7 card pb-20">
-               <div class="card card-body shadow-none bd-info mt-3 mb-3">
-                  <div class="marker marker-ribbon marker-info pos-absolute t-10 l-0">Instructions सूचना </div>
-                  <ul class="steps steps-vertical mt-4 stepsOverflow">
-                   
-                  </ul>
-               </div>
-            </div>
+            </div>     
+             <!-- sign-wrapper -->
+            <div class=" d-lg-flex pos-relative col-lg-4 card pb-20 m-4px">
+              <div class="card card-body shadow-none bd-info mt-3 mb-3">
+                 <div class="marker marker-ribbon marker-info pos-absolute t-10 l-0">News ( बातमी )  </div>
+                 <ul class="steps steps-vertical mt-4 stepsOverflow">
+                    @php $i=0;@endphp
+                    @foreach($instructionData as $data)
+                    <li class="step-item ">
+                       @if($data['children'])
+                       <button type="button" class="step-link" onclick="loadModal('{{$data["id"]}}','{{$data["descriptionDev"]}}')">
+                       <span class="step-number">{{++$i}}</span>
+                       <span class="step-title">{!!$data['descriptionEng']!!}<br>
+                       <span class="text-muted">{{$data['descriptionDev']}}</span></span>
+                       </button>
+                       @elseif($data['isDownloadable'])
+                       <button href="#" class="step-link">
+                       <span class="step-number">{{++$i}}</span>
+                       <span class="step-title"><a href="{{route('instructions.downloadFile',[$data['fileUrl']])}}" target="_blank">{!!$data['descriptionEng']!!}</a><br>
+                       <span class="text-muted">{{$data['descriptionDev']}}</span></span>
+                       </button>
+                       @else
+                       <button href="#" class="step-link">
+                         <span class="step-number">{{++$i}}</span>
+                         <span class="step-title">{!!$data['descriptionEng']!!}<br>
+                         <span class="text-muted">{{$data['descriptionDev']}}</span>
+                         </span>
+                       </button>   
+                       @endif
+                    </li>
+                    @endforeach
+                 </ul>
+              </div>
+           </div>
             <!-- media-body -->
          </div>
          <!-- media -->
@@ -40,6 +64,45 @@
       <!-- container -->
    </div>
 </div>
+
+<div class=" d-lg-flex pos-relative col-lg-4 card pb-20 m-4px">
+  <div class="card card-body shadow-none bd-info mt-3 mb-3">
+     <div class="marker marker-ribbon marker-info pos-absolute t-10 l-0">Notification ( सूचना )  </div>
+     <!-- <marquee behavior="scroll" direction="up" onmouseover="this.stop();" onmouseout="this.start();"  height="300px" scrollamount="4"> -->
+     <ul class="steps steps-vertical mt-4 stepsOverflow">
+      
+         @php $i=0;@endphp
+        @foreach($notificationArr as $data)
+        <li class="step-item ">
+           @if($data['children'])
+           <button type="button" class="step-link" onclick="loadModal('{{$data["id"]}}','{{$data["descriptionDev"]}}')">
+           <span class="step-number">{{++$i}}</span>
+           <span class="step-title">{!!$data['descriptionEng']!!}<br>
+           <span class="text-muted">{{$data['descriptionDev']}}</span></span>
+           </button>
+           @elseif($data['isDownloadable'])
+           <button href="#" class="step-link">
+           <span class="step-number">{{++$i}}</span>
+           <span class="step-title"><a href="{{route('instructions.downloadFile',[$data['fileUrl']])}}" target="_blank">{!!$data['descriptionEng']!!}</a><br>
+           <span class="text-muted">{{$data['descriptionDev']}}</span></span>
+           </button>
+           @else
+           <button href="#" class="step-link">
+             <span class="step-number">{{++$i}}</span>
+             <span class="step-title">{!!$data['descriptionEng']!!}<br>
+             <span class="text-muted">{{$data['descriptionDev']}}</span>
+             </span>
+           </button>   
+           @endif
+        </li>
+        @endforeach
+    
+     </ul>
+  <!--  </marquee> -->
+  </div>
+</div>
+
+
 <div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content tx-14">
@@ -126,6 +189,7 @@
    
                    },
                    success:function(data) { 
+                    console.log(data);
                      $(".body_overlay").hide();
                      if (data.ValidatorErrors) {
                        $.each(data.ValidatorErrors, function(index, jsonObject) {
@@ -148,7 +212,8 @@
                      }
                    },
                    error: function (data) { // Set our complete callback, adding the .hidden class and hiding the spinner.
-                     toastr.error(data.message);
+                    //  toastr.error(data.errors);
+                     toastr.error(data.errors);
                    },
                    complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
                      $('#loader').addClass('hidden');

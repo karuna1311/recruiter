@@ -30,7 +30,7 @@ class ReservationRequest extends FormRequest
 
 
         $domicile_annual = 'YES'||'NO' === $this->get('domicle_maharashtra');
-        $category_annual = 'OPEN'||'SC'||'ST'||'DT-VJ(A)'||'NT(B)'||'NT(C)'||'NT(D)'||'SBC'||'OBC'||'EWS' === $this->get('cate');
+        $category_annual = 'Unreserved'||'SC'||'ST'||'DT-A'||'NT-B'||'NT-C'||'NT-D'||'SBC'||'OBC'||'EWS' === $this->get('cate');
 
         $ews_category = 'EWS'  === $this->get('cate');
         $ews_cert_status_available = 'AVAILABLE' === $this->get('ews_cert_status');
@@ -51,7 +51,7 @@ class ReservationRequest extends FormRequest
             'ews_cert_appli_issue_dist' => ($ews_category && $ews_cert_status_applied) ? $rules['ews_cert_appli_issue_dist'] = 'required' : '',
             'ews_cert_appli_issue_taluka' => ($ews_category && $ews_cert_status_applied) ? $rules['ews_cert_appli_issue_taluka'] = 'required' : '',
 
-            'caste_certificate' => 'required_if:cate,SC,ST,DT-VJ(A),NT(B),NT(D),SBC,OBC',
+            'caste_certificate' => 'required_if:cate,SC,ST,DT-A,NT-B,NT-D,SBC,OBC',
             'caste_cert_no' => 'required_if:caste_certificate,AVAILABLE',
             'caste_cert_issue_district' => 'required_if:caste_certificate,AVAILABLE',
 
@@ -69,7 +69,7 @@ class ReservationRequest extends FormRequest
             'caste_validity_appli_issue_dist'  =>  'required_if:caste_validity,APPLIED BUT NOT RECEIVED',
             'caste_validity_appli_issue_taluka'  =>  'required_if:caste_validity,APPLIED BUT NOT RECEIVED',
 
-            'ncl_cert' => 'required_if:cate,DT-VJ(A),NT(B),NT(D),SBC,OBC',
+            'ncl_cert' => 'required_if:cate,DT-A,NT-B,NT-D,SBC,OBC',
             'ncl_cert_no' => 'required_if:ncl_cert,AVAILABLE',
             'ncl_cert_issue_dist' => 'required_if:ncl_cert,AVAILABLE',
             'ncl_cert_date' => 'nullable|required_if:ncl_cert,AVAILABLE|date_format:'.config('panel.date_format').'|before_or_equal:'.config('datevalidation.reservation.ncl'),
@@ -80,7 +80,7 @@ class ReservationRequest extends FormRequest
             'ncl_cert_appli_issue_taluka' => 'required_if:ncl_cert,APPLIED BUT NOT RECEIVED',
             
             'ph' => 'required',
-            'per_disability' => 'required_if:ph,YES|numeric',
+            'per_disability' => 'required_if:ph,YES',
             'ph_type' => 'required_if:ph,YES',
             
             

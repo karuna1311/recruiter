@@ -16,6 +16,7 @@ class PersonalInformationController extends Controller
 {
     public function index()
     {
+        abort_if(Gate::denies('personal_info'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
         
         $user=Auth::user();
         
@@ -35,17 +36,23 @@ class PersonalInformationController extends Controller
         
         $permanent_district = (!empty($personalInfoData->permanent_state)) ? $personalInfoData->permanent_state : null;
         $permanent_taluka = (!empty($personalInfoData->permanent_district)) ? $personalInfoData->permanent_district : null;
+
+        $present_district = (!empty($personalInfoData->present_state)) ? $personalInfoData->present_state : null;
+        $present_taluka = (!empty($personalInfoData->present_district)) ? $personalInfoData->present_district : null;
        
         $stateData = LocationController::getState();
         $districtData = LocationController::getDistrict($permanent_district);
         $talukaData = LocationController::getSubDistrict($permanent_taluka);
+
+        $present_districtData = LocationController::getDistrict($present_district);
+        $present_talukaData = LocationController::getSubDistrict($present_taluka);
         
         
         return view('user.ApplicationForm.PersonalInformation',compact(
             'stateData',
             'districtData',
             'talukaData',
-            'userData','personalInfoData'));
+            'userData','personalInfoData','present_districtData','present_talukaData'));
     }
     public function create()
     {
@@ -53,13 +60,12 @@ class PersonalInformationController extends Controller
     }
     public function store(PersonalInfoRequest $request)
     {
+        abort_if(Gate::denies('personal_info'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
         try {
             $user=Auth::user();
             $exists = UserReservation::where('user_id',$user->id)->exists();
-            if($exists==true){
-                
-            }else{
-                $insertPersonalInfo = UserReservation::create($request->validated());
+            if(!$exists==true){
+                $insertPersonalInfo = UserReservation::create($request->all());
                 User::where('id',$user->id)->update(['application_status'=>'1']);
             }
             return Response::json(['status'=>'success','data'=>'Data submitted successfully']);
@@ -79,7 +85,7 @@ class PersonalInformationController extends Controller
     }
     public function update(PersonalInfoRequest $request, UserReservation $personalInfo)
     {
-        
+        // dd($request->except('_token'));
         try {
             $user=Auth::user();
 

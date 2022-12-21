@@ -18,7 +18,7 @@ class InstructionsService
         }
     }
     public static function getRegisterInstruction(){
-        $instructionArray=json_decode(Storage::disk('uploads')->get('Instructions/json/RegistrationInstructions.json'),true);
+        $instructionArray=json_decode(Storage::disk('uploads')->get('/Instructions/json/RegistrationInstructions.json'),true);
         foreach($instructionArray as $key => $instructions){
             if(count($instructions['children'])){
                 $children=$instructions['children'];
@@ -35,8 +35,14 @@ class InstructionsService
         return $instructionArray;
     }
     public static function getLoginInstruction(){
-        $instructionArray=json_decode(Storage::disk('uploads')->get('Instructions/json/LoginInstructions.json'),true);
+        
+        $instructionArray=json_decode(Storage::disk('uploads')->get('/Instructions/json/LoginInstructions.json'),true);
         foreach($instructionArray as $key => $instructions){
+            if($instructions['id']=='1'){
+                $notficationArr=$instructionArray[$key];
+                unset($instructionArray[$key]);
+                continue;
+            }
             if($instructions['isActive']!='1') {
                 unset($instructionArray[$key]);
                 continue;
@@ -46,13 +52,18 @@ class InstructionsService
         usort($instructionArray, function($a, $b) {
             return $a['orderId'] <=> $b['orderId'];
         });
-        return $instructionArray;
+        usort($notficationArr['children'], function($a, $b) {
+            return $a['orderId'] <=> $b['orderId'];
+        });
+        
+        return ['news'=>$instructionArray,'notification'=>$notficationArr['children']];
     }
     public static function getLoginInstructionById($id){
+        
         $instructionArray=json_decode(Storage::disk('uploads')->get('Instructions/json/LoginInstructions.json'),true);
         $childrenArray=array();
-        foreach($instructionArray as $value){
-            if($value['id']===$id){
+        foreach($instructionArray as $value){  
+            if($value['id']==$id){
                 $childrenArray=$value['children'];
                 break;
             }

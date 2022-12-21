@@ -1,18 +1,23 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\User\PaymentController;
 
 
 Route::get('/clear-cache', function() {
 	Artisan::call('cache:clear');
-	Artisan::call('route:cache');
-	Artisan::call('config:cache');
-	Artisan::call('view:clear');
+	Artisan::call('optimize:clear');
 	echo 'cleared';
-
 });
+Route::get('/clear-optimize', function() {
+	Artisan::call('optimize:clear');
+	echo 'cleared';
+});
+
+
 
 Route::get('/', function () {
     return redirect('login');
@@ -23,6 +28,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth'], function () {
 	Route::get('/registrationInstructions', 'RegisterController@registrationInstructions')->name('registrationInstructions');
 	Route::get('/loginInstructions/{id?}', 'LoginController@loginInstructions')->name('loginInstructions');
 });
+
+Route::group(['namespace' => 'App\Http\Controllers\Instructions'], function () {
+	Route::get('/instructions-downloadFile/{fileName}', 'InstructionsController@downloadFile')->name('instructions.downloadFile');
+});
+
 
 //otp-routes
 Route::group(['namespace' => 'App\Http\Controllers\Otp'], function () {
@@ -40,21 +50,27 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 
 	Route::resource('qualification', 'QualificationController');
 	Route::post('qualification/destroy','QualificationController@massDestroy')->name('qualification.massDestroy');
+	Route::post('qualification/checkQualificationExists','QualificationController@checkQualification')->name('qualification.checkQualification');
+	
 	Route::resource('experience', 'ExperienceController');
 	Route::post('experience/destroy','ExperienceController@massDestroy')->name('experience.massDestroy');
+	Route::post('experience/checkExperienceExists','ExperienceController@checkExperience')->name('experience.checkExperience');
 
 
 	Route::resource('postavailable', 'PostAvailableController');
 	Route::post('checkEligibility/{id}', 'PostAvailableController@checkJobAvailability')->name('postavailable.checkJob');
 	Route::post('applyJob/{id}', 'PostAvailableController@applyJob')->name('postavailable.applyJob');
+	Route::post('checkPostAvailable', 'PostAvailableController@checkPostAvailable')->name('postavailable.checkPostAvailable');
+	Route::get('applyJob/testfunction', 'PostAvailableController@testFunction')->name('postavailable.test');
 	
+	Route::resource('preview', 'PreviewController');
+	
+	Route::resource('declaration', 'DeclarationController');
 
 	// Route::get('/securityDeposite', 'SecurityDepositeController@index')->name('securityDeposite.index');
 	// Route::post('/securityDeposite/{securityDeposite}', 'SecurityDepositeController@update')->name('securityDeposite.update');
 	// Route::post('/getSecurityDeposite', 'SecurityDepositeController@getSecurityDeposite')->name('securityDeposite.amount');
 
-	Route::resource('preview', 'PreviewController');
-	Route::resource('declaration', 'DeclarationController');
 	//
 	Route::get('/session', 'SessionController@index')->name('session.index');
 	Route::get('/sessionApply/{id}', 'SessionController@sessionApply')->name('session.apply');
@@ -62,24 +78,24 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	//
 	Route::resource('payment', 'PaymentController');
 	Route::post('/payment/form/{data}', 'PaymentController@form')->name('payment.form');
-	Route::post('/payment/totalfees', 'PaymentController@totalFees')->name('payment.totalfees');
-	Route::get('/payment/updatePaymentStatus','PaymentController@show')->name('payment.updatePaymentStatus');
+	Route::post('/payment/totalfees', 'PaymentController@totalFees')->name('payment.totalfees');	
+	Route::post('/payment/unlockProfile', 'PaymentController@unlockProfile')->name('payment.unlockProfile');	
+	
 	//
 	Route::get('/document', 'DocumentUploadController@index')->name('document.index');
 	Route::post('/documentUpload/{document}', 'DocumentUploadController@upload')->name('document.upload');
+	Route::post('/documentUpload/processCompleted', 'DocumentUploadController@processCompleted')->name('document.processCompleted');
 
-	Route::get('/appliedSessions', 'AppliedSessionController@index')->name('appliedSessions.index');
-	Route::get('/paymentReceipt/{session}', 'AppliedSessionController@paymentReceipt')->name('appliedSessions.paymentReceipt');
-	Route::get('/applicationReport/{sessionId}', 'AppliedSessionController@applicationReport')->name('appliedSessions.applicationReport');
+	Route::get('/appliedJobPayment', 'AppliedJobPaymentController@index')->name('appliedJobPayment.index');
+	Route::get('/paymentReceipt/{payment_id}/{job_id}', 'AppliedJobPaymentController@paymentReceipt')->name('appliedJobPayment.paymentReceipt');
+	Route::get('/applicationReport/{payment_id}/{job_id}', 'AppliedJobPaymentController@applicationReport')->name('appliedJobPayment.applicationReport');
 });
 
-// Route::post('/paymentUpdate/{transaction}', 'App\Http\Controllers\User\PaymentController@update')->name('payment.update');
-// Route::post('/updatePushResponse', 'App\Http\Controllers\User\PaymentController@updatePushResponse')->name('payment.updatePushResponse');
 
 Route::post('/getLocation', 'App\Http\Controllers\Location\LocationController@index')->name('location.index');
 Route::get('/getState', 'App\Http\Controllers\Location\LocationController@getState')->name('location.getState');
 Route::get('/getDistrict', 'App\Http\Controllers\Location\LocationController@getDistrict')->name('location.getDistrict');
-Route::get('/getCollegeList/{collegeType}', 'App\Http\Controllers\User\CollegeListController@index')->name('collegeList.index');
+// Route::get('/getCollegeList/{collegeType}', 'App\Http\Controllers\User\CollegeListController@index')->name('collegeList.index');
 
 
 Route::get('/services/{qualificationtype}', 'App\Http\Controllers\Service\ServiceController@getQualificationName')->name('services.getQualificationName');

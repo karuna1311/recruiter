@@ -3,7 +3,7 @@
    <head>
       <style type="text/css">
          @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
-         body { margin: 1px; }
+         body { margin: 1px; font-family: freeserif;}
          .devnagari{font-family: freeserif;}
       </style>
    </head>
@@ -16,39 +16,39 @@
             table td{border: 0px solid #ddd;padding: 4px;font-size: 12px;color: #000;text-align: left;font-family: 'Open Sans', sans-serif;font-weight: 400!important;}
             .widthBd td{width: 16.66%;}
             table tr{border: 1px solid #ddd;}
+            .tablebd tr td{border: 1px solid #ddd;}
+            .tablebd tr th{background: #fff!important;border: 1px solid #ddd;}
          </style>
          <table style="margin-bottom: 20px;">
             <tr>
-              <td><img src="{{ url('/') }}/LoginAssets/images/pdfback.jpg" class="w-100"></td>
-            </tr>
-         </table>
-         <br>
-         <!-- neet details -->
-         <table class="widthBd">
-            <tr>
-               <th colspan="6">PREVIOUS ATTEMPT OF NEET PG</th>
-            </tr>
-            <tr>
-               <td><span>{{ trans('cruds.registration.NeetRollNo_eng') }}</span><br><span class="devnagari">{{ trans('cruds.registration.NeetRollNo_dev') }}:</span></td>
-               <td><b>{{$userData['rollno']}}</b></td>
-               <td><span>{{ trans('cruds.registration.NeetAppNo_eng') }}</span><br><span class="devnagari">{{ trans('cruds.registration.NeetAppNo_dev') }}:</span></td>
-               <td><b>{{$userData['neetappno']}}</b></td>
-               <td><span>{{ trans('cruds.personalInformation.fields.DateOfBirth_eng') }}</span><br><span class="devnagari">{{ trans('cruds.personalInformation.fields.DateOfBirth_dev') }}:</span></td>
-               <td><b>{{$userData['dob']}}</b></td>
-            </tr>
-            <tr>
-               <td><span>{{ trans('cruds.registration.NeetRank_eng') }}</span><br><span class="devnagari">{{ trans('cruds.registration.NeetRank_dev') }}:</span></td>
-               <td><b>{{$userData['arank']}}</b></td></td>
-               <td><span>{{ trans('cruds.registration.NeetMark_eng') }}</span><br><span class="devnagari">{{ trans('cruds.registration.NeetMark_dev') }}:</span></td>
-               <td><b>{{$userData['neet_marks']}}</b></td>
+               <td><img src="{{ url('/') }}/LoginAssets/images/pdfback.jpg" class="w-100"></td>
             </tr>
          </table>
          <br>
          <!-- Personal Information -->
          <table  class="widthBd">
+          
+            <tr>
+               <td colspan="4">
+                  <span>Application No<br>
+                  {{-- <span class="devnagari">{{ trans('cruds.personalInformation.fields.name_dev') }}</span>: --}}
+               </td>
+               <td colspan="2"><b>{{$appliedjob->application_no}}</b></td>
+            </tr>
+            <tr>
+               <td colspan="4">
+                  <span>Job Name</span><br>
+                  {{-- <span class="devnagari">{{ trans('cruds.personalInformation.fields.name_dev') }}</span>: --}}
+               </td>
+               <td colspan="2"><b><span class="devnagari">{{ App\Traits\Convertors::postName($appliedjob['job_id'])}}</span></b></td>
+            </tr>
+            
+            
             <tr>
                <th colspan="6">Personal Information</th>
             </tr>
+
+
             <tr>
                <td colspan="4">
                   <span>{{ trans('cruds.personalInformation.fields.name_eng') }}</span><br>
@@ -86,7 +86,22 @@
                <td><span>{{ trans('cruds.personalInformation.fields.alternateContact_eng') }}</span>:<br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.alternateContact_dev') }}</span>:</td>
                <td><b>{{$previewData->alternate_mobile??'--'}}</b></td>
                <td><span>{{ trans('cruds.personalInformation.fields.aadhar_eng') }}</span>: <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.aadhar_dev') }}</span>:</td>
-               <td colspan="3"><b>{{$previewData->adhar_card_no??'--'}}</b></td>
+               <td><b>{{$previewData->adhar_card_no??'--'}}</b></td>
+                           <td><span>{{ trans('cruds.personalInformation.fields.age_eng') }} </span>
+                  <span class="devnagari">{{ trans('cruds.personalInformation.fields.age_dev') }}</span>
+               </td>
+               <td><b>{{$previewData->age??'--'}}</b></td>
+               </tr>
+            <tr>
+
+               <td><span>{{ trans('cruds.personalInformation.fields.municipal_bank_eng') }}</span>
+                  <span class="devnagari"> {{ trans('cruds.personalInformation.fields.municipal_bank_dev') }} </span>
+               </td>
+               <td><b>{{$previewData->bankemp??'--'}}</b></td>
+               <td><span>{{ trans('cruds.personalInformation.fields.marathi_eng') }}</span>
+                  <span class="devnagari"> {{ trans('cruds.personalInformation.fields.marathi_dev') }} </span>
+               </td>
+               <td><b>{{$previewData->marathispeaking??'--'}}</b></td>
             </tr>
          </table>
          <!-- Permanent Addresss -->
@@ -107,13 +122,13 @@
                <td><span>{{ trans('cruds.personalInformation.fields.city_eng') }}</span> <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.city_dev') }}</span>:</td>
                <td><b>{{$previewData->permanent_city??'--'}}</b></td>
                <td><span>{{ trans('cruds.personalInformation.fields.state_eng') }}</span> <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.state_dev') }}</span>:</td>
-               <td><b>{{$previewData->permanent_state??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getStateByID($previewData->permanent_state)??'--'}}</b></td>
                <td><span>{{ trans('cruds.personalInformation.fields.district_eng') }}</span> <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.district_dev') }}</span></td>
-               <td><b>{{$previewData->permanent_district??'--'}}</b></td>
+               <td><b>{{  App\Traits\Convertors::getDistrictById($previewData->permanent_district)??'--'}}</b></td>
             </tr>
             <tr>
                <td><span>{{ trans('cruds.personalInformation.fields.taluka_eng') }} </span><br> <span class="devnagari"> {{ trans('cruds.personalInformation.fields.taluka_dev') }}</span></td>
-               <td><b>{{$previewData->permanent_taluka??'--'}}</b></td>
+               <td><b>{{   App\Traits\Convertors::getTalukaById( $previewData->permanent_taluka )??'--'}}</b></td>
                <td><span>{{ trans('cruds.personalInformation.fields.PinCode_eng') }}</span> <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.PinCode_dev') }} </span></td>
                <td><b>{{$previewData->permanent_pin_code??'--'}}</b></td>
             </tr>
@@ -137,13 +152,13 @@
                <td><span>{{ trans('cruds.personalInformation.fields.city_eng') }}</span> <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.city_dev') }}</span>:</td>
                <td><b>{{$previewData->present_city??'--'}}</b></td>
                <td><span>{{ trans('cruds.personalInformation.fields.state_eng') }}</span> <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.state_dev') }}</span>:</td>
-               <td><b>{{$previewData->present_state??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getStateByID($previewData->present_state ) ??'--'}}</b></td>
                <td><span>{{ trans('cruds.personalInformation.fields.district_eng') }}</span> <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.district_dev') }}</span></td>
-               <td><b>{{$previewData->present_district??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getDistrictById($previewData->present_district) ??'--'}}</b></td>
             </tr>
             <tr>
                <td><span>{{ trans('cruds.personalInformation.fields.taluka_eng') }} </span><br> <span class="devnagari"> {{ trans('cruds.personalInformation.fields.taluka_dev') }}</span></td>
-               <td><b>{{$previewData->present_taluka??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getTalukaById($previewData->present_taluka )??'--'}}</b></td>
                <td><span>{{ trans('cruds.personalInformation.fields.PinCode_eng') }}</span> <br> <span class="devnagari">{{ trans('cruds.personalInformation.fields.PinCode_dev') }} </span></td>
                <td><b>{{$previewData->present_pin_code??'--'}}</b></td>
             </tr>
@@ -154,20 +169,6 @@
          <table class="widthBd">
             <tr>
                <th colspan="2">Reservation</th>
-            </tr>
-            <tr>
-               <td><span>{{ trans('cruds.Reservation.fields.nri_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.nri_dev') }}</span>:</td>
-               <td><b>{{$previewData->nriq??'--'}}</b></td>
-            </tr>
-         </table>
-         <table class="widthBd">
-            <tr>
-               @if($previewData->nriq=='YES')
-               <td><span>{{ trans('cruds.Reservation.fields.nriSelf_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.nriSelf_dev') }}</span>:</td>
-               <td><b>{{$previewData->nrim??'--'}}</b></td>
-               <td><span>{{ trans('cruds.Reservation.fields.NriWard_eng') }}</span>: <br><span class="devnagari">{{ trans('cruds.Reservation.fields.NriWard_dev') }}</span>:</td>
-               <td><b>{{$previewData->nriw??'--'}}</b></td>
-               @endif
             </tr>
          </table>
          <table class="widthBd">
@@ -182,20 +183,12 @@
             <tr>
                <td><span>{{ trans('cruds.Reservation.fields.Category_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.Category_dev') }}</span>:</td>
                <td><b>{{$previewData->cate??'--'}}</b></td>
-               @if($previewData->nriq=='NO' && $previewData->nation=='INDIAN')
+              
                <td><span>{{ trans('cruds.Reservation.fields.AnnualIncome_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.AnnualIncome_dev') }}</span>:</td>
                <td><b>{{$previewData->annual_family_income??'--'}}</b></td>
                <td><span>{{ trans('cruds.Reservation.fields.regionOfResidence_eng') }} </span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.regionOfResidence_dev') }}:</span></td>
                <td><b>{{$previewData->region_of_residence??'--'}}</b></td>
-               @endif
-            </tr>
-         </table>
-         <table class="widthBd">
-            <tr>
-               @if($previewData->ews=='YES')
-               <td><span>{{ trans('cruds.Reservation.fields.certStatus_eng') }}</span><br> <span class="devnagari">{{ trans('cruds.Reservation.fields.certStatus_dev') }}</span></td>
-               <td><b>tedt</b></td>
-               @endif
+              
             </tr>
          </table>
          <table class="widthBd">
@@ -204,7 +197,7 @@
                <td><span>{{ trans('cruds.Reservation.fields.EwsCertificateNo_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.EwsCertificateNo_dev') }}</span>:</td>
                <td><b>{{$previewData->ews_cert_no??'--'}}</b></td>
                <td><span>{{ trans('cruds.Reservation.fields.EWSCertIssuingDistrict_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.EWSCertIssuingDistrict_dev') }}</span>:</td>
-               <td><b>{{$previewData->ews_cert_issue_dist??'--'}}</b></td>
+               <td><b>{{   App\Traits\Convertors::getDistrictById($previewData->ews_cert_issue_dist)??'--'}}</b></td>
             </tr>
             @endif
          </table>
@@ -216,17 +209,17 @@
                <td><span>{{ trans('cruds.Reservation.fields.EwsApplicationDate_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.EwsApplicationDate_dev') }}</span>:</td>
                <td><b>{{$previewData->ews_cert_appli_date??'--'}}</b></td>
                <td><span>{{ trans('cruds.Reservation.fields.EwsEwsAppDistrict_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.EwsEwsAppDistrict_dev') }}</span>:</td>
-               <td><b>{{$previewData->ews_cert_appli_issue_dist??'--'}}</b></td>
+               <td><b>{{App\Traits\Convertors::getDistrictById($previewData->ews_cert_appli_issue_dist)??'--'}}</b></td>
             </tr>
             <tr>
                <td><span>{{ trans('cruds.Reservation.fields.EwsIssuingTaluka_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.EwsIssuingTaluka_dev') }} :</span></td>
-               <td><b>{{$previewData->ews_cert_appli_issue_taluka??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getTalukaById( $previewData->ews_cert_appli_issue_taluka )??'--'}} </b></td>
             </tr>
             @endif
          </table>
          <table class="widthBd">
             <tr>
-               @if($previewData->cate=='SC' || $previewData->cate=='ST' || $previewData->cate=='DT-VJ(A)' || $previewData->cate=='NT(B)' || $previewData->cate=='NT(C)' || $previewData->cate=='NT(D)' || $previewData->cate=='OBC' || $previewData->cate=='SBC')
+               @if($previewData->cate=='SC' || $previewData->cate=='ST' || $previewData->cate=='DT-A' || $previewData->cate=='NT-B' || $previewData->cate=='NT-C' || $previewData->cate=='NT-D' || $previewData->cate=='OBC' || $previewData->cate=='SBC')
                <td><span>{{ trans('cruds.Reservation.fields.ScCasteCert_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.ScCasteCert_dev') }}</b>:</td>
                <td><b>{{$previewData->caste_certificate??'--'}}</b></td>
                @endif
@@ -234,7 +227,7 @@
                <td><span>{{ trans('cruds.Reservation.fields.CasteCertNumber_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.CasteCertNumber_dev') }}</b>:</td>
                <td><b>{{$previewData->caste_cert_no??'--'}}</b></td>
                <td><span>{{ trans('cruds.Reservation.fields.CasteCertInssDist_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.CasteCertInssDist_dev') }}</b>:</td>
-               <td><b>{{$previewData->caste_cert_issue_district??'--'}}</b></td>
+               <td><b>{{  App\Traits\Convertors::getDistrictById($previewData->caste_cert_issue_district)??'--'}}</b></td>
                @endif
             </tr>
          </table>
@@ -246,11 +239,11 @@
                <td><span>{{ trans('cruds.Reservation.fields.CasteCertappDate_eng') }} </span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.CasteCertappDate_dev') }}:</span></td>
                <td><b>{{$previewData->caste_cert_appli_date??'--'}}</b></td>
                <td><span>{{ trans('cruds.Reservation.fields.CasteCertDist_eng') }} </span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.CasteCertDist_dev') }}</span></td>
-               <td><b>{{$previewData->caste_cert_appli_issue_dist??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getDistrictById($previewData->caste_cert_appli_issue_dist)??'--'}}</b></td>
             </tr>
             <tr>
                <td><span>{{ trans('cruds.Reservation.fields.CasteCertTal_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.CasteCertTal_dev') }}:</span></td>
-               <td><b>{{$previewData->caste_cert_appli_issue_taluka??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getTalukaById( $previewData->caste_cert_appli_issue_taluka )??'--'}} </b></td>
             </tr>
             @endif
          </table>
@@ -264,7 +257,7 @@
                <td><span>{{ trans('cruds.Reservation.fields.CasteValNumber_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.CasteValNumber_dev') }}:</span></td>
                <td><b>{{$previewData->caste_validity_no??'--'}}</b></td>
                <td><span>{{ trans('cruds.Reservation.fields.CasteValDist_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.CasteValDist_dev') }}:</span></td>
-               <td><b>{{$previewData->caste_validity_issue_district??'--'}}</b></td>
+               <td><b>{{  App\Traits\Convertors::getDistrictById($previewData->caste_validity_issue_district)??'--'}}</b></td>
                @endif
             </tr>
          </table>
@@ -280,7 +273,7 @@
             </tr>
             <tr>
                <td><span>{{ trans('cruds.Reservation.fields.CasteValAppTal_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.CasteValAppTal_dev') }}:</span></td>
-               <td><b>{{$previewData->caste_validity_appli_issue_taluka??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getTalukaById( $previewData->caste_validity_appli_issue_taluka )??'--'}}  </b></td>
             </tr>
             @endif
          </table>
@@ -290,7 +283,7 @@
                <td><span>{{ trans('cruds.Reservation.fields.NCLCertNo_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.NCLCertNo_dev') }}:</span></td>
                <td><b>{{$previewData->ncl_cert_no??'--'}}</b></td>
                <td><span>{{ trans('cruds.Reservation.fields.NCLCertDist_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.NCLCertDist_dev') }}:</span></td>
-               <td><b>{{$previewData->ncl_cert_issue_dist??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getDistrictById($previewData->ncl_cert_issue_dist)??'--'}}</b></td>
                <td><span>{{ trans('cruds.Reservation.fields.nclCertDate_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.Reservation.fields.nclCertDate_dev') }}:</span></td>
                <td><b>{{$previewData->ncl_cert_date??'--'}}</b></td>
             </tr>
@@ -308,203 +301,237 @@
             </tr>
             <tr>
                <td><span>{{ trans('cruds.Reservation.fields.NCLCertIssuingTal_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.NCLCertIssuingTal_dev') }}:</span></td>
-               <td><b>{{$previewData->ncl_cert_appli_issue_taluka??'--'}}</b></td>
+               <td><b>{{ App\Traits\Convertors::getTalukaById( $previewData->ncl_cert_appli_issue_taluka )??'--'}} </b></td>
             </tr>
             @endif
+         </table>
+         <br>
+          <table class="widthBd">
+            <tr>
+               <th >Persons with Benchmark Disabilities Details</th>
+            </tr>
          </table>
          <table class="widthBd">
             <tr>
                <td><span>{{ trans('cruds.Reservation.fields.ph_eng') }} :</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.ph_dev') }}:</span></td>
                <td><b>{{$previewData->ph??'--'}}</b></td>
+              @if($previewData->ph=='YES') 
+               <td><span>{{ trans('cruds.SpecialReservation.fields.perdisability_eng') }}</span><br><span class="devnagari">{{ trans('cruds.SpecialReservation.fields.perdisability_dev') }}:</span></td>
+               <td><b>{{$previewData->per_disability??'--'}}</b></td>
+                <td>
+                  <span>{{ trans('cruds.SpecialReservation.fields.phType_eng') }}</span><span class="devnagari">{{ trans('cruds.SpecialReservation.fields.phType_dev') }}</span>
+               </td>
+               <td><b>{{ ($previewData->ph_type) ? App\Traits\Convertors::phType($previewData->ph_type) :'--'  }}</b></td>
+                @endif
+            </tr>
+         </table>
+         <br>
+          <table class="widthBd">
+            <tr>
+               <th >Orphan Details</th>
+            </tr>
+         </table>
+         <table class="widthBd">
+           
+            <tr>
                <td><span>{{ trans('cruds.Reservation.fields.orphan_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.orphan_dev') }}:</span></td>
                <td><b>{{$previewData->orphan??'--'}}</b></td>
-               <td><span>{{ trans('cruds.Reservation.fields.MinorityQuota_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.MinorityQuota_dev') }}:</span></td>
-               <td><b>{{$previewData->minority??'--'}}</b></td>
             </tr>
-         </table>
-         <table class="widthBd">
-            @if($previewData->minority=='YES') 
-            <tr>
-               <td><span>{{ trans('cruds.Reservation.fields.religion_eng') }}</span><br><span class="devnagari">{{ trans('cruds.Reservation.fields.religion_dev') }}:</span></td>
-               <td><b>{{$previewData->minority_quota??'--'}}</b></td>
-            </tr>
+             @if($previewData->orphan=='YES') 
+             <tr>
+                <td><span>{{ trans('cruds.SpecialReservation.fields.orphanType_eng') }}</span> <span class="devnagari">{{ trans('cruds.SpecialReservation.fields.orphanType_dev') }}</span></td>
+                <td><b>{{$previewData->orphan_type ??'--'}}</b></td>
+             </tr>
             @endif
          </table>
+         <br>
          <table class="widthBd">
             <tr>
-               <th>Inservice Quota</th>
+               <th>Ex-serviceman</th>
             </tr>
          </table>
          <table class="widthBd">
             <tr>
-               <td colspan="4"><span>{{ trans('cruds.inserviceQuota.fields.inserviceQuota_eng') }} </span> <br><span class="devnagari">{{ trans('cruds.inserviceQuota.fields.inserviceQuota_dev') }}:</span></td>
-               <td><b>{{$previewData->inservice_quota??'--'}}</b></td>
+               <td colspan="4"><span>{{ trans('cruds.SpecialReservation.fields.exserviceman_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.SpecialReservation.fields.exserviceman_dev') }}:</span></td>
+               <td><b>{{$previewData->ex_serviceman??'--'}}</b></td>
             </tr>
          </table>
          <table class="widthBd">
-            @if($previewData->inservice_quota=='YES')
+            @if($previewData->ex_serviceman=='YES')
             <tr>
-               <td><span>{{ trans('cruds.inserviceQuota.fields.inservice_establishment_eng') }}</span><br><span class="devnagari">{{ trans('cruds.inserviceQuota.fields.inservice_establishment_dev') }}</span>:</td>
-               <td><b>{{$previewData->inservice_establishment??'--'}}</b></td>
-               <td ><span>{{ trans('cruds.inserviceQuota.fields.DateOfJoin_eng') }} </span> <br><span class="devnagari">{{ trans('cruds.inserviceQuota.fields.DateOfJoin_dev') }}:</span></td>
-               <td><b>{{$previewData->inservice_join_date??'--'}}</b></td>
+               <td><span>Division of the Armed Forces</span><br><span class="devnagari">सशस्त्र दलांची विभागणी</span>:</td>
+               <td><b>{{$previewData->forces_division??'--'}}</b></td>
+
+               <td ><span>{{ trans('cruds.SpecialReservation.fields.joinDate_eng') }}</span><br><span class="devnagari">{{ trans('cruds.SpecialReservation.fields.joinDate_dev') }}:</span></td>
+               <td><b>{{$previewData->join_date??'--'}}</b></td>
             </tr>
             <tr>
-               <td ><span>{{ trans('cruds.inserviceQuota.fields.PostingAdd_eng') }} </span> <br><span class="devnagari">{{ trans('cruds.inserviceQuota.fields.PostingAdd_dev') }}:</span></td>
-               <td><b>{{$previewData->inservice_posting_addr??'--'}}</b></td>
-               <td><span>{{ trans('cruds.inserviceQuota.fields.noc_eng') }} </span> <br><span class="devnagari">{{ trans('cruds.inserviceQuota.fields.noc_dev') }}:</span></td>
-               <td><b>{{$previewData->inservice_establish_noc??'--'}}</b></td>
-            </tr>
-            <tr>
-               @if($previewData->inservice_quota=='YES')
-               <td ><span>{{ trans('cruds.inserviceQuota.fields.NocIssuingDate_eng') }} </span><br><span class="devnagari">{{ trans('cruds.inserviceQuota.fields.NocIssuingDate_dev') }}:</span></td>
-               <td><b>{{$previewData->inservice_establish_noc_date??'--'}}</b></td>
-               @endif
-               <td ><span>{{ trans('cruds.inserviceQuota.fields.DeptInq_eng') }}</span>  <br><span class="devnagari">{{ trans('cruds.inserviceQuota.fields.DeptInq_dev') }}:</span></td>
-               <td><b>{{$previewData->inservice_dept_enquiry??'--'}}</b></td>
-            </tr>
-            @if($previewData->inservice_dept_enquiry=='YES')
-            <tr>
-               <td><span>{{ trans('cruds.inserviceQuota.fields.InqDetails_eng') }}:</span><br><span class="devnagari">{{ trans('cruds.inserviceQuota.fields.InqDetails_dev') }}:</span></td>
-               <td><b>{{$previewData->inservice_dept_enquiry_details??'--'}}</b></td>
+               <td ><span>{{ trans('cruds.SpecialReservation.fields.retirement_eng') }}</span><br><span class="devnagari">{{ trans('cruds.SpecialReservation.fields.retirement_dev') }}</span></td>
+               <td><b>{{$previewData->retirement_date??'--'}}</b></td>
+
+               <td><span>{{ trans('cruds.SpecialReservation.fields.PeriodOfService_eng') }}</span><br><span class="devnagari">{{ trans('cruds.SpecialReservation.fields.PeriodOfService_dev') }}:</span></td>
+               <td><b>{{$previewData->service_years.'  Year '.$previewData->service_months.' months '.$previewData->service_days. ' days '??'--'}}</b></td>
             </tr>
               @endif
-            @endif
+            
          </table>
+         <br>
          <table class="widthBd">
             <tr>
-               <th><b>{{ trans('cruds.CollegeInformation.title_eng') }} </b></th>
-            </tr>
-         </table>
-         <table class="widthBd">
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.DegreeExam_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.DegreeExam_dev') }}:</span></td>
-               <td><b>{{$previewData->mbbs_passing_date??'--'}}</b></td>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.PercentageMBBS_eng') }} </span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.PercentageMBBS_dev') }}:</span></td>
-               <td><b>{{$previewData->mbbs_agg_per??'--'}}</b></td>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.DateofIntern_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.DateofIntern_dev') }}</span></td>
-               <td><b>{{$previewData->mbbs_internship_date??'--'}}</b></td>
+               <th><b>{{ trans('cruds.SportDetails.title_eng') }} </b></th>
             </tr>
          </table>
          <table class="widthBd">
             <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.DiplomaCourse_eng') }}</span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.DiplomaCourse_dev') }}:</span></td>
-               <td><b>{{$previewData->mci_reg_diploma??'--'}}</b></td>
-               @if($previewData->mci_reg_diploma=='COMPLETED' || $previewData->mci_reg_diploma=='ADMITTED AND PURSUING')
-               <td><span>{{ trans('cruds.CollegeInformation.fields.SubofDiploma_eng') }}</span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.SubofDiploma_dev') }}:</span></td>
-               <td><b>{{$previewData->diploma_subject??'--'}}</b></td>
-               @endif
+               <td><span>{{ trans('cruds.SportDetails.fields.sportPerson_eng') }}</span><br>
+                  <span class="devnagari">{{ trans('cruds.SportDetails.fields.sportPerson_dev') }}:</span></td>
+               <td><b>{{$previewData->sports_person??'--'}}</b></td>
             </tr>
          </table>
+            @if($previewData->sports_person=='YES') 
          <table class="widthBd">
             <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.DegreeCourse_eng') }}</span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.DegreeCourse_dev') }}:</span></td>
-               <td><b>{{$previewData->mci_reg_degree??'--'}}</b></td>
+               <td><span>{{ trans('cruds.SportDetails.fields.CompetitionType_eng') }}</span><br>
+                  <span class="devnagari">{{ trans('cruds.SportDetails.fields.CompetitionType_dev') }}:</span></td>
+               <td><b>{{ ($previewData->type_competition) ? App\Traits\Convertors::competitionType($previewData->type_competition) :'--'  }}</b></td>
+
+               <td><span>{{ trans('cruds.SportDetails.fields.CompetitionLevel_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.SportDetails.fields.CompetitionLevel_dev') }}</span></td>
+               <td><b>{{$previewData->level_competition??'--'}}</b></td>
             </tr>
-            <tr>
-               
-               <td><span>{{ trans('cruds.CollegeInformation.fields.MBBSDegree_eng') }}</span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.MBBSDegree_dev') }}:</span></td>
-               <td><b>{{$previewData->mbbs_dc_in_mh_or_aiims??'--'}}</b></td>
-             
-            </tr>
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.GovtClg_eng') }}: </span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.GovtClg_dev') }}</span></td>
-               <td><b>{{$previewData->mbbs_college_name??'--'}}</b></td>
-            </tr>
-            @if($previewData->mbbs_dc_in_mh_or_aiims=='YES')
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.CollegeType_eng') }}: </span> <br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.CollegeType_dev') }}:</span></td>
-               <td><b>{{$previewData->mbbs_college_type??'--'}}</b></td>
-            </tr>
-            @endif
-            @if($previewData->mbbs_dc_in_mh_or_aiims=='NO' )
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.GovtClg_eng') }}:</span> <br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.GovtClg_dev') }}</span></td>
-               <td><b>{{$previewData->mbbs_college_outoff_ind_mah??'--'}}</b></td>
-            </tr>
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.college_name_out_mh_eng') }}</span><span class="devnagari"> <br>{{ trans('cruds.CollegeInformation.fields.college_name_out_mh_dev') }} :</span> </td>
-               <td><b>{{$previewData->mbbs_college_ind_mah??'--'}}</b></td>
-            </tr>
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.uni_name_out_mh_eng') }}</span><br><span class="devnagari"> {{ trans('cruds.CollegeInformation.fields.uni_name_out_mh_dev') }}:</span></td>
-               <td><b>{{$previewData->mbbs_university_ind_mah??'--'}}</b></td>
-            </tr>
-            @endif
-            @if($previewData->mci_reg_degree=='COMPLETED')
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.SubofDegree_eng') }}:</span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.SubofDegree_dev') }}:</span></td>
-               <td><b>{{$previewData->degree_subject??'--'}}</b></td>
-            </tr>
-             @endif
          </table>
-         @if( $previewData->mbbs_college_type=='AIIMS OR CENTRAL GOVT INSTITUTION' )
+
+         <table class="widthBd">
+            <tr>
+               <td><span>{{ trans('cruds.SportDetails.fields.CompetitionMedal_eng') }}</span><br><span class="devnagari">{{ trans('cruds.SportDetails.fields.CompetitionMedal_dev') }}:</span></td>
+               <td><b> {{ ($previewData->position_medal) ? App\Traits\Convertors::medalname($previewData->position_medal) :'--'  }}</b></td>
+
+              
+               <td><span>{{ trans('cruds.SportDetails.fields.CompetitionYear_eng') }}</span><br><span class="devnagari">{{ trans('cruds.SportDetails.fields.CompetitionYear_dev') }}:</span></td>
+               <td><b>{{$previewData->competition_year??'--'}}</b></td>
+
+            </tr>
+         </table>
+          @endif
+          <br>
+          <table class="widthBd">
+            <tr>
+               <th>Qualification</th>
+            </tr>
+         </table>
+         <table class="tablebd">
+            <thead style="background: #fff!important;">
+               <tr role="row">
+                  <th>Sr No</th>
+                  <th>Qualification Type</th>
+                  <th>Name of Qualification</th>
+                  <th>Subject / Stream / Branch</th>
+                  <th>Board / University</th>
+                  <th>Qualification Type</th>
+                  <th>Date of qualification completion</th>
+                  <th>Attempts</th>
+                  <th>Percentage / CGPA (For Grade add respective percentage value)</th>                  
+                  <th>Class / Grade</th>
+                  <th>Mode</th>
+               </tr>
+            </thead>
+            <tbody style="font-size: 12px;">
+               <?php $i=1; ?>
+               @foreach($qualification as $value)
+               <tr role="row"class="odd">
+                  <td>{{ $i }}</td>
+                  <td>{{ !empty($value->qualificationtype) ? $value->qualificationtype : '-'}}</td>
+                  <td>{{ !empty($value->qualificationname) ? $value->qualificationname : '-'}}</td>
+                  <td>{{ !empty($value->subject) ? App\Traits\Convertors::subject($value->subject)  : '-'}}</td>
+                  <td>{{ !empty($value->university) ? App\Traits\Convertors::university($value->university) : '-'}}</td>
+                  <td>{{ !empty($value->typeResult) ? $value->typeResult : '-'}}</td>
+                  <td>{{ !empty($value->doq) ? $value->doq : '-'}}</td>
+                  <td>{{ !empty($value->attempts) ? $value->attempts : '-'}}</td>
+                  <td>{{ !empty($value->percentage) ? $value->percentage : '-'}}</td>                  
+                  <td>{{ !empty($value->classGrade) ? App\Traits\Convertors::class($value->classGrade)  : '-'}}</td>
+                  <td>{{ !empty($value->mode) ? App\Traits\Convertors::mode($value->mode) : '-'}}</td>
+                  <?php $i++; ?>
+               </tr>
+               @endforeach
+            </tbody>
+         </table>
+         <br>
+         <table class="widthBd">
+            <tr>
+               <th>Experience Information</th>
+            </tr>
+         </table>
+         <table class="tablebd">
+            <thead >
+               <tr>
+                  <th>Sr No</th>
+                  <th>Institution / Department / Organisation / Court</th>
+                  <th>Designation </th>
+                  <th>Nature Of Appointment</th>
+                  <th>Nature Of Job</th>
+                  <th>Full Time / Other</th>
+                  <th>Pay Band / Pay Scale / Professional Charge</th>
+                  <th>Grade Pay</th>
+                  <th>Monthly Gross Salary / Income</th>
+                  <th>From Date</th>
+                  <th>To Date</th>
+               </tr>
+            </thead>
+            <tbody style="font-size: 12px;">
+               <?php $i=1; ?>   
+               @foreach($experience as $value)
+               <tr>
+                  <td>{{ $i }}</td>
+                  <td>{{ !empty($value->officeName) ? $value->officeName : '-'}}</td>
+                  <td>{{ !empty($value->postNameLookupId) ? App\Traits\Convertors::designation($value->postNameLookupId) : '-'}}</td>
+                  <td>{{ !empty($value->apointmentNatureLookupId) ? App\Traits\Convertors::appointment($value->apointmentNatureLookupId) : '-'}}</td>
+                  <td>{{ !empty($value->jobNatureLookupId) ? App\Traits\Convertors::jobnature($value->jobNatureLookupId) : '-'}}</td>
+                  <td>{{ !empty($value->time) ? $value->time : '-'}}</td>
+                  <td>{{ !empty($value->payScale) ? $value->payScale : '-'}}</td>
+                  <td>{{ !empty($value->gradePay) ? $value->gradePay : '-'}}</td>
+                  <td>{{ !empty($value->monthlyGrossSalary) ? $value->monthlyGrossSalary : '-'}}</td>
+                  <td>{{ !empty($value->fromDate) ? $value->fromDate : '-'}}</td>
+                  <td>{{ !empty($value->toDate) ? $value->toDate : '-'}}</td>
+                  <?php $i++; ?>
+               </tr>
+               @endforeach   
+            </tbody>
+         </table>
          <table>
             <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.college_name_out_mh_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.college_name_out_mh_dev') }} :</span></td>
-               <td><b>{{$previewData->mbbs_college_ind_mah??'--'}}</b></td>
-            </tr>
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.uni_name_out_mh_eng') }}</span><br><span class="devnagari"> {{ trans('cruds.CollegeInformation.fields.uni_name_out_mh_dev') }}:</span></td>
-               <td><b>{{$previewData->mbbs_university_ind_mah??'--'}}</b></td>
-            </tr>
-         </table>
-         @endif
-         <table class="widthBd">
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.MedicalCollege_eng') }}</span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.MedicalCollege_dev') }}:</span></td>
-               <td><b>{{$previewData->aiee??'--'}}</b></td>
-            </tr>
-         </table>
-         <table class="widthBd">
-            <tr>
-               <th><b>Previous Attempt Of NEET-G</b></th>
-            </tr>
-         </table>
-         <table class="widthBd">
-            <tr>
-               <td><span>{{ trans('cruds.CollegeInformation.fields.attemptedCandidate_eng') }}</span><br><span class="devnagari">{{ trans('cruds.CollegeInformation.fields.attemptedCandidate_dev') }}:</span></td>
-               <td>{{$previewData->neet_pg_attempt_year??'--'}}</td>
-            </tr>
-         </table>
-         <table class="widthBd">
-            <tr>
-               <th><b>DC Council Registration</b> </th>
-            </tr>
-         </table>
-         <table class="widthBd">
-            <tr>
-               <td><span>{{ trans('cruds.DcCouncil.fields.MedicalCouncil_eng') }}</span><br><span class="devnagari">{{ trans('cruds.DcCouncil.fields.MedicalCouncil_dev') }}:</span></td>
-               <td><b>{{$previewData->medical_council_reg??'--'}}</b></td>
-               @if($previewData->medical_council_reg=='YES' || $previewData->medical_council_reg=='APPLIED')
-               <td><span>{{ trans('cruds.DcCouncil.fields.MedicalCouncilReg_eng') }}</span><span class="devnagari"> <br>{{ trans('cruds.DcCouncil.fields.MedicalCouncilReg_dev') }} :</span></td>
-               <td><b>{{$previewData->medical_council_reg_no??'--'}}</b></td>
+                @if(!empty($photo))
+               <td>
+                  <img id="uploadPreview" width="80" height="90" src="data:image/jpg;base64,{{$photo}}">
+               </td>
                @endif
+                @if(!empty($sign))
+               <td style="text-align:right;"><img id="SuploadPreview" width="100" height="50" src="data:image/jpg;base64,{{$sign}}" ></td>
+                @endif
             </tr>
-            <tr>
-               <td><span>{{ trans('cruds.DcCouncil.fields.dci_eng') }} </span><br><span class="devnagari">{{ trans('cruds.DcCouncil.fields.dci_dev') }}:</span></td>
-               <td><b>{{$previewData->medical_dci_reg??'--'}}</b></td>
-               @if($previewData->medical_dci_reg=='YES')
-               <td><span>{{ trans('cruds.DcCouncil.fields.dci_eng') }} </span><br><span class="devnagari">{{ trans('cruds.DcCouncil.fields.dci_dev') }}:</span></td>
-               <td><b>{{$previewData->medical_dci_reg_no??'--'}}</b></td>
-               @endif
-            </tr>
+
          </table>
+         <br>
          <table class="widthBd">
             <tr>
                <th><b>Required Documents</b> </th>
             </tr>
          </table>
-         <table class="widthBd">
+         <table class="documentUpload" >
+            <tr>
+               <th style="width:10%;text-align: right;">Sr. No.</th>
+               <th>Document Name</th>
+               <th>Status</th>
+            </tr>
             @php $i=0;@endphp
             @foreach($documentData as $document)
             <tr>
-               <td>{{++$i}}</td>
+               <td style="text-align: right;">{{++$i}}</td>
                <td>{{$document->document_name}}</td>
-               <td>{{$document->documentUploaded}}</td>
+               <td class="status" style="text-align: center;">{{$document->documentUploaded}}</td>
             </tr>
             @endforeach
          </table>
+
+
       </div>
    </body>
 </html>

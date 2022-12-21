@@ -32,11 +32,12 @@ class ResetPasswordController extends Controller
      */
     public function reset(ForgetPasswordRequest $request)
     {
-        $dob=date('d-m-Y',strtotime($request->dob));
+        $dob=date('Y-m-d',strtotime($request->dob));
         $userName=$request->username;
         $user=User::where('dob',$dob)->where('email',$userName)->orWhere('mobile',$userName)->first();
+        
         if(!$user) return Response::json(['status'=>'error','data'=>'Invalid details']);
-        $user=['name'=>$user->name,'mobile'=>$user->mobile,'email'=>$user->email,'password'=>base64_decode($user->base64_pwd)];   
+        $user=['name'=>$user->name,'mobile'=>$user->mobile,'email'=>$user->email,'password'=>$user->base64_pwd];   
         try{
             $ForgotPasswordMail = new ForgotPasswordMail($user);
             Mail::to($user['email'])->send($ForgotPasswordMail);

@@ -10,18 +10,18 @@ action="https://smbgroup.co.in/Payment/BANK_RECRUITMENT/OnlinePayment.php"
   <input type="hidden" name="transactionAmount" id="transactionAmount" value="{{$payment_user['amount']}}">
   <input type="hidden" name="currencyCode" id="currencyCode" value="{{$payment_user['currencyCode']}}">
   <input type="hidden" name="requestDateTime" id="requestDateTime"  value="{{$payment_user['created_at']}}" >
-  {{-- <input type="hidden" name="successUrl" id="successUrl"  value="{{$payment_user->successUrl}}"> 
-  {{-- <input type="hidden" name="failUrl" id="failUrl"  value="{{$payment_user->failUrl}}"> --}}
+  {{-- <input type="text" name="successUrl" id="successUrl"  value="{{$payment_user->successUrl}}"> 
+  {{-- <input type="text" name="failUrl" id="failUrl"  value="{{$payment_user->failUrl}}"> --}}
    <input type="hidden" name="additionalField1" id="additionalField1"  value="{{$payment_user['user_id']}}">         
   <input type="hidden" name="additionalField2" id="additionalField2"  value="{{$payment_user['mobile']}}">         
   <input type="hidden" name="additionalField3" id="additionalField3"  value="{{$payment_user['email']}}">           
-  <input type="hidden" name="additionalField4" id="additionalField4"  value="{{json_encode($payment_user['job_wise'])}}">       
-   <input type="hidden" name="additionalField5" id="additionalField5" value="{{json_encode($payment_user['groupjob_wise'])}}">
+  <input type="hidden" name="additionalField4" id="additionalField4"  value="{{$payment_user['job_wise']}}">         
+   {{-- <input type="text" name="additionalField5" id="additionalField5" value="{{json_encode($payment_user['groupjob_wise'])}}"> --}}
   <input type="hidden" name="checksum" id="checksum" value="{{$payment_user['checksum']}}"> 
 	
   @php
             
-  $FormattedData=$payment_user['order_id'].'|'. $payment_user['user_id'].'|'.$payment_user['amount'].'|'.$payment_user['currencyCode'].'|'.$payment_user['created_at'].'|'.$payment_user['mobile'].'|'.$payment_user['email'].'|'.json_encode($payment_user['job_wise']).'|'.json_encode($payment_user['groupjob_wise']);   // order_id,user id,amount
+  $FormattedData=  $payment_user['order_id'].'|'. $payment_user['user_id'].'|'.$payment_user['amount'].'|'.$payment_user['currencyCode'].'|'.$payment_user['created_at'].'|'.$payment_user['mobile'].'|'.$payment_user['email'].'|'.json_encode($payment_user['job_wise']); //.'|'.json_encode($payment_user['groupjob_wise']);   // order_id,user id,amount
   $CheckSumKey=$payment_user['checksum'];
   $CheckSumValue=hash_hmac('sha256',$FormattedData,$CheckSumKey,false);
   $CheckSumValue=strtoupper($CheckSumValue);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use Response;
+use Gate;
 use Exception;
 use App\Models\User;
 use App\Models\lookup;
@@ -14,9 +15,9 @@ use App\Models\QualificationType;
 use App\Models\UserQualification;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\User\UserQualificationRequest;
 use App\Http\Controllers\Location\LocationController;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class QualificationController extends Controller
 {
@@ -29,9 +30,24 @@ class QualificationController extends Controller
     {
        
         
-       
+        abort_if(Gate::denies('qualification'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $user_id =Auth::user()->id;
+        
         $qualification = QualificationType::Select('qualification_type_name','qualification_type_code')->orderby('sort_order','ASC')->get();
+
+//         $qualification_name = QualificationName::Select('qualification_name_code')->where('qualification_type_code','LIKE','%G%')->get();
+        
+//         $array = array();
+//         foreach($qualification_name as $value){
+//                 array_push($array,$value->qualification_name_code);
+//         }
+
+//         $reCreateArray = array_values($array);
+//         echo "<pre>";
+// print_r($reCreateArray);
+// die();
+        // dd($array);
         $stateData = LocationController::getState();
         $grade = lookup::select('id','label')->where('type','LIKE','%qualification_grade%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         $mode = lookup::Select('id','label')->where('type','LIKE','%qualification_mode%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
@@ -43,14 +59,14 @@ class QualificationController extends Controller
         'mode.label as mode','qualificationtype.qualification_type_name as qualification_type','qualificationname.qualification_name as qualification_name')
         ->leftjoin('qualificationtype','user_qualification.qualificationtype','=','qualificationtype.qualification_type_code')
         ->leftjoin('qualificationname','user_qualification.qualificationname','=','qualificationname.qualification_name_code')
-        ->leftjoin('subject','user_qualification.subject','=','subject.subject_id')
+        ->leftjoin('subject','user_qualification.subject','=','subject.id')
         ->leftjoin('university','user_qualification.university','=','university.id')
         ->leftjoin('lookup_options as class','user_qualification.classGrade','=','class.id')
         ->leftjoin('lookup_options as mode','user_qualification.mode','=','mode.id')
         ->where('user_id',$user_id)
         ->orderBy('qualificationtype.sort_order','ASC')
         ->get();
-          
+        //   dd($user_qualification);
         
         return view('user.ApplicationForm.Qualification',compact('qualification','stateData','grade','mode','user_qualification'));
     }
@@ -76,14 +92,17 @@ class QualificationController extends Controller
      
         try {
             $user=Auth::user();
-
+            $qualificationexists = UserQualification::exists();
             if($user->status_lock == '0'){
 
                 $data = $request->except('token');
                 $data['user_id'] = $user->id;
                 
                 $insert = UserQualification::create($data);
-                if($user->application_status >= 2) User::where('id',$user->id)->update(['application_status'=>'3']);
+                if(!$qualificationexists){
+                    User::where('id',$user->id)->update(['application_status'=>'3']);
+                }
+                 
             }else if($user->status_lock =='1'){
                 return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
             }            
@@ -153,6 +172,7 @@ class QualificationController extends Controller
     public function update(UserQualificationRequest $request, $token)
     {        
         try { 
+            
             $user=Auth::user();
             
             if($user->status_lock == '0'){
@@ -170,6 +190,31 @@ class QualificationController extends Controller
         return Response::json(['status'=>'success','data'=>'Data updated successfully']);
     }
 
+    public function checkQualification(Request $request){      
+        try {            
+            $user=Auth::user();
+            $check = UserQualification::exists();
+            if($user->status_lock == '0'){                
+            
+                    if($check == true){
+                        // User::where('id',$user->id)->update(['application_status'=>'3']);
+                        return redirect()->route('experience.index');
+                    }else{
+                        return redirect()->route('qualification.index')->with('msg_error','Please add minimum 1 Qualification');
+                    }
+             
+            }else if($user->status_lock =='1'){
+                if($check == true){
+                    return redirect()->route('experience.index');
+                }
+                    return redirect()->route('qualification.index')->with('msg_error','Your account is locked, please first unlocked it.');                
+            }            
+        }
+        catch(Exception $e) {
+            return redirect()->route('qualification.index')->with('msg_error',$e->getMessage());
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -178,6 +223,20 @@ class QualificationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        try{
+            $qualification_id = base64_decode($id);
+            $model = UserQualification::find($qualification_id);
+            
+            if(!empty($model)){
+                $model->delete();
+                return redirect()->route('qualification.index');
+            }else{
+                return redirect()->route('qualification.index')->with('error','Server Error');
+            }
+
+        }catch(Exception $e){
+            return back()->with('msg_error' ,$e->getmessage());
+        }
     }
 }

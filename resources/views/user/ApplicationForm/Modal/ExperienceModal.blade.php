@@ -141,7 +141,7 @@
             </div>
         </div>
 
-        <script>
+<script>
          
    $('#editfromDate,#edittoDate').on('change',function()
    {
@@ -204,5 +204,5 @@
       }
    });
 
-         </script>
+</script>
                            

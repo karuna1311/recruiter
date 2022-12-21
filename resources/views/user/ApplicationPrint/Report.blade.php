@@ -396,7 +396,7 @@
                <td><b>{{ ($previewData->type_competition) ? App\Traits\Convertors::competitionType($previewData->type_competition) :'--'  }}</b></td>
 
                <td><span>{{ trans('cruds.SportDetails.fields.CompetitionLevel_eng') }}</span> <br><span class="devnagari">{{ trans('cruds.SportDetails.fields.CompetitionLevel_dev') }}</span></td>
-               <td><b>{{$previewData->level_competition??'--'}}</b></td>
+               <td><b>{{$previewData->level_competition??'--'}}</b></td> 
             </tr>
          </table>
 

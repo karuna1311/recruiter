@@ -21,9 +21,7 @@ class AuthGates
                         Gate::define($appStatusArray[$i]['gate_name'], function ()  {
                             return true;
                         });
-                        // Gate::define('appliedJobPayment', function ()  {
-                        //     return true;
-                        // }); 
+                     
                     }
                 }
             }
@@ -42,11 +40,8 @@ class AuthGates
                 Gate::define('appliedJobPayment', function ()  {
                     return true;
                 }); 
-            }
-            
-             
-         
+            }            
         }
         return $next($request);
     }
-}
+} 

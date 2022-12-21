@@ -98,10 +98,8 @@ class JobApplicationService
 
        $result = $resultres + $resultqual + $resultexp;
        
-    // echo $resultres. '+'. $resultqual .'+'. $resultexp;
        if(($resultqual >= 1 && $resultexp >= 1) || (($jobId == 7 || $jobId == 8 || $jobId == 9)&& $resultqual == 0))
        {
-        
                 if($jobId == 1)
                 {
                         $desgination_criteria = array( array("381"=>"3"),array("379"=>"3"),array("1507"=>"3"),array("1507"=>"5"));                      
@@ -693,16 +691,8 @@ class JobApplicationService
                                             }
                                     }                        
                 } 
-    } 
+        }
                
-            
-    
-    // else{
-    //     array_push($arryOfConditionErr, $arryOfReservationErr); 
-    // }
-
-    // array_push($arryOfConditionErr,['Reservation'=>$arryOfReservationErr]);  
-        //   dd(count($arryOfConditionErr),count($arryOfReservationErr));
         if($jobId == 1 || $jobId == 4 || $jobId == 7 ||$jobId == 8 || $jobId == 9) 
         {
                 if(count($arryOfConditionErr) >= 1 || count($arryOfReservationErr) >= 1){        
@@ -729,61 +719,46 @@ class JobApplicationService
 
     public static function isEligible($criteriaUnit,$masterData)
     {      
-       
         switch ($criteriaUnit['type']) {
             case 'Field':
                 return self::evalField($criteriaUnit,$masterData);
                 break;
             case "Or":
-            if($criteriaUnit['conditionType']==='qualification')
-              {
-                // echo 'qual';
-
-                // echo "<br>";
-                // echo "<pre>";
-                // print_r($masterData);
-                // die();
-                return self::isEligibleOrWithAndLoop($criteriaUnit,$masterData);
-                break;  
-            }else if($criteriaUnit['conditionType']==='experience'){
-                // echo 'exp';
-                // print_r($criteriaUnit);
-                // echo "<br>";
-                return self::isEligibleOrWithAndLoop($criteriaUnit,$masterData);
-                break;
-
-            }else{
-                return self::isEligibleOr($criteriaUnit,$masterData);
-                break;  
-            }
+                if($criteriaUnit['conditionType']==='qualification')
+                {             
+                    return self::isEligibleOrWithAndLoop($criteriaUnit,$masterData);
+                    break;  
+                }else if($criteriaUnit['conditionType']==='experience'){              
+                    return self::isEligibleOrWithAndLoop($criteriaUnit,$masterData);
+                    break;
+                }else{
+                    return self::isEligibleOr($criteriaUnit,$masterData);
+                    break;  
+                }
             case "And":
-            if($criteriaUnit['conditionType']==='reservation'){
-
-                return self::isEligibleAnd($criteriaUnit,$masterData);
-                break;  
-            }else{
-                return self::isEligibleAndLoop($criteriaUnit['children'],$masterData,count($criteriaUnit['children']));
-                break;  
-            }
+                if($criteriaUnit['conditionType']==='reservation'){
+                    return self::isEligibleAnd($criteriaUnit,$masterData);
+                    break;  
+                }else{
+                    return self::isEligibleAndLoop($criteriaUnit['children'],$masterData,count($criteriaUnit['children']));
+                    break;  
+                }
             default:
                 # code...
                 break;
         }
     }
+
      public static function isEligibleLoop($criteriaUnit,$masterData)
     {
-        // echo "<pre>";
-        //  print_r($criteriaUnit);
-        //  echo "<br>";
-        //  echo "<pre>";
-        //  print_r($masterData);
-         // die();
-        switch ($criteriaUnit['type']) {
+        switch ($criteriaUnit['type'])
+        {
             case 'Field':  
                 return self::evalField($criteriaUnit,$masterData);
             break; 
             case "And":        
-            if($criteriaUnit['conditionType']=='qualification' || $criteriaUnit['conditionType']=='experience'){
+            if($criteriaUnit['conditionType']=='qualification' || $criteriaUnit['conditionType']=='experience')
+            {
                 return self::isEligibleAndLoop($criteriaUnit['children'],$masterData,count($criteriaUnit['children']));
                 break;  
             }          
@@ -793,12 +768,14 @@ class JobApplicationService
         }
     }
 
-    public static function evalField($criteriaUnit,$masterData){
-        $comparission=$criteriaUnit['comparison'];
-        $fieldTable=$criteriaUnit['fieldTable'];
-        $criteriaValue=$criteriaUnit['value'];
+    public static function evalField($criteriaUnit,$masterData)
+    {
+        $comparission   =   $criteriaUnit['comparison'];
+        $fieldTable     =   $criteriaUnit['fieldTable'];
+        $criteriaValue  =   $criteriaUnit['value'];
 
-        if(empty($fieldTable)){
+        if(empty($fieldTable))
+        {
             $fieldTableArr=$masterData[$fieldTable]?? array() ;
           
             if(count($fieldTableArr)=='0') return '0'; 
@@ -815,6 +792,7 @@ class JobApplicationService
      
         return $camparissionValue;      
     }
+
     public static function comparissionSwitch($comparission,$candidateValue,$criteriaValue)
     {
             switch ($comparission) {
@@ -854,7 +832,8 @@ class JobApplicationService
                 break;
         }
     }
-      public static function isEligibleAnd($criteriaUnit,$masterData)
+
+    public static function isEligibleAnd($criteriaUnit,$masterData)
     {
         
         foreach ($criteriaUnit as $key => $child) {
@@ -867,118 +846,100 @@ class JobApplicationService
          return '1';
     }
 
-       public static function isEligibleOrWithAnd($criteriaUnit,$masterData)
-        {              
+    public static function isEligibleOrWithAnd($criteriaUnit,$masterData)
+    {              
 
-                    $studentData = $masterData;
-                    $success = 0; 
-                   
-                    foreach ($criteriaUnit as $key => $children) { 
-                       
-                        $count_creiteria = $children['successvalue'];
-                        if($children['type'] == 'And'){
-                            foreach($children['children'] as $child){
-                               
-                                $returnValue=self::evalField($child,$studentData);
-                          
-                                 if ($returnValue == 1){
-                                       $success = $success + 1; 
-                                    }    
+        $studentData = $masterData;
+        $success = 0; 
+            
+        foreach ($criteriaUnit as $key => $children) { 
+            
+        $count_creiteria = $children['successvalue'];
+        if($children['type'] == 'And')
+        {
+            foreach($children['children'] as $child){
+                
+                $returnValue=self::evalField($child,$studentData);
+            
+                    if ($returnValue == 1){
+                        $success = $success + 1; 
+                    }    
 
-                                    // echo $count_creiteria.'='.$success;                             
-                                if($count_creiteria==strval($success)){
-                                     return '1';
-                                     break;                                   
-                                }
-                            }
-                        }else{                          
-                    
-                                $returnValue=self::evalField($children,$studentData);    
+                    // echo $count_creiteria.'='.$success;                             
+                if($count_creiteria==strval($success)){
+                        return '1';
+                        break;                                   
+                }
+            }
+        }else
+        {                          
+    
+                $returnValue=self::evalField($children,$studentData);    
 
-                                  if ($returnValue == 1){
-                                       $success = $success + 1; 
-                                    }  
-                    
-                                if($count_creiteria==strval($success)){
-                                     return '1';
-                                     break;                                   
-                                }                         
+                    if ($returnValue == 1){
+                        $success = $success + 1; 
+                    }  
+    
+                if($count_creiteria==strval($success)){
+                        return '1';
+                        break;                                   
+                }                         
 
 
-                        }
-                            $success = 0;
-                    }     
-             return '0'; 
         }
+            $success = 0;
+        }     
+        return '0'; 
+    }
 
     public static function isEligibleOrWithAndLoop($criteriaUnit,$masterData)
     {                     
-    // echo "<pre>";
-    // print_r($criteriaUnit);
-    // die(); 
-                   $count_creiteria = $criteriaUnit['successvalue'];
-                   $success ='0';
-                   foreach ($criteriaUnit['children'] as $key => $criteria['children']) { 
-                        
-                       $returnValue=self::isEligibleOrAndLoop($criteria['children'],$masterData); 
-                       // echo $returnValue;
-                       // die();
-                        if ($returnValue=='1'){
-                            $success = $success + 1; 
-                        }
-                    } 
-
-                       // echo 'isEligibleOrWithAndLoop'.$success.'='.$count_creiteria;
-                       //   echo "<br>";
-                    
-                         
-                    if(self::comparissionGreaterThanEqualsTo(intval($success),intval($count_creiteria))){
-                        return '1';
-                    }
+    
+    $count_creiteria = $criteriaUnit['successvalue'];
+    $success ='0';
+        foreach ($criteriaUnit['children'] as $key => $criteria['children']) 
+        { 
+            
+            $returnValue=self::isEligibleOrAndLoop($criteria['children'],$masterData); 
+        
+            if ($returnValue=='1'){
+                $success = $success + 1; 
+            }
+        }  
+        if(self::comparissionGreaterThanEqualsTo(intval($success),intval($count_creiteria))){
+            return '1';
+        }
                                 
     }
 
     public static function isEligibleOrAndLoop($criteriaUnit,$masterData)
     {   
-                    // echo "<br>";
-                                // echo "<pre>";
-                                // print_r($criteriaUnit);
-                                // die();
-      // echo $criteriaUnit['successvalue'];
      $count_creiteria = $criteriaUnit['successvalue'];
        if($criteriaUnit['type']==='And'){
                    
                         $success ='0'; 
-                        // echo count($masterData);                      
-                        foreach ($masterData as $key => $studentData) {                       
-                                // echo "<br>";
-                                // echo "<pre>";
-                                // print_r($studentData);
-                         
-                                foreach ($criteriaUnit['children'] as $key => $child) { 
-                                    // echo "<br>";
-                                    // echo "<pre>";
-                                    // print_r($child);
-                                    // echo "<br>";
-                                       
-                                    $returnValue=self::evalField($child,$studentData);              
-                                       if ($returnValue=='1'){
-                                            $success = $success + 1; 
-                                        }
-                                    //     echo 'isEligibleOrAndLoop'.$success.'='.$count_creiteria;
-                                    //  echo "<br>";
-                                      if(self::comparissionEquals(strval($success),strval($count_creiteria))){    
-                                            return '1';
-                                             $success ='0';    
-                                        }                                   
-                                    }                                    
-                                    $success ='0';
+                                         
+                    foreach ($masterData as $key => $studentData) 
+                    {                      
+                        foreach ($criteriaUnit['children'] as $key => $child) 
+                        {                                           
+                            $returnValue=self::evalField($child,$studentData);              
+                                if ($returnValue=='1')
+                                {
+                                    $success = $success + 1; 
+                                }
+                    
+                                if(self::comparissionEquals(strval($success),strval($count_creiteria)))
+                                {    
+                                    return '1';
+                                    $success ='0';    
+                                }                                   
+                        }                                    
+                        $success ='0';
                     }                                        
        }else if($criteriaUnit['type']==='Or'){
 
-       }  
-
-        
+       } 
     }
 
 
@@ -987,49 +948,44 @@ class JobApplicationService
     {    
 
         $success =0;
-        foreach ($masterData as $key => $studentData) {  
-            // echo  "<br>";
-        // echo 'count'.$count_creiteria;
-            // print_r($studentData);
-                foreach ($criteriaUnit as $key => $child) {                    
-                    // echo  "<br>";
-                    // // echo 'count'.$count_creiteria;
-                    // print_r($child);
-                    $returnValue=self::isEligibleLoop($child,$studentData);
-                            // echo $returnValue;       
-                       if ($returnValue=='1'){
+        foreach ($masterData as $key => $studentData) 
+        { 
+            foreach ($criteriaUnit as $key => $child) 
+            {                    
+              
+                $returnValue=self::isEligibleLoop($child,$studentData);                            
+                       if ($returnValue=='1')
+                       {
                                 $success++; 
-                            }
-                    }
-                    if($count_creiteria==$success){
-                        return '1';
-                        $success ='0'; 
-                    }
-                    $success ='0'; 
+                       }
+            }
+
+            if($count_creiteria==$success){
+                return '1';
+                $success ='0'; 
+            }
+            $success ='0'; 
         }   
 
     }
 
     public static function isEligibleOr($criteriaUnit,$masterData)
     {     
-        // echo "<pre>";
-        // print_r($criteriaUnit);
-        // die();
-        foreach ($criteriaUnit as $key => $child) {            
-            // echo 'type:'.$child['type'];
-            // die();
-            if($child['type']=='And'){
-                    return self::isEligibleAnd($child['children'],$masterData);
-                    if ($returnValue=='1'){
-                            return '1';
-                            break;
-                    } 
+     
+        foreach ($criteriaUnit as $key => $child) 
+        {          
+            if($child['type']=='And'){                    
+                $returnValue = self::isEligibleAnd($child['children'],$masterData);
+                if ($returnValue=='1'){
+                        return '1';
+                        break;
+                } 
             }else if($child['type']=='Or'){
                 $returnValue=self::isEligibleOr($child,$masterData);
-                                if ($returnValue=='1'){
-                                    return '1';
-                                    break;
-                                } 
+                if ($returnValue=='1'){
+                    return '1';
+                    break;
+                } 
             }else{                
                 $returnValue=self::isEligible($child,$masterData);
                 if ($returnValue=='1'){
@@ -1046,35 +1002,44 @@ class JobApplicationService
     public static function comparissionEquals($candidateValue,$criteriaValue){
         return ($candidateValue==$criteriaValue) ? '1' :'0';
     }
+
     public static function comparissionNotEquals($candidateValue,$criteriaValue){
         return ($candidateValue!=$criteriaValue) ? '1' :'0';
     }
+
     public static function comparissionGreaterThan($candidateValue,$criteriaValue){
         return ($candidateValue > $criteriaValue) ? '1' :'0';
     }
-      public static function comparissionLesserThan($candidateValue,$criteriaValue){
+
+    public static function comparissionLesserThan($candidateValue,$criteriaValue){
         return ($candidateValue < $criteriaValue) ? '1' :'0';
     }
+
     public static function comparissionNotBetween($candidateValue,$criteriaValue){
-        $toRange=$criteriaValue[1];
-        $fromRange=$criteriaValue[0];
+            $toRange=$criteriaValue[1];
+            $fromRange=$criteriaValue[0];
         return (!($candidateValue >= $fromRange && $candidateValue <= $toRange)) ? '1' :'0';
     }
+
     public static function comparissionDateBetween($candidateValue,$criteriaValue){
         $toRange=$criteriaValue[1];
         $fromRange=$criteriaValue[0];
         $dateCheck=Carbon::parse($candidateValue)->between($fromRange, $toRange);
         return (!$dateCheck) ? '1' :'0';
     }
+
     public static function comparissionIn($candidateValue,$criteriaValue){
         return (in_array($candidateValue, $criteriaValue)) ? '1' :'0';
     }
+
     public static function comparissionNotIn($candidateValue,$criteriaValue){
         return (!in_array($candidateValue, $criteriaValue)) ? '1' :'0';
     }
+
     public static function comparissionGreaterThanEqualsTo($candidateValue,$criteriaValue){
         return ($candidateValue >= $criteriaValue) ? '1' :'0';
     }
+
     public static function comparissionLessThanEqualsTo($candidateValue,$criteriaValue){
         return ($candidateValue <= $criteriaValue) ? '1' :'0';
     }

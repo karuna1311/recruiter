@@ -131,111 +131,65 @@
       @endsection
       @section('js')
       <script type="text/javascript">
-         // $(document).ready(function() {
+       
  
-            $(document).on("submit", "#declaration", function(event)
-            {
-               event.preventDefault();
+   $(document).on("submit", "#declaration", function(event)
+   {
+      event.preventDefault();
 
-               var url=$(this).attr("action");
-               $.ajax({
-                  url: url,
-                  type: 'POST',            
-                  data: new FormData(this),
-                  processData: false,
-                  contentType: false,
-                  success: function (data, status)
-                  {
-                     if (data.ValidatorErrors) {
-                          $.each(data.ValidatorErrors, function(index, jsoNObject) {
-                            $.each(jsoNObject, function(key, val) {
-                                toastr.error(val);
-                            });
-                            return false;
-                          });
-                        }
-                        if (data.status) {
-                          if(data.status==='error') toastr.error(data.data);
-                          else if(data.status==='success'){
-                             toastr.success(data.data);
-                            
-                            window.location.replace("{{route('payment.index')}}");
-                           }
-                        }
-                  }, error:function (response) {
-                       let data = response.responseJSON;
-                       toastr.error(data);
-                   }
-               });
-            });
+      var url=$(this).attr("action");
+      $.ajax({
+         url: url,
+         type: 'POST',            
+         data: new FormData(this),
+         processData: false,
+         contentType: false,
+         success: function (data, status)
+         {
+            if (data.ValidatorErrors) {
+                  $.each(data.ValidatorErrors, function(index, jsoNObject) {
+                     $.each(jsoNObject, function(key, val) {
+                        toastr.error(val);
+                     });
+                     return false;
+                  });
+               }
+               if (data.status) {
+                  if(data.status==='error') toastr.error(data.data);
+                  else if(data.status==='success'){
+                     toastr.success(data.data);
+                     
+                     window.location.replace("{{route('payment.index')}}");
+                  }
+               }
+         }, error:function (response) {
+               let data = response.responseJSON;
+               toastr.error(data);
+            }
+      });
+   });
  
-      //   $('#declaration').validate({
-      //       rules: {            
-                
-      //       },
-      //       messages: {
-      //       },   
-      //       submitHandler: function (form) {
-               
-      //          var img = $('#uploadImage')[0].files;
-      //          var sign = $('#uploadImageSign')[0].files;
-      //          var fd = new FormData();
-      //          fd.append('img', img[0]);
-      //          fd.append('sign', sign[0]);
+   
 
- 
-      //          let action = form.action;
-      //           $.ajax({
-      //                url: action,
-      //                data: fd,
-      //                type: 'POST',
-      //                beforeSend: function() {
-                         
+   function PreviewImage()
+   {
+      var oFReader = new FileReader();
+      oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
 
-      //              },
-      //               success : function(data){
-      //                if (data.ValidatorErrors) {
-      //                     $.each(data.ValidatorErrors, function(index, jsoNObject) {
-      //                       $.each(jsoNObject, function(key, val) {
-      //                           toastr.error(val);
-      //                       });
-      //                       return false;
-      //                     });
-      //                   }
-      //                   if (data.status) {
-      //                     if(data.status==='error') toastr.error(data.data);
-      //                     else if(data.status==='success'){
-      //                        toastr.success(data.data);
-      //                       //  window.location.replace();
-      //                      }
-      //                   }
-      //              },
-      //              error:function (response) {
-      //                  let data = response.responseJSON;
-      //                  toastr.error(data);
-      //              }
-      //           });
-      //       }
-      //   });
-   //  });
+      oFReader.onload = function (oFREvent){
+         document.getElementById("uploadPreview").src = oFREvent.target.result;
+      };
+   };
 
-         function PreviewImage(){
-    var oFReader = new FileReader();
-    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+   function SPreviewImage()
+   {
+      var oFReader = new FileReader();
+      oFReader.readAsDataURL(document.getElementById("uploadImageSign").files[0]);
 
-    oFReader.onload = function (oFREvent){
-        document.getElementById("uploadPreview").src = oFREvent.target.result;
-    };
-};
-
-function SPreviewImage(){
-    var oFReader = new FileReader();
-    oFReader.readAsDataURL(document.getElementById("uploadImageSign").files[0]);
-
-    oFReader.onload = function (oFREvent) {
-        document.getElementById("SuploadPreview").src = oFREvent.target.result;
-    };
-};
-      </script>
+      oFReader.onload = function (oFREvent) {
+         document.getElementById("SuploadPreview").src = oFREvent.target.result;
+      };
+   };
+</script>
 @include('include.user.UserCustomJs')
 @endsection

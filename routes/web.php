@@ -67,10 +67,7 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 	
 	Route::resource('declaration', 'DeclarationController');
 
-	// Route::get('/securityDeposite', 'SecurityDepositeController@index')->name('securityDeposite.index');
-	// Route::post('/securityDeposite/{securityDeposite}', 'SecurityDepositeController@update')->name('securityDeposite.update');
-	// Route::post('/getSecurityDeposite', 'SecurityDepositeController@getSecurityDeposite')->name('securityDeposite.amount');
-
+	
 	//
 	Route::get('/session', 'SessionController@index')->name('session.index');
 	Route::get('/sessionApply/{id}', 'SessionController@sessionApply')->name('session.apply');
@@ -95,8 +92,6 @@ Route::group(['namespace' => 'App\Http\Controllers\User','middleware' => ['auth'
 Route::post('/getLocation', 'App\Http\Controllers\Location\LocationController@index')->name('location.index');
 Route::get('/getState', 'App\Http\Controllers\Location\LocationController@getState')->name('location.getState');
 Route::get('/getDistrict', 'App\Http\Controllers\Location\LocationController@getDistrict')->name('location.getDistrict');
-// Route::get('/getCollegeList/{collegeType}', 'App\Http\Controllers\User\CollegeListController@index')->name('collegeList.index');
-
 
 Route::get('/services/{qualificationtype}', 'App\Http\Controllers\Service\ServiceController@getQualificationName')->name('services.getQualificationName');
 Route::get('/university/{id}', 'App\Http\Controllers\Service\ServiceController@getUniversity')->name('services.getUniversityName');

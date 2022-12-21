@@ -15,31 +15,37 @@ class AuthGates
         if (!app()->runningInConsole() && $user) {
             $appStatusArray=config('application.application_status');
             $application_status=$user->application_status ?? 0;
-            if($application_status < 8){
+            if($application_status < 7){
                 for($i=1;$i<=$user->application_status+1;$i++) {
                     if(array_key_exists($i, $appStatusArray)){
                         Gate::define($appStatusArray[$i]['gate_name'], function ()  {
                             return true;
                         });
+                        // Gate::define('appliedJobPayment', function ()  {
+                        //     return true;
+                        // }); 
                     }
                 }
             }
-            elseif($application_status==='8'){
+            elseif($application_status==='7'){
+                Gate::define($appStatusArray[8]['gate_name'], function ()  {
+                    return true;
+                });     
+                Gate::define('appliedJobPayment', function ()  {
+                    return true;
+                });            
+            }
+            elseif($application_status==='8' || $application_status==='9'){
                 Gate::define($appStatusArray[9]['gate_name'], function ()  {
                     return true;
-                });
-            }elseif($application_status==='9'){
-                Gate::define($appStatusArray[10]['gate_name'], function ()  {
+                });           
+                Gate::define('appliedJobPayment', function ()  {
                     return true;
-                });
-            }elseif($application_status==='10'){
-                Gate::define($appStatusArray[11]['gate_name'], function ()  {
-                    return true;
-                });
-                Gate::define('applied_session', function ()  {
-                    return true;
-                });
+                }); 
             }
+            
+             
+         
         }
         return $next($request);
     }

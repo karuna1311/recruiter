@@ -1,9 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Payment;
+use App\Models\Transaction;
+use Illuminate\Support\Carbon;
+use Exception;
+use Response;
 
 class PaymentController extends Controller
 {
@@ -72,7 +77,7 @@ class PaymentController extends Controller
         dd('api.payment');
         $arryOfpaymentResponse=$request->all();
         // dd($arryOfpaymentResponse);
-        // print_r($arryOfpaymentResponse);die();
+        print_r($arryOfpaymentResponse);die();
         $dataSize=sizeof($arryOfpaymentResponse);
         for($i = 0; $i < $dataSize; $i++) 
         {
@@ -94,7 +99,7 @@ class PaymentController extends Controller
 
             if($order_status==='Success'){
 
-                $paymentInfoUpdate=transaction::where('order_id',$order_id)
+                $paymentInfoUpdate=Transaction::where('order_id',$order_id)
                 ->update([
                     'tracking_id'=>$tracking_id,
                     'bank_ref_no'=>$bank_ref_no,
@@ -104,12 +109,12 @@ class PaymentController extends Controller
                 ]);
 
 
-                $transactionInfoId= transaction::where('order_id',$order_id)->select('id','created_at')->get();
+                $transactionInfoId= Transaction::where('order_id',$order_id)->select('id','created_at')->get();
 
                 Payment::create(
                     [
                         'user_id' => '1',
-                        'job_id'    => '1',
+                        'job_id'    => '3',
                         'amount' => $amount,
                         'order_id' => $order_id,
                         'tracking_id'=>$tracking_id,
@@ -120,8 +125,10 @@ class PaymentController extends Controller
                         'created_at'=>$transactionInfoId[0]['updated_at'],
                         'updated_at'=>$transactionInfoId[0]['updated_at']
                     ]);
+             }else if($order_status === 'Aborted'){
+
              }
-        }catch(QueryException $exception){
+        }catch(Exception $exception){
             return Response::json(['status' => 'error','message'=>$exception->getMessage()]);
         }
        

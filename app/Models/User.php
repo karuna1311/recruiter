@@ -36,7 +36,8 @@ class User extends Authenticatable
         'declare4',
         'declare5',
         'photo',
-        'sign'
+        'sign',
+        'session_id'
     ];
     public function payment()
     {

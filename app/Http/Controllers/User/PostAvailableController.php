@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\User;
 
+use Gate;
 use DateTime;
+use DB;
+use Response;
 use Carbon\Carbon;
 use App\Models\Jobs;
 use App\Models\User;
-use App\Models\UserReservation;
+use App\Models\lookup;
 use App\Traits\convertors;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\UserExperience;
+use App\Models\UserReservation;
 use App\Models\AppliedJobByUser;
 use App\Models\UserQualification;
 use App\Models\EligibleCandidates;
@@ -18,6 +23,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AppliedJobByUserExperience;
 use App\Models\AppliedJobByUserQualification;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
+
+use App\Services\JobApplicationService;
 
 class PostAvailableController extends Controller
 {
@@ -34,270 +42,163 @@ class PostAvailableController extends Controller
 
     public function index()
     {
- 
-        $jobs = Jobs::all();
-        
-        return view('user.ApplicationForm.PostAvailable',compact('jobs'));
-    }
+        abort_if(Gate::denies('postavailable'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
 
-    public function checkJobAvailability($enc_id)
-    {        
-        $user_id = $this->getUserID();       
-        // get user data 
-        $studentdata = UserReservation::with(['qualification','experience'])        
-        ->where('user_reservation.user_id',$user_id)
-        ->first();
-       
-        $student_json = json_decode($studentdata);
         
-        // dd(Storage::disk('public'));
-        $instructionArray=json_decode(Storage::disk('json')->get('/criteria/json/admin_job.json'),true);
+        $applied_array = array();
         
-        $instruction_json = $instructionArray;
-        // dd($instruction_json);
-        
-        // personal_reservation
-        $per_res_success = [];
-        $per_res_success_count = 0;
-        $per_res_error = [];
-        $per_res_error_count = 0;
-
-        // reservation
-        $res_success = [];
-        $res_success_count = 0;
-        $res_error = [];
-        $res_error_count = 0;
-        // qualification
-        $qual_success = [];
-        $qual_success_count = 0;
-        $qual_error = [];
-        $qual_error_count = 0;
-        // experience
-        $exp_success = [];
-        $exp_success_count = 0;
-        $exp_error = [];
-        $exp_error_count = 0;
-        
-        $temp_errors = [];
-        $result = array();
-
-        $job_id_exists = [];
-        $job_id = base64_decode($enc_id);  
-    
-        foreach($instructionArray as $value)
-        {
-            array_push($job_id_exists,$value['job_id']);
+        $job_array = array();
+        $jobs = Jobs::get();
+   
+        foreach($jobs as $value){   
+      
+           $start_date =  (isset($value->start_date)) ? $value->start_date : 'NULL';
+           $end_date =  (isset($value->end_date)) ? $value->end_date : 'NULL';
           
-            if($value['job_id']==$job_id) 
-            {
-                
-                switch (strtolower($value['personal_type'])) 
-                {
+            $currentDate = date('Y-m-d');
+            $currentDate = date('Y-m-d', strtotime($currentDate));   
+              
+            if($start_date==='NULL' && $end_date==='NULL'){
+         
+                $availableJobs = Jobs::select('id','name','year')->where('start_date',NULL)
+                                            ->where('end_date',NULL)
+                                            ->where('id',$value->id)
+                                                ->first();      
+                                                
+                                                $data = [
+                                                    'id' => $availableJobs->id,
+                                                    'name' => $availableJobs->name,
+                                                    'year' => $availableJobs->year,
+                                                ];
+                    array_push($job_array,$data); 
+             
+            }else if(isset($start_date) && isset($end_date)){   
+                                  
+                  if(($currentDate >= $start_date) && ($currentDate <= $end_date)){
+                    $availableJobs = Jobs::select('id','name','year')
+                                            ->where('start_date',$value->start_date)
+                                            ->where('end_date',$value->end_date)
+                                            ->where('id',$value->id)
+                                            ->first(); 
+                    $data = [
+                        'id' => $availableJobs->id,
+                        'name' => $availableJobs->name,
+                        'year' => $availableJobs->year,
+                    ];
+                    array_push($job_array,$data);     
+                  }                             
+            }                   
+        }
+        
+        $eligible_candidates = EligibleCandidates::Select('applied_job_by_user.job_id')
+        ->join('applied_job_by_user','applied_job_by_user.eligible_cand_id','=','eligible_candidates.id')
+        ->where(
+            [
+                'eligible_candidates.status' => 1,
+                'eligible_candidates.user_id' => self::getUserID()
+            ]
+        )->get();
 
-                    case 'personal_reservation':
-                    
-                        $response = self::match_personal_reservation($value['criteria'],$student_json,$value['type']); 
-                    
-                        if(strtolower($value['type'])=='or'){
-                            if($response[0]['per_res_success']>=$response[0]['admin_criteria_count']){
-                                array_push($per_res_success,['success'=>'candidate is eligible in Personal details with reservation section']);
-                                $per_res_success_count++;
-                            }else{
-                                array_push($per_res_error,['error'=>$response[0]['per_res_error_msg']]);
-                                $per_res_error_count++;
-                            }
-                        }else if(strtolower($value['type'])=='and'){
-                            if($response[0]['per_res_success']==$response[0]['admin_criteria_count']){
-                                array_push($per_res_success,['success'=>'candidate is eligible in Personal details with reservation section']);
-                                $per_res_success_count++;
-                            }else{
-                                array_push($per_res_error,['error'=>$response[0]['per_res_error_msg']]);
-                                $per_res_error_count++;
-                            }
-                        }
+                                // dd($eligible_candidates);
+        foreach($eligible_candidates as $value){
+            array_push($applied_array,$value->job_id);
+        }                            
+        return view('user.ApplicationForm.PostAvailable',compact('job_array','applied_array'));
+    }
+    public function checkJobAvailability($enc_id){
+        abort_if(Gate::denies('postavailable'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
+        $user_id = $this->getUserID();
 
-                    break;
-                    case 'reservation':
-                    
-                        $response = self::matchjob($value['criteria'],$student_json,$value['type']); 
-                        
-                            if(strtolower($value['type'])=='or'){
-                                if($response[0]['res_success']>=$response[0]['admin_criteria_count']){
-                                    array_push($res_success,['success'=>'candidate is eligible in reservation section']);
-                                    $res_success_count++;
-                                }else{
-                                    array_push($res_error,['error'=>$response[0]['res_error']]);
-                                    $res_error_count++;
-                                }
-                            }else if(strtolower($value['type'])=='and'){
-                                if($response[0]['res_success']==$response[0]['admin_criteria_count']){
-                                    array_push($res_success,['success'=>'candidate is eligible in reservation section']);
-                                    $res_success_count++;
-                                }else{
-                                    array_push($res_error,['error'=>$response[0]['res_error']]);
-                                    $res_error_count++;
-                                }
-                            }              
-                    break;
-                    
-                    case 'qualification':                   
-                    
-                        $response = self::matchqualificationjob($value['criteria'],$student_json,$value['type']); 
-                            // dd($response);
-                            if(strtolower($value['type'])=='or'){
-                                if($response[0]['result']>=$response[0]['success']){
-                                    array_push($qual_success,['success'=>'candidate is eligible with the qualification']);  
-                                    $qual_success_count++;
-                                }else{
-                                    if($value['description']!=null){
-                                        array_push($qual_error,['error'=>$value['description']]);         //error msg display from admin
-                                        $qual_error_count++;
-                                    }else{
-                                        array_push($qual_error,['error'=>$response[0]['error']]);
-                                        $qual_error_count++;
-                                    }
-                                }
-                            }else if(strtolower($value['type'])=='and'){
-                                
-                                if($response[0]['result']==$response[0]['success']){
-                                    array_push($qual_success,['success'=>'candidate is eligible with the qualification']);  
-                                    $qual_success_count++;                       
-                                }else{                               
-                                    if($value['description']!=null){
-                                        array_push($qual_error,['error'=>$value['description']]);         //error msg display from admin
-                                        $qual_error_count++;
-                                    }else{
-                                        array_push($qual_error,['error'=>$response[0]['error']]); 
-                                        $qual_error_count++;
-                                    }
-                                }                          
-                            }                     
-                            break;                       
-                    case 'experience':                    
-                    
-                    $result_student_exp = self::getStudentExp($student_json);
-                    $result_admin_exp = self::getAdminExp($value['criteria'],$value['children'][0]);
-                    $response = self::matchexperiencejob($result_admin_exp,$result_student_exp,$value['children'][0]['type']); 
-                    
+        $job_id = base64_decode($enc_id);
+// dd($user_id);
+        $job_exists = Storage::disk('json')->exists('criteria/json/'.$job_id.'.json');
+         
+     if($job_exists==true){
+        $job =json_decode(Storage::disk('json')->get('criteria/json/'.$job_id.'.json'),true);
+         $studentdata = UserReservation::with(['qualification'])
+         ->where('user_reservation.user_id',$user_id)
+         ->first()->toArray();
 
-                    if(strtolower($value['type'])=='or'){
-                        if($response[0]['result']>=$response[0]['success']){
-                            array_push($exp_success,['success'=>'candidate is eligible with the experience']);  
-                            $exp_success_count++;
-                        }else{
-                            if($value['description']!=null){
-                                array_push($exp_error,['error'=>$value['description']]);         //error msg display from admin
-                                $exp_error_count++;
-                            }else{
-                                array_push($exp_error,['error'=>$response[0]['error']]);
-                                $exp_error_count++;
-                            }
-                        }
-                    }else if(strtolower($value['type'])=='and'){
-                        
-                        if($response[0]['result']==$response[0]['success']){
-                            array_push($exp_success,['success'=>'candidate is eligible with the experience']);  
-                            $exp_success_count++;                       
-                        }else{                               
-                            if($value['description']!=null){
-                                array_push($exp_error,['error'=>$value['description']]);         //error msg display from admin
-                                $exp_error_count++;
-                            }else{
-                                array_push($exp_error,['error'=>$response[0]['error']]); 
-                                $exp_error_count++;
-                            }
-                        }                          
-                    } 
-                        break;   
-                        
-                    }  
+        $experience =DB::select(DB::raw('select jobNatureLookupId, postNameLookupId,SUM(expYears), SUM(expMonths), CASE WHEN SUM(expMonths) = 12 THEN ROUND(SUM(expYears) +(SUM(expMonths) / 12),0) WHEN SUM(expMonths) > 12 THEN SUM(expYears) +ROUND((SUM(expMonths) / 12),1) WHEN SUM(expMonths) < 12 THEN CONCAT(SUM(expYears),".",sum(expMonths)) END as total_exp_year  FROM `user_experience` WHERE `user_id` = '.$user_id.' and `deleted_at` is null GROUP BY jobNatureLookupId,postNameLookupId ORDER BY postNameLookupId'));
 
+        $experience = json_decode(json_encode($experience), true);
+        
+        array_push($studentdata,['experience' => $experience]);
+        // echo "<pre>";
+        // print_r($studentdata);die();
+        $job_id = base64_decode($enc_id);
+        $checkEligibity=JobApplicationService::checkEligibity($studentdata,$job_id);
 
-                    $checkCandidate =  EligibleCandidates::where('user_id', '=',$user_id)
+        $checkCandidate =  EligibleCandidates::where('user_id', '=',$user_id)
                                     ->where('job_id', '=',$job_id)
                                     ->exists();
-                    // echo $job_id;
-                    // echo "<br>";
-                    // print_r($job_id_exists);
-                    // echo "<br>";
 
-        //     if(!in_array($job_id,$job_id_exists))
-        //     {
-        //         $no_criteria = 'No Criteria Made by Admin';
-        //         return response()->Json([                    
-        //             'zero_criteria' => $no_criteria,                 
-        //             'error'     => 1
-        //             ]);
-        //     }
-        //    else
-            if($res_error_count== 0 && $qual_error_count==0 && $exp_error_count==0 && $per_res_error_count == 0 && in_array($job_id,$job_id_exists))
-            {
-
-                    if($checkCandidate){
+        if($checkCandidate == true && $checkEligibity['status'] == 'success'){
                     $store =   EligibleCandidates::where('user_id', '=',$user_id)
                                         ->where('job_id', '=',$job_id)
                                         ->update(['status' => 1]);
-                    }else{
+                    }
+        else if($checkCandidate == true && $checkEligibity['status'] != 'success'){
+              $store =   EligibleCandidates::where('user_id', '=',$user_id)
+                                        ->where('job_id', '=',$job_id)
+                                        ->update(['status' => 0]);
+        }else if($checkCandidate == false && $checkEligibity['status'] == 'success'){
                         $store =   EligibleCandidates::insert([
                             'user_id' => $user_id,
                             'job_id' => $job_id,
                             'status' => 1
                         ]);                                   
-                    }             
-
-                    if ($store) {
-                        return response()->Json([
-                            'res_success' => $res_success,
-                            'per_res_success' => $per_res_success,
-                            'qual_success' => $qual_success,
-                            'exp_success' => $exp_success,
-                            'success' => 1,
-                            'error' => 0,
-                        ]);
-                    }
-            }           
-            else{     
-
-                    if($checkCandidate)
-                    {
-                    $store =   EligibleCandidates::where('user_id', '=',$user_id)
-                                        ->where('job_id', '=',$job_id)
-                                        ->update(['status' => 0]);
-                    }else
-                    {
-                    $store =  EligibleCandidates::insert([
-                            'user_id' => $user_id,
-                            'job_id' => $job_id,
-                            'status' => 0
-                        ]);                                   
-                    } 
-
-                return response()->Json([
-                                        'res_error' => $res_error,
-                                        'per_res_error' => $per_res_error,
-                                        'qual_error' => $qual_error,
-                                        'exp_error' => $exp_error,                                           
-                                        'res_success' => $res_success,
-                                        'per_res_success' => $per_res_success,
-                                        'qual_success' => $qual_success,
-                                        'exp_success' => $exp_success,
-                                        'success' => 0,
-                                        'error'     => 1
-                                        ]);
-            } 
-
-        }       
-        }       
-        if(!in_array($job_id,$job_id_exists))
+        }else if($checkCandidate == false && $checkEligibity['status'] != 'success')
         {
-            $no_criteria = 'No Criteria Made by Admin';
-            return response()->Json([                    
-                'zero_criteria' => $no_criteria,                 
-                'error'     => 1
-                ]);
+                      $store =   EligibleCandidates::insert([
+                                                'user_id' => $user_id,
+                                                'job_id' => $job_id,
+                                                'status' => 0
+                                            ]); 
         }
-            
+
+        return $checkEligibity; 
+
+    }else{
+        return Response::json(['status'=>'error','data'=>'Crietria Not set By Admin']); 
     }
+
+
+        //$checkEligibity_qualification=JobApplicationService::checkEligibity($studentdata->qualification,$job_id);
+
+        // echo "<pre>";
+        // print_r($checkEligibity);die();
+    }
+
+
+    public function checkPostAvailable(){
+        try {            
+            $user=Auth::user();
+            $user_id = $user->id;
+
+            $check = EligibleCandidates::join('applied_job_by_user','applied_job_by_user.job_id','=','eligible_candidates.job_id')
+            ->where('eligible_candidates.status',1)->where('eligible_candidates.user_id',$user_id)->exists();
+            
+            if($user->status_lock == '0'){               
+            
+                    if($check == true){                        
+                        return redirect()->route('preview.index');
+                    }else{
+                        return redirect()->route('postavailable.index')->with('msg_error','Please be Eligible and Apply for One Post');
+                    }
+             
+            }else if($user->status_lock =='1'){
+                if($check == true){
+                    return redirect()->route('preview.index');
+                }
+                    return redirect()->route('postavailable.index')->with('msg_error','Your account is locked, please first unlocked it.');                
+            }            
+        }
+        catch(Exception $e) {
+            return redirect()->route('postavailable.index')->with('msg_error',$e->getMessage());
+        }
+    }
+    
     
     public function match_personal_reservation($criteria,$student_data,$type)
     {      
@@ -307,7 +208,7 @@ class PostAvailableController extends Controller
         $array_criteria = json_decode($criteria);
         $array_student = (array)$student_data;
         $admin_criteri_count = 0;  
-    
+        // dd($array_criteria,$array_student);
         $count_success = 0;        
       
         if(strtolower($type)=='or')
@@ -332,6 +233,10 @@ class PostAvailableController extends Controller
                                     array_push($error,$array_student[$fieldname].' caste candidate is not eligible,Eligible candidate must be '.$value);     
                                 }else if(strtolower($array_criteria[$i]->fieldname) == 'age'){
                                     array_push($error,'Age '.$array_student[$fieldname].' candidate is not eligible,Eligible candidate must be '. convertors::comparisonName($comparison) .' '.$value);     
+                                }else if(strtolower($array_criteria[$i]->fieldname) == 'ph'){
+                                    array_push($error,'Physical handicap '.$array_student[$fieldname].' candidate is not eligible,Eligible candidate must be '. convertors::comparisonName($comparison) .' '.$value);     
+                                }else if(strtolower($array_criteria[$i]->fieldname) == 'orphan'){
+                                    array_push($error,'Orphan '.$array_student[$fieldname].' candidate is not eligible,Eligible candidate must be '. convertors::comparisonName($comparison) .' '.$value);     
                                 }
                             }                    
                         } 
@@ -343,9 +248,9 @@ class PostAvailableController extends Controller
             {      
                     $admin_criteri_count++;
                     
-                $fieldname = strtolower($array_criteria[$i]->fieldname); 
-                $comparison = $array_criteria[$i]->comparison; 
-                $value = strtolower($array_criteria[$i]->value); 
+                    $fieldname = strtolower($array_criteria[$i]->fieldname); 
+                    $comparison = $array_criteria[$i]->comparison; 
+                    $value = strtolower($array_criteria[$i]->value); 
 
                 if(array_key_exists($fieldname,$array_student) &&($fieldname == array_search($array_student[$fieldname],$array_student))
                 )
@@ -359,6 +264,10 @@ class PostAvailableController extends Controller
                             array_push($error,$array_student[$fieldname].' caste candidate is not eligible,Eligible candidate must be '.$value);     
                         }else if(strtolower($array_criteria[$i]->fieldname) == 'age'){
                             array_push($error,'Age '.$array_student[$fieldname].' candidate is not eligible,Eligible candidate must be '. convertors::comparisonName($comparison) .' '.$value);     
+                        }else if(strtolower($array_criteria[$i]->fieldname) == 'ph'){
+                            array_push($error,'Physical handicap '.$array_student[$fieldname].' candidate is not eligible,Eligible candidate must be '. convertors::comparisonName($comparison) .' '.$value);     
+                        }else if(strtolower($array_criteria[$i]->fieldname) == 'orphan'){
+                            array_push($error,'Orphan '.$array_student[$fieldname].' candidate is not eligible,Eligible candidate must be '. convertors::comparisonName($comparison) .' '.$value);     
                         }
                     }                    
                 } 
@@ -725,15 +634,23 @@ class PostAvailableController extends Controller
 
     public function applyJob($id)
     {
+        abort_if(Gate::denies('postavailable'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
         $job_id = base64_decode($id);
         $user_id = $this->getUserID();
-        
+        $year = date('Y');
+        $lastyear = substr($year, -2);
+        $randomkey = mt_rand(111111,999999);
+        $application_no = $lastyear.$job_id.$randomkey;
 
         $exists = EligibleCandidates::where('user_id', '=',$user_id)
                                     ->where('job_id', '=',$job_id)
                                     ->where('status','=', 1)
                                     ->exists();
-
+        $getInsertedId = EligibleCandidates::select('id')
+                            ->where('user_id', '=',$user_id)
+                            ->where('job_id', '=',$job_id)
+                            ->where('status','=', 1)
+                            ->first();
         if($exists){
             //true means candidate is eligible with job
             $basic_user_data = UserReservation::Select('*')->where('user_id',$user_id)->first();
@@ -744,16 +661,23 @@ class PostAvailableController extends Controller
             $json_qual_user = json_encode($qual_user_data);
             $json_exp_user = json_encode($exp_user_data);
 
-           $user_data = AppliedJobByUser::Insert([
-                                'user_id' => $user_id,
-                                'job_id' => $job_id,
-                                'json' => $json_basic_user,
-                                ]);
+         
+                $user_data = new AppliedJobByUser();
+                $user_data->user_id             =    $user_id;           
+                $user_data->job_id              =    $job_id;                          
+                $user_data->eligible_cand_id    =    $getInsertedId->id;                          
+                $user_data->json                =    $json_basic_user; 
+                $user_data->application_no      =     $application_no;    
+                $user_data->save();
+                $LastInsertId                   =      $user_data->id ; 
 
+
+           
            $user_qualification_data = AppliedJobByUserQualification::Insert([
                                             'user_id' => $user_id,
                                             'job_id' => $job_id,
                                             'json' => $json_qual_user,
+                                            'applied_job_id' => $LastInsertId
                                             ]);
 
                 
@@ -761,10 +685,12 @@ class PostAvailableController extends Controller
                                             'user_id' => $user_id,
                                             'job_id' => $job_id,
                                             'json' => $json_exp_user,
+                                            'applied_job_id' => $LastInsertId
                                             ]);
 
             if($user_data == true && ($user_qualification_data == true || $user_experience_data ==true ))
             {
+                User::where('id',$user_id)->update(['application_status'=>'5']);
                 return response()->Json([
                     'msg'   => 'Success Applied',
                     'status'     => 'success'
@@ -845,5 +771,23 @@ class PostAvailableController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function testFunction()
+    {
+    
+        $job = Transaction::where('order_id','22111906353812')->select('job_id')->first();
+        $data = json_decode($job->job_id);
+        var_dump($data);
+        foreach($data as $value){           
+                 AppliedJobByUser::where('user_id',12)
+                        ->where('job_id',$value)
+                        ->update([                                
+                            'payment_status'=>'success',                                
+                            'updated_at'=>Carbon::now()
+                        ]);
+        }
+
+
     }
 }

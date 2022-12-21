@@ -166,7 +166,7 @@
                      <label class="d-block">{{ trans('cruds.personalInformation.fields.state_eng') }}:<font class="astr">*</font><br> {{ trans('cruds.personalInformation.fields.state_dev') }} :</label>
                   </div>
                   <div class="col-md-4">
-                     <select class="form-control inpField select2" name="permanent_state"  id="State" onchange="getLocation('District','district',$(this).val())">
+                     <select class="form-control inpField " name="permanent_state"  id="State" onchange="getLocation('District','district',$(this).val())">
                      @foreach ($stateData as $key=>$value)
                      <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->permanent_state== $key) ? 'selected' : '' }} >{{$value}}</option>
                      @endforeach
@@ -176,7 +176,7 @@
                      <label class="d-block">{{ trans('cruds.personalInformation.fields.district_eng') }}:<font class="astr">*</font><br> {{ trans('cruds.personalInformation.fields.district_dev') }} :</label>
                   </div>
                   <div class="col-md-4">
-                     <select class="form-control inpField select2" name="permanent_district"  id="District" onchange="getLocation('Taluka','subDistrict',$('#State').val(),$(this).val())">                        
+                     <select class="form-control inpField " name="permanent_district"  id="District" onchange="getLocation('Taluka','subDistrict',$('#State').val(),$(this).val())">                        
                         @if(isset($personalInfoData->permanent_district))                        
                            @foreach ($districtData as $key=>$value)
                            <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->permanent_district== $key) ? 'selected' : '' }} >{{$value}}</option>
@@ -192,7 +192,7 @@
                      <label class="d-block">{{ trans('cruds.personalInformation.fields.taluka_eng') }}:<font class="astr">*</font><br> {{ trans('cruds.personalInformation.fields.taluka_dev') }} :</label>
                   </div>
                   <div class="col-md-4">
-                     <select class="form-control inpField select2" name="permanent_taluka"  id="Taluka" onchange="getLocation('pincode','pincode',$('#State').val(),$('#District').val(),$(this).val())">       
+                     <select class="form-control inpField " name="permanent_taluka"  id="Taluka" onchange="getLocation('pincode','pincode',$('#State').val(),$('#District').val(),$(this).val())">       
                         @if(isset($personalInfoData->permanent_taluka))                        
                            @foreach ($talukaData as $key=>$value)
                            <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->permanent_taluka== $key) ? 'selected' : '' }} >{{$value}}</option>
@@ -263,7 +263,7 @@
                      <div class="col-md-4">
                         <select class="form-control inpField select2" name="present_district"  id="present_dist2" onchange="getLocation('present_Taluka','subDistrict',null,$(this).val())"> 
                         @if(isset($personalInfoData->present_district))                        
-                              @foreach ($districtData as $key=>$value)
+                              @foreach ($present_districtData as $key=>$value)
                               <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->present_district== $key) ? 'selected' : '' }} >{{$value}}</option>
                               @endforeach
                         @else
@@ -280,8 +280,8 @@
                         <select class="form-control inpField select2" name="present_taluka"  id="present_Taluka" onchange="getLocation('present_PinCode','pincode',null,$('#present_dist2').val(),$(this).val())">
                          
                         @if(isset($personalInfoData->present_taluka))                        
-                              @foreach ($talukaData as $key=>$value)
-                              <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->permanent_taluka== $key) ? 'selected' : '' }} >{{$value}}</option>
+                              @foreach ($present_talukaData as $key=>$value)
+                              <option value="{{ $key}}" {{ (isset($personalInfoData) && $personalInfoData->present_taluka== $key) ? 'selected' : '' }} >{{$value}}</option>
                               @endforeach
                         @else
                            <option value="" selected>[SELECT]</option> 
@@ -376,6 +376,8 @@
                permanent_district : "required",
                permanent_taluka : "required",
                permanent_pin_code:"required",
+               bankemp:"required",
+               marathispeaking:"required",
                present_address_1 : {required: function () { return $('#PresentAdd').prop('checked') == true;}},
                present_address_2 : {required: function () { return $('#PresentAdd').prop('checked') == true;}},
                present_address_3 : {required: function () { return $('#PresentAdd').prop('checked') == true;}},
@@ -401,7 +403,9 @@
                 permanent_city: "please Enter City Name",
                 permanent_district: "Please select district",
                 permanent_taluka: "Please select taluka",
-                permanent_pin_code: "Please select pincode",
+                permanent_pin_code: "Please Enter pincode",
+                bankemp:"Are you employee with Municipal Co-Op Bank?",
+                marathispeaking:"Please Select Marathi Speaking",
                 present_address_1 :  "Please provide address line 1",
                present_address_2 : "Please provide address line 2",
                present_address_3 :"Please provide address line 3",
@@ -410,7 +414,7 @@
                present_district : "Please Select district",
                present_taluka : "Please Select taluka",
                present_pin_code:"Please select pincode",
-               alternate_mobile:"Phone number should be  10 Digit."
+               alternate_mobile:{number:"Please enter valid mobile number", maxlength:"Phone number should be  10 Digit."},
     
             },
             submitHandler: function(form) {

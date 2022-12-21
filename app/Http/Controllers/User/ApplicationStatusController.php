@@ -10,7 +10,7 @@ class ApplicationStatusController extends Controller
 	public function index(){
 		$appStatusArray=ApplicationStatusService::getApplicationStatus();
 		$incompleteStatusArray=ApplicationStatusService::getIncompleteApplicationStatus();
-		//print_r($incompleteStatusArray);die();
+		
 		return view('user.ApplicationStatus.index',compact('appStatusArray','incompleteStatusArray'));
 	}
 }

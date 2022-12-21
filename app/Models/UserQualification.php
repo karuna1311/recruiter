@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Models\subject;
+use App\Traits\MultiTenantModelTrait;
 use Illuminate\Database\Eloquent\Model; 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserQualification extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
+    // ,MultiTenantModelTrait;
 
     protected $table='user_qualification';
 

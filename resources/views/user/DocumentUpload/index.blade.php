@@ -6,6 +6,7 @@
            <h4 class="page-title">Document Upload</h4>
         </div>
      </div>
+  
      <div class="col-12">
         <div class="card card-widget card-events">
            <div class="card-body">
@@ -21,10 +22,11 @@
                     <th>View</th>
                  </tr>
                </thead>
+               <?php $i=1; ?>
                  @foreach($documentData as $key=>$data)
                  @php $documentType='';@endphp
                  <tr>
-                    <td>{{++$key}}</td>
+                    <td>{{$i}}</td>
                     <td style="text-align: left;">{{$data->document_name}}</td>
                     <td>
                       @if(!empty($data->allowed_documents))
@@ -42,6 +44,7 @@
                     </td> 
                     <td id="documentDiv_{{$data->id}}" style="width: 10%;">@if(!empty($data->documentUploaded))<a id="uploadedFile_{{$data->id}}" href="data:application/pdf;base64,{{$data->documentUploaded}}" download="{{$data->document_code}}.pdf" class="btn fs-18"><i class="uil-eye"></i></a>@endif</td>
                  </tr>
+                 <?php $i++;?>
                  @endforeach
               </table>
               @else
@@ -49,6 +52,18 @@
               @endif
               </form>
            </div>
+           <div class="row form-group  mt-3 ">
+                           
+            <div class="col-md-12 pull-right">       
+               
+               <form id="processCompleted" action="{{ route('appliedJobPayment.index') }}">
+                  <input type="hidden" name="_method" value="get">
+                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                  <input type="submit" class="btn btn-xs btn-success" value="Process Completed">
+               </form>
+                
+            </div>
+         </div>
            <div class="card-footer bg-transparent">
            </div>
         </div>

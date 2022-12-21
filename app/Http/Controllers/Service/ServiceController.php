@@ -16,7 +16,7 @@ class ServiceController extends Controller
      
         $token = base64_decode(filter_var($type));
         return QualificationName::where('qualification_type_code','LIKE','%'.$token.'%')
-        ->orderBy('sort_order','ASC')->pluck('qualification_name_code','qualification_name')->prepend('[SELECT]','')->all();
+        ->orderBy('qualification_name','ASC')->pluck('qualification_name_code','qualification_name')->prepend('[SELECT]','')->all();
     }
 
     public function getUniversity($id){
@@ -28,8 +28,9 @@ class ServiceController extends Controller
     
     public function getSubject($id){
         $token = base64_decode(filter_var($id));
-    
-        return subject::select('subject.subject_name','subject.id')->where('qualification_name_code','like','%'.$token.'%')
+        
+        return subject::select('subject.subject_name','subject.id')
+        ->where('qualification_name_code','=',$token)
         ->orderBy('subject_name','ASC')
         ->pluck('subject.subject_name','subject.id')->prepend('[Select]','')->toArray();
         

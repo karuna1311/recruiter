@@ -44,16 +44,17 @@ return [
         //     'root' => '/var/www/html/DB_upload2/recruitment',
         // ],
 
-        // 'uploads' => [
-        //     'driver' => 'local',
-        //     'root' => storage_path('app/public'),
-        //     'url' => env('APP_URL').'/storage',
-        // ],
+        'uploads' => [
+            'driver' => 'local',
+            'root' => 'C:/xampp/htdocs/DB_upload1',
+            'url' => env('APP_URL').'/storage',
+        ],
 
         'json' => [
             'driver' => 'local',
+            'root' => 'C:/xampp/htdocs/DB_upload1',
             // 'root' => storage_path('app/public'),
-            'root' => 'C:xampp\htdocs\recruiter_admin\storage\app\public',
+            // 'root' => 'C:xampp\htdocs\recruiter_admin\storage\app\public',
         ],
 
         'public' => [

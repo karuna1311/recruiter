@@ -2,28 +2,37 @@
 
 namespace App\Http\Controllers\user; 
 
+use Gate;
 use Response;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\User\DeclarationRequest;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class DeclarationController extends Controller
 {
     public function index()
     {
-        
+        abort_if(Gate::denies('declaration'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
         $user=Auth::user();
+      
+        if(Storage::disk('uploads')->exists('photo/'.$user->photo)){
+            $photo=base64_encode(Storage::disk('uploads')->get('photo/'.$user->photo));
+        }else{
+            // $photo=base64_encode(Storage::disk('uploads')->get('photo/No_image_available.svg'));
+            $photo='';
+        }
+        if(Storage::disk('uploads')->exists('signature/'.$user->sign)){
+            $sign=base64_encode(Storage::disk('uploads')->get('signature/'.$user->sign));
+        } else{
+            // $sign=base64_encode(Storage::disk('uploads')->get('signature/No_image_available.svg'));
+            $sign='';
+        }
         
-        // dd(Storage::disk('uploads')->get('recruitment/img/bank_candidate_image/'));
-        
-        // $user['image'] = isset($user->photo) ? Storage::disk('uploads')->get($user->photo) : '';
-        // $user['signed'] = isset($user->sign) ? Storage::disk('uploads')->get('recruitment/img/bank_candidate_sign/') : Storage::disk('json')->get('/img/bank_candidate_image/') ;
-            // dd($user->image);
-            // dd($user);
-        return view('user.ApplicationForm.Declaration',compact('user'));
+        return view('user.ApplicationForm.Declaration',compact('user','photo','sign'));
     }
     public function create()
     {
@@ -36,17 +45,17 @@ class DeclarationController extends Controller
     {
         //
     }
-    public function edit(DeclarationRequest $request,UserReservation $declaration)
+    public function edit()
     {
 
     }
     public function update(DeclarationRequest $request,$token)
     {
-        // dd($request->img);
-        // dd($request->all());
+     
         try {
-            $user=Auth::user();
-            $user_id = $user->id();
+            $user=Auth::USER();
+            $user_id = $user->id;
+            
             $imgNameToStore = null;
             $signNameToStore = null;
           // Handle file Upload
@@ -65,24 +74,35 @@ class DeclarationController extends Controller
             $imgNameToStore = $user_id.'_photo_'.time().'.'.$imgextension;
             $signNameToStore = $user_id.'_sign_'.time().'.'.$signextension;
             
-            $file = $request->img;
-            $sign = $request->sign;
-
-            Storage::disk('uploads')->put('/photo/'.$imgNameToStore,$file);       
-            Storage::disk('uploads')->put('/signature/'.$signextension,$sign);
+            Storage::disk('uploads')->put('/photo/'.$imgNameToStore,file_get_contents($request->img));       
+            Storage::disk('uploads')->put('/signature/'.$signNameToStore,file_get_contents($request->sign));
         
-        }
-
-
+            $id = base64_decode($token);
+    
+            $user = User::find($id);
+            $user->declare1 = '1';
+            $user->declare2 = '1';
+            $user->declare3 = '1';
+            $user->declare4 = '1';
+            $user->declare5 = '1';
+            $user->application_status = '7';
+            $user->status_lock = '1';
+            $user->photo = $imgNameToStore;
+            $user->sign = $signNameToStore;
+            $user->save();
+        
+        }else{
             $id = base64_decode($token);
             $user = User::find($id);
-            $updatetDeclaration = $user->update(['declare1'=>'1','declare2'=>'1','declare3'=>'1','declare4'=>'1','declare5'=>'1','application_status'=>'6',
-        'photo'=>$imgNameToStore,'sign'=>$signNameToStore]);
-            // ,'status_lock'=>'1']);
+            $user->application_status = '7';
+            $user->status_lock = '1';
+            $user->save();
+        }
+         
             
             
         }
-        catch(Exception $e) {
+        catch(QueryException $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);
         }
         return Response::json(['status'=>'success','data'=>'Data submitted successfully']);

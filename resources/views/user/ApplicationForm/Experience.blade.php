@@ -8,6 +8,11 @@
    </div>
    <div class="col-12">
       <div class="tab-content">
+         @if(session('msg_error'))
+            <div class="alert alert-danger" align="center">
+               <p>{{ session('msg_error') }}</p>
+            </div>      
+         @endif
          <form id="experienceForm">
             @csrf
                            <fieldset class="form-fieldset">
@@ -132,6 +137,7 @@
                                  </div>
                               </div>
                            </fieldset>
+                        </form>
                            <br>
                            <fieldset class="form-fieldset">
                            <div class="table-responsive">
@@ -140,8 +146,8 @@
                                     <tr>
                                        <th></th>
                                        <th>Sr No</th>
-                                       <th>Institution / Department / Organisation / Court</th>
-                                       <th>Designation (Post Held)</th>
+                                       <th>Institution / Department / Organisation</th>
+                                       <th>Designation </th>
                                        <th>Nature Of Appointment</th>
                                        <th>Nature Of Job</th>
                                        <th>Full Time / Other</th>
@@ -162,7 +168,7 @@
                                        <td></td>
                                        <td>{{ $i }}</td>
                                        <td>{{ !empty($value->officeName) ? $value->officeName : '-'}}</td>
-                                       <td>{{ !empty($value->designation) ? $value->designation : '-'}}</td>
+                                       <td>{{ !empty($value->post_name) ? $value->post_name : '-'}}</td>
                                        <td>{{ !empty($value->appointment) ? $value->appointment : '-'}}</td>
                                        <td>{{ !empty($value->job_nature) ? $value->job_nature : '-'}}</td>                                    
                                        <td>{{ !empty($value->time) ? $value->time : '-'}}</td>                                    
@@ -178,7 +184,13 @@
                                                    action="{{ route('experience.edit', base64_encode($value->id)) }}"
                                                    >
                                                     {{ trans('global.edit') }}
-                                                </a>   
+                                                </a> 
+                                                
+                                                <form action="{{ route('experience.destroy', base64_encode($value->id)) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                   <input type="hidden" name="_method" value="DELETE">
+                                                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                   <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                </form>
                                                                       
                                        </td>
 
@@ -195,10 +207,16 @@
                            <div class="row form-group  mt-3">
 
                               <div class="col-md-12 text-center"> 
-                                 <a  href="{{ route('postavailable.index') }}" class="btn btn-success mb-1">Save and Next</a>
+                                 {{-- <a  href="{{ route('postavailable.index') }}" class="btn btn-success mb-1">Save and Next</a> --}}
+
+                                 <form action="{{ route('experience.checkExperience') }}" method="POST">
+                                    <input type="hidden" name="_method" value="POST">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="submit" class="btn btn-xs btn-success" value="Save and Next">
+                                 </form>
                               </div>
                            </div>
-                        </form>
+                        
       </div>
    </div>
 </div>
@@ -274,7 +292,7 @@
 
    $('#fromDate,#toDate').on('change',function()
    {
-      alert(1);
+
       var employment = $('#typeEmploymentLookupId').val();      
       let fromDate      = $('#fromDate').val();
             if(employment=='PRESENT')
@@ -331,12 +349,13 @@
          valueFlush(['appointmentLetterNo','letterDate']);  
             var apointmentNatureLookupId = token;
             
-            if (apointmentNatureLookupId == '269' || apointmentNatureLookupId == "258" || apointmentNatureLookupId == "272" || apointmentNatureLookupId == "271") {
+            if ( apointmentNatureLookupId == "258" || apointmentNatureLookupId == "272" || apointmentNatureLookupId == "271") {
                $('.appointmentContent').show();
             } 
             else if(apointmentNatureLookupId == "269")
             {
                $('.fullTimeLookup').show();
+               $('.appointmentContent').show();
             }
             else {
                $('.appointmentContent').hide();
@@ -384,31 +403,31 @@
          $("#experienceForm").validate({
             // Specify validation rules
             rules: {
-               // employmentType : "required",
+               employmentType : "required",
                
-               // officeName : "required",    
-               // flgOfficeGovOwned : "required",                   
-               // postNameLookupId : "required",
-                  // designation:{
-               //          required: function () { return $('#postNameLookupId').val()==='433';},
-               // },
-               // jobNatureLookupId : "required",    
-               // apointmentNatureLookupId : "required",                       
-               // fromDate : "required",                     
-               // toDate:{
-               //          required: function () { return $('#typeEmploymentLookupId').val()==='PAST';},
-               // },  
-               // appointmentLetterNo:{
-               //          required: function () { return $('#apointmentNatureLookupId').val()==='258';},
-               //          // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
-               // },
-               //   letterDate:{
-               //          required: function () { return $('#apointmentNatureLookupId').val()==='258';},
-               //          // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
-               // },
-               // time:{
-               //          required: function () { return $('#apointmentNatureLookupId').val()==='269';},
-               // },             
+               officeName : "required",    
+               flgOfficeGovOwned : "required",                   
+               postNameLookupId : "required",
+                  designation:{
+                        required: function () { return $('#postNameLookupId').val()==='433';},
+               },
+               jobNatureLookupId : "required",    
+               apointmentNatureLookupId : "required",                       
+               fromDate : "required",                     
+               toDate:{
+                        required: function () { return $('#typeEmploymentLookupId').val()==='PAST';},
+               },  
+               appointmentLetterNo:{
+                        required: function () { return $('#apointmentNatureLookupId').val()==='258';},
+                        // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               },
+                 letterDate:{
+                        required: function () { return $('#apointmentNatureLookupId').val()==='258';},
+                        // required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               },
+               time:{
+                        required: function () { return $('#apointmentNatureLookupId').val()==='269';},
+               },             
               
             },
             // Specify validation error messages
@@ -516,6 +535,7 @@
                               }
                      });
    });
+
       </script>
 @include('include.user.UserCustomJs')
 @endsection

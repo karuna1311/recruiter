@@ -15,7 +15,7 @@ class DocumentUploadController extends Controller
 {
     public function index()
     {
-        // abort_if(Gate::denies('document_upload'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('document_upload'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');
     	$documentData=DocumentUploadService::getEligibleDocuments();
 		
         return view('user.DocumentUpload.index',compact('documentData'));
@@ -29,4 +29,14 @@ class DocumentUploadController extends Controller
     	}
     	return Response::json(['status'=>'success','data'=>$documentData]);
     }
+
+	// public function processCompleted(){
+	// 	try {
+	// 		$user=Auth::user();
+	// 		User::where('id',$user->id)->update(['application_status'=>'9']);
+    // 	} catch (Exception $e) {
+    // 		return Response::json(['status'=>'error','data'=>$e->getMessage()]);
+    // 	}
+    // 	// return Response::json(['status'=>'success','data'=>$documentData]);
+	// }
 }

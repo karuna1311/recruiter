@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="custom-control custom-checkbox mb-2 d-flex">
                                        <input type="checkbox" name="declare2" class="custom-control-input declarecheckbox" id="2" {{ $declare2 }}>
-                                       <label class="custom-control-label" for="2"> I have not concealed any material information, however if any information submitted herein is found fraudulent, incorrect or untrue, I understand that I am liable to criminal prosecution and I also agree to forgo my seat in Medical Postgraduate course. I also understand that my selection and admission to the course is also liable to be cancelled. <br> <span class="text-muted">मी कोणतीही भौतिक माहिती लपवलेली नाही, तथापि येथे सादर केलेली कोणतीही माहिती फसवी, चुकीची किंवा असत्य आढळल्यास, मी समजतो की मी फौजदारी खटला भरण्यास जबाबदार आहे आणि मी वैद्यकीय पदव्युत्तर अभ्यासक्रमातील माझी जागा सोडण्यास देखील सहमत आहे. मी हे देखील समजतो की माझी निवड आणि अभ्यासक्रमासाठीचा प्रवेश देखील रद्द केला जाऊ शकतो.</span></label>
+                                       <label class="custom-control-label" for="2"> I have not concealed any material information, however if any information submitted herein is found fraudulent, incorrect or untrue, I understand that I am liable to criminal prosecution and I also agree to forgo my seat in The Munciple Co-Op. Bank LTD. I also understand that my selection and admission to the course is also liable to be cancelled. <br> <span class="text-muted">मी कोणतीही भौतिक माहिती लपवलेली नाही, तथापि येथे सादर केलेली कोणतीही माहिती फसवी, चुकीची किंवा असत्य आढळल्यास, मी समजतो की मी फौजदारी खटला भरण्यास जबाबदार आहे आणि मी The Munciple Co-Op. Bank LTD माझी जागा सोडण्यास देखील सहमत आहे. मी हे देखील समजतो की माझी निवड आणि अभ्यासक्रमासाठीचा प्रवेश देखील रद्द केला जाऊ शकतो.</span></label>
                                     </div>
                                     <div class="custom-control custom-checkbox mb-2 d-flex">
                                        <input type="checkbox" name="declare3" class="custom-control-input declarecheckbox" id="3" {{ $declare3 }}>
@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="custom-control custom-checkbox mb-2 d-flex">
                                        <input type="checkbox" name="declare5" class="custom-control-input declarecheckbox" id="5" {{ $declare5 }}>
-                                       <label class="custom-control-label" for="5">I undertake to submit all the required original certificates at the time of Document Verification as well as at the time of admission to a course/college as per the rules, failing which I understand that my claim for selection shall not be granted. <br><span class="text-muted">मी दस्तऐवज पडताळणीच्या वेळी तसेच नियमांनुसार अभ्यासक्रम/कॉलेजच्या प्रवेशाच्या वेळी सर्व आवश्यक मूळ प्रमाणपत्रे सादर करण्याचे वचन घेतो, असे न झाल्यास माझा निवडीचा दावा मंजूर केला जाणार नाही हे मला समजते.</span></label>
+                                       <label class="custom-control-label" for="5">I undertake to submit all the required original certificates at the time of Document Verification as well as at the time of recruitment to a job/post as per the rules, failing which I understand that my claim for selection shall not be granted. <br><span class="text-muted">मी दस्तऐवज पडताळणीच्या वेळी तसेच नियमानुसार नोकरी/पदावर भरतीच्या वेळी सर्व आवश्यक मूळ प्रमाणपत्रे सादर करण्याचे वचन घेतो, असे न झाल्यास माझा निवडीचा दावा मंजूर केला जाणार नाही हे मला समजते.</span></label>
                                     </div>
                                  </div>
                               </div>
@@ -54,23 +54,26 @@
                                  <table class="table table-bordered img_table">
                      <tr>
                         <td valign="top" style="width: 50%;">
-                           <ul class="insruction">
+                           <ul class="insruction text-left">
                               <li><b>Instruction For Photograph:</b></li>
                               <li>Size of photograph must be less than 35 kb.</li>
-                              <li>Height of photograph must be between 250 pixel and 320 pixel.</li>
-                              <li>width of photograph must be between 150 pixel and 220 pixel.</li>
+                              <li>Height of photograph must be between max: 320 pixel.</li>
+                              <li>width of photograph must be between 
+                                 max: 220 pixel.</li>
                            </ul>
                         </td>
                         <td valign="top">
-                           <ul>
+                           <ul style="list-style: none;">
                               <li ><b>Upload Photo</b></li>
-                              @if($user->photo)
+                              @if(!empty($photo))
                               <td style="border:solid 1px #CCCCCC;"><a href="" onClick="document.getElementById('uploadImage').click(); return false" >
-                                 <img id="uploadPreview" width="80" height="90" src="{{ URL::asset('storage/'.$user->photo)}}"></a>
+                                 <img id="uploadPreview" width="80" height="90" src="data:image/jpg;base64,{{$photo}}">
+                                 
+                              </a>
                               </td>
                                  @else
                                  <td style="border:solid 1px #CCCCCC;"><a href="" onClick="document.getElementById('uploadImage').click(); return false" >
-                                    <img id="uploadPreview" width="80" height="90" ></a>
+                                    <img id="uploadPreview" width="80" height="90" src="{{ asset('storage/photo/No_image_available.svg') }}"></a>
                                  </td>
                                  @endif
                               <input id="uploadImage" type="file" name="img" onChange="PreviewImage();" hidden><h5 class="errorHide" id="err_photo"></h5></td>
@@ -79,29 +82,29 @@
                      </tr>
                      <tr>
                         <td valign="top" style="width: 50%;">
-                           <ul class="insruction">
+                           <ul class="insruction text-left">
                               <li><b>Instruction For Signature</b></li>
                               <li>Size of signature must be less than 30 kb.</li>
-                              <li>Height of signature must be between 100 pixel and 180 pixel.</li>
-                              <li>width of signature must be between 150 pixel and 220 pixel.</li>
+                              <li>Height of signature must be between max: 180 pixel.</li>
+                              <li>width of signature must be between max: 220 pixel.</li>
                            </ul>
                         </td>
                         <td valign="top">
-                           <ul>
+                           <ul style="list-style:none;">
                               <li><b>Upload Sign</b></li>
                         
                         
-                           @if($user->sign)
+                           @if(!empty($sign))
                            <td style="border:solid 1px #CCCCCC;"><a href="" onClick="document.getElementById('uploadImageSign').click(); return false" >
-                              <img id="SuploadPreview" width="100" height="50" src="{{ URL::asset('storage/'.$user->sign)}}"
-                              ></a>
-                              <input id="uploadImageSign" type="file" name="sign" onChange="SPreviewImage();" hidden><h5 class="errorHide" id="err_sign"></h5>
+                              <img id="SuploadPreview" width="100" height="50" src="data:image/jpg;base64,{{$sign}}" >
+                           </a>
+                              <input id="uploadImageSign" type="file" name="sign" onChange="SPreviewImage();" hidden ><h5 class="errorHide" id="err_sign"></h5>
                            </td>
                               @else
                               <td style="border:solid 1px #CCCCCC;"><a href="" onClick="document.getElementById('uploadImageSign').click(); return false" >
-                                 <img id="SuploadPreview" width="100" height="50" src="{{ URL::asset('storage/'.$user->sign)}}"
+                                 <img id="SuploadPreview" width="100" height="50"  src="{{ asset('storage/signature/No_image_available.svg') }}"
                                  ></a>
-                                 <input id="uploadImageSign" type="file" name="sign" onChange="SPreviewImage();" hidden><h5 class="errorHide" id="err_sign"></h5>
+                                 <input id="uploadImageSign" type="file" name="sign" onChange="SPreviewImage();" hidden ><h5 class="errorHide" id="err_sign"></h5>
                               </td>
                               
                               @endif
@@ -114,7 +117,7 @@
                               </div>
                               <div class="row form-group">                                 
                                  <div class="col-md-12 text-right">                                    
-                                    <button type="submit" class="btn btn-success mb-3">Save And Next</button>
+                                    <button type="submit" class="btn btn-success mb-3">Save And Lock</button>
                                  </div>
                               </div>
                            </fieldset>

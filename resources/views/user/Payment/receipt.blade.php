@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
        <style type="text/css">
          @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
-         body { margin: 1px; }
+         body { margin: 1px;}
          .devnagari{font-family: freeserif;}
           .contactDetails h4{text-transform: uppercase;font-size: 14px;}
           .contactDetails p{font-size: 13px;margin-bottom: 0;}
@@ -37,10 +38,7 @@
                      <tr>
                         <td colspan="2" style="text-align:center;">
                            <h4 style="text-transform: uppercase;font-weight: 400;margin-bottom: 6px;"><b>Contact Details</b></h4>
-                        </td>
-                        <td colspan="2" style="text-align:center;">
-                           <h4 style="text-transform: uppercase;font-weight: 400;margin-bottom: 6px;"><b>NEET Details</b></h4>
-                        </td>
+                        </td>                     
                      </tr>
                      <tr>
                         <td>
@@ -48,13 +46,7 @@
                         </td>
                         <td>
                            {{$userData['name']}}
-                        </td>
-                        <td>
-                           <b>Application No:</b>
-                        </td>
-                        <td>
-                           {{$userData['neetappno']}}
-                        </td>
+                        </td>                     
                         <tr>
                         <td>
                            <b>Mobile No.</b>: 
@@ -62,18 +54,15 @@
                         <td>
                            {{$userData['mobile']}}
                         </td>
-                        <td><b>Roll No.:</b></td>
-                        <td>{{$userData['rollno']}}</td>
+                      
                      </tr>
                      <tr>
                         <td>
-                           <p><b>Email</b>: </td>
-                         <td>{{$userData['email']}}
+                           <p><b>Email</b>:
                         </td>
                          <td>
-                          
-                         <b>Date Of Birth:</b></td>
-                         <td>{{$userData['dob']}}
+                           {{$userData['email']}}                     
+                         </td>
                      </tr>
                   </table>
                   <br>
@@ -81,29 +70,21 @@
                      <thead class="table-dark text-center" style=" color: #fff;background-color: #3b4863;">
                        <tr>
                            <th>Sr. No.</th>
-                           <th>Session Name</th>
-                           <th>Order Id</th>
-                           <th>Cetcell <br> Application No</th>
-                           <th>Fees Type</th>
+                           <th>Job Name</th>
+                           <th>Order Id</th>                          
                            <th>Amount</th>
                        </tr>
                      </thead>
+                     <?php $i = 1; ?>
+                     @foreach($payment_data as $value)
                      <tr>
                         <td rowspan="2" class="text-right">1.</td>
-                        <td rowspan="2">{{$session->session_name}}</td>
-                        <td rowspan="2" class="text-right">{{$paymentData->order_id}}</td>
-                        <td rowspan="2">{{$paymentData->id}}</td>
-                        <td style="text-align: right;">Application Fee</td>
-                        <td style="text-align: right;"><b>&#8377; {{$session->fee_json}}/-</b></td>
+                        <td rowspan="2" ><span class="devnagari"> {{App\Traits\Convertors::postName($value['job_id'])}}</span></td>
+                        <td rowspan="2" class="text-right">{{$value['order_id']}}</td>    
+                        <td style="text-align: right;">&#8377; <b>{{$value['amount']}}/-</b></td> 
+                        <?php $i++;?>
                      </tr>
-                     <tr>
-                        <td style="text-align: right;">Security Deposite</td>
-                        <td style="text-align: right;"><b>&#8377; {{$paymentData->amount - $session->fee_json}}/-</b></td>
-                     </tr>
-                     <tr>
-                        <td colspan="5"  style="text-align: right;">Total:</td>
-                        <td style="text-align: right;">&#8377; <b>{{$paymentData->amount}}/-</b></td>
-                     </tr>
+                     @endforeach
                   </table>
              </div>
          </div>

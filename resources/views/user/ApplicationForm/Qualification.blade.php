@@ -114,14 +114,10 @@
                                        <th >Qualification Type</th>
                                        <th >Date of qualification completion</th>
                                        <th >Attempts</th>
-                                       <th >Percentage / CGPA (For Grade add respective percentage value)</th>
-                                       
+                                       <th >Percentage / CGPA (For Grade add respective percentage value)</th>                                       
                                        <th >Class / Grade</th>
                                        <th >Mode</th>
-                                       <th >ACTION</th>
-                                       <!-- <th >Compulsory Subjects</th>
-                                       <th >Optional Subjects</th> -->
-                                    
+                                       <th >ACTION</th>                               
                                     </tr>
                                  </thead>
                                  <tbody style="font-size: 12px;">
@@ -256,7 +252,7 @@
                      $('#qualificationname').empty();
                      valueFlush(['qualificationname','subjectId']);
                      if(data){
-                        // console.log(data);
+                       
                            $.each(data, function(key, val) { 
                            $('#qualificationname').append('<option value="'+key+'">'+val+'</option>');
                         });
@@ -306,8 +302,7 @@
                }else{
                   if(arr.length > 1){    
                      valueFlush(['editsubjectId']);                   
-                        $('#editsubjectId').empty();
-                        // $('#editsubjectId').attr('readonly', false);
+                        $('#editsubjectId').empty();                        
                         $.each(data, function(key, val) {
                            $('#editsubjectId').append('<option value="'+key+'">'+val+'</option>');
                         });
@@ -517,9 +512,8 @@
                                  if (data.status) {
                                  if(data.status==='error') toastr.error(data.data);
                                  else if(data.status==='success'){
-                                    toastr.success(data.data);
-                                    window.location.reload();
-                                    // window.location.replace("{{route('experience.index')}}");
+                                       toastr.success(data.data);
+                                       window.location.reload();                                    
                                     }
                                  }
                               },

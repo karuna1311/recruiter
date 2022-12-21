@@ -52,9 +52,6 @@ class PreviewController extends Controller
         ->where('eligible_candidates.user_id',$user->id)
         ->where('eligible_candidates.status',1)
         ->get();
-
-
-
             
         $userData = ['name'=>$user->name,'mobile'=>$user->mobile,'email'=>$user->email,'dob'=>$user->dob];
         return view('user.ApplicationForm.Preview',compact('previewData','userData','qualification','experience','job_applied'));
@@ -76,7 +73,8 @@ class PreviewController extends Controller
     }
     public function update(UserReservation $preview)
     {
-        try {
+        try 
+        {
             $user=Auth::user();
             User::where('id',$user->id)->update(['application_status'=>'6']);
         }

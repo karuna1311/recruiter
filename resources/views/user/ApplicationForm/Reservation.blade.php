@@ -848,13 +848,9 @@
    });
    $(document).on('change','#retirementDate',function(){
         var retirement_date = $(this).val();        
-        var join_date = $('#joinDate').val();
-   
+        var join_date = $('#joinDate').val();   
         var admission = moment(join_date, 'YYYY-MM-DD').add('days','1'); 
-        var discharge = moment(retirement_date, 'YYYY-MM-DD').add('days','1');
-        
-        // console.log(admission);
-        // console.log(discharge);
+        var discharge = moment(retirement_date, 'YYYY-MM-DD').add('days','1');       
         var years = discharge.diff(admission, 'year');
         admission.add(years, 'years');
         var months = discharge.diff(admission, 'months');

@@ -181,8 +181,7 @@
                                        <td>
                                                 <a type="button" class="btn btn-xs btn-info"
                                                 data-bs-toggle="modal"  onclick="editExperience(this)"
-                                                   action="{{ route('experience.edit', base64_encode($value->id)) }}"
-                                                   >
+                                                   action="{{ route('experience.edit', base64_encode($value->id)) }}"                                 >
                                                     {{ trans('global.edit') }}
                                                 </a> 
                                                 
@@ -190,12 +189,8 @@
                                                    <input type="hidden" name="_method" value="DELETE">
                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                </form>
-                                                                      
-                                       </td>
-
-                                                <!-- <td>{{ !empty($value->compulsorySubjects) ? $value->compulsorySubjects : '-'}}</td>                                    
-                                       <td>{{ !empty($value->optionalSubjects) ? $value->optionalSubjects : '-'}}</td> -->
+                                                </form>                                                                      
+                                       </td>                                    
                                     </tr>
                                     <?php $i++; ?>
                                  @endforeach
@@ -207,8 +202,6 @@
                            <div class="row form-group  mt-3">
 
                               <div class="col-md-12 text-center"> 
-                                 {{-- <a  href="{{ route('postavailable.index') }}" class="btn btn-success mb-1">Save and Next</a> --}}
-
                                  <form action="{{ route('experience.checkExperience') }}" method="POST">
                                     <input type="hidden" name="_method" value="POST">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -473,22 +466,24 @@
                               url: "{{ route('experience.store')}}",
                               data: $(form).serialize(),
                               type: 'POST',
-                              success : function(data){
-                                 // console.log(data);
-                                 if (data.ValidatorErrors) {
-                                 $.each(data.ValidatorErrors, function(index, jsoNObject) {
-                                    $.each(jsoNObject, function(key, val) {
-                                       toastr.error(val);
+                              success : function(data){                                 
+                                 if (data.ValidatorErrors) 
+                                 {
+                                    $.each(data.ValidatorErrors, function(index, jsoNObject) {
+                                       $.each(jsoNObject, function(key, val) {
+                                          toastr.error(val);
+                                       });
+                                       return false;
                                     });
-                                    return false;
-                                 });
                                  }
-                                 if (data.status) {
+                                 if (data.status) 
+                                 {
                                  if(data.status==='error') toastr.error(data.data);
-                                 else if(data.status==='success'){
-                                    toastr.success(data.data);
-                                    window.location.reload();
-                                    // window.location.replace("{{route('postavailable.index')}}");
+                                    else if(data.status==='success')
+                                    {
+                                       toastr.success(data.data);
+                                       window.location.reload();
+                                       
                                     }
                                  }
                               },

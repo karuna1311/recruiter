@@ -35,24 +35,11 @@ class QualificationController extends Controller
         $user_id =Auth::user()->id;
         
         $qualification = QualificationType::Select('qualification_type_name','qualification_type_code')->orderby('sort_order','ASC')->get();
-
-//         $qualification_name = QualificationName::Select('qualification_name_code')->where('qualification_type_code','LIKE','%G%')->get();
-        
-//         $array = array();
-//         foreach($qualification_name as $value){
-//                 array_push($array,$value->qualification_name_code);
-//         }
-
-//         $reCreateArray = array_values($array);
-//         echo "<pre>";
-// print_r($reCreateArray);
-// die();
-        // dd($array);
+    
         $stateData = LocationController::getState();
         $grade = lookup::select('id','label')->where('type','LIKE','%qualification_grade%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         $mode = lookup::Select('id','label')->where('type','LIKE','%qualification_mode%')->orderby('label','ASC')->pluck('label','id')->prepend('[SELECT]','')->all();
         
-        // user qualification
         $user_qualification = UserQualification::Select('user_qualification.id','user_qualification.typeResult','user_qualification.doq',
         'user_qualification.attempts','user_qualification.percentage','user_qualification.compulsorySubjects',
         'user_qualification.optionalSubjects','subject.subject_name as subject_name','university.name as university_name','class.label as class',
@@ -66,7 +53,6 @@ class QualificationController extends Controller
         ->where('user_id',$user_id)
         ->orderBy('qualificationtype.sort_order','ASC')
         ->get();
-        //   dd($user_qualification);
         
         return view('user.ApplicationForm.Qualification',compact('qualification','stateData','grade','mode','user_qualification'));
     }
@@ -90,7 +76,8 @@ class QualificationController extends Controller
     public function store(UserQualificationRequest $request)
     {
      
-        try {
+        try 
+        {
             $user=Auth::user();
             $qualificationexists = UserQualification::exists();
             if($user->status_lock == '0'){
@@ -152,13 +139,8 @@ class QualificationController extends Controller
         ->pluck('subject.subject_name','subject.id')->prepend('[Select]','')->toArray();
         
         $html_view = view('user.ApplicationForm.Modal.QualificationModal',compact('data','qualification_type_list','state_list',
-        'grade_list',
-        'mode_list',
-        'subject_list',
-        'qualification_name_list',
-    'university_list'))->render();
+        'grade_list','mode_list','subject_list','qualification_name_list','university_list'))->render();
 
-        
         return response()->json(['html'=>$html_view]);
     }
 
@@ -171,18 +153,17 @@ class QualificationController extends Controller
      */
     public function update(UserQualificationRequest $request, $token)
     {        
-        try { 
-            
+        try 
+        {  
             $user=Auth::user();
-            
-            if($user->status_lock == '0'){
+            if($user->status_lock == '0')
+            {
                 $id = base64_decode($token);
                 $update = UserQualification::where('id',$id)->update($request->except('_token','_method'));
 
             }else if($user->status_lock =='1'){
                 return Response::json(['status'=>'error','data'=>'Your account is locked, please first unlocked it.']);    
-            }             
-            
+            }              
         }
         catch(Exception $e) {
             return Response::json(['status'=>'error','data'=>$e->getMessage()]);
@@ -194,7 +175,8 @@ class QualificationController extends Controller
         try {            
             $user=Auth::user();
             $check = UserQualification::exists();
-            if($user->status_lock == '0'){                
+            if($user->status_lock == '0')
+            {                
             
                     if($check == true){
                         // User::where('id',$user->id)->update(['application_status'=>'3']);
@@ -203,7 +185,8 @@ class QualificationController extends Controller
                         return redirect()->route('qualification.index')->with('msg_error','Please add minimum 1 Qualification');
                     }
              
-            }else if($user->status_lock =='1'){
+            }else if($user->status_lock =='1')
+            {
                 if($check == true){
                     return redirect()->route('experience.index');
                 }
@@ -223,8 +206,8 @@ class QualificationController extends Controller
      */
     public function destroy($id)
     {
-        
-        try{
+        try
+        {
             $qualification_id = base64_decode($id);
             $model = UserQualification::find($qualification_id);
             

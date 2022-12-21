@@ -60,8 +60,7 @@
                   
                         </form>
                         <div class="row form-group  mt-3 ">
-                           <div class="col-md-6 text-right"> 
-                              {{-- <a href="{{ route('preview.index') }}" type="button" class="btn btn-success mb-1">Save And Next</a> --}}
+                           <div class="col-md-6 text-right">                               
                               <form action="{{ route('postavailable.checkPostAvailable') }}" method="POST">
                                  <input type="hidden" name="_method" value="POST">
                                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -159,6 +158,7 @@
                }
               
             });
+            
       </script>
       @endsection()
 @endsection

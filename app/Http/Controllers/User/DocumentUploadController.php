@@ -30,13 +30,4 @@ class DocumentUploadController extends Controller
     	return Response::json(['status'=>'success','data'=>$documentData]);
     }
 
-	// public function processCompleted(){
-	// 	try {
-	// 		$user=Auth::user();
-	// 		User::where('id',$user->id)->update(['application_status'=>'9']);
-    // 	} catch (Exception $e) {
-    // 		return Response::json(['status'=>'error','data'=>$e->getMessage()]);
-    // 	}
-    // 	// return Response::json(['status'=>'success','data'=>$documentData]);
-	// }
 }

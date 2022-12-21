@@ -29,7 +29,7 @@ class AppliedJobPaymentController extends Controller
         abort_if(Gate::denies('appliedJobPayment'), HttpResponse::HTTP_FORBIDDEN, '403 Forbidden');     
         $user=Auth::USER();
         $user_id = $user->id;
-        // User::where('id',$user_id)->update(['application_status'=>'9']);
+        User::where('id',$user_id)->update(['application_status'=>'9']);
         
         $jobpayment = AppliedJobByUser::where('user_id',$user_id)
                                     ->select('job_adv.name','applied_job_by_user.job_id','applied_job_by_user.bank_ref_no as order_id','applied_job_by_user.application_no')

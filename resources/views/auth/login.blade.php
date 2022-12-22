@@ -122,7 +122,10 @@
       </div>
    </div>
 </div>
-<script type="text/javascript">
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+ <script type="text/javascript">
+    
+    
    function loadModal(instructionId,modalTitle)
      {
        $('#instructionsModal').modal('hide');

@@ -7,6 +7,7 @@
       </div>
    </div>
 </footer>
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
 <script src="{{ url('/') }}/LoginAssets/js/vendor.min.js"></script>
 <script src="{{ url('/') }}/LoginAssets/js/app.min.js"></script>
 <!-- Apex js -->
@@ -24,7 +25,15 @@
 <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
 <script type="text/javascript">
-	$('.select2').select2();
-
-
+   
+   // document.onkeydown = function (event)
+   // {
+   //    event = (event || window.event);
+   //    if (event.keyCode == 123 || event.keyCode == 18)
+   //    {         
+   //       return false;
+   //    }
+   // }
+   
+   $('.select2').select2();
 </script>

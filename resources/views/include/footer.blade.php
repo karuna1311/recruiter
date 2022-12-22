@@ -12,6 +12,7 @@
         </nav> -->
       </div>
     </footer>
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>  
     <script src="{{ url('/') }}/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url('/') }}/lib/jquery-steps/build/jquery.steps.min.js"></script>
     <script src="{{ url('/') }}/assets/js/dashforge.js"></script>
